@@ -9,7 +9,7 @@ export FUNDING PAGE_LIMIT VERSION
 
 .PHONY: all guidance submission guidance-a guidance-b2 submission-a submission-b2 \
         a part-a b2 part-b2 counts pages chars check check-admin check-budget \
-        strict test dist clean distclean help
+        strict test ci dist clean distclean help
 
 all: guidance submission
 
@@ -59,6 +59,9 @@ strict: check
 test:
 	$(PYTHON) -m unittest discover -s tests -v
 
+ci:
+	$(PYTHON) scripts/ci.py run
+
 dist: all check test
 	$(PYTHON) scripts/package.py --require-pdfs
 
@@ -79,6 +82,7 @@ help:
 	@echo "make check-budget    Check partner budgets and consortium totals"
 	@echo "make strict          Also require completed administrative/budget fields"
 	@echo "make test            Run layout, validation, build and packaging tests"
+	@echo "make ci              Run every CI check, with logs and a Markdown summary"
 	@echo "make dist            Validate, then package source, four PDFs and reports"
 	@echo "make FUNDING=lump-sum  Select lump-sum rules and the 45-page Part B cap"
 	@echo "make PAGE_LIMIT=30     Override a call-specific Part B page cap"
