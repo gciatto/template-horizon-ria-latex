@@ -98,6 +98,28 @@ class ToolTests(unittest.TestCase):
         result = self.run_tool("count_pdf.py", self.proposal(guidance=1), "--check")
         self.assertEqual(result.returncode, 1, result.stderr)
 
+    def test_part_a_is_uncapped_but_still_checks_size_and_guidance(self):
+        path = self.proposal(count=41)
+        metadata = {"document_part": "A", "funding": "standard",
+                    "page_limit": None, "guidance": 0}
+        path.with_suffix(".hemeta").write_text(json.dumps(metadata))
+        result = self.run_tool("count_pdf.py", path, "--check")
+        self.assertEqual(result.returncode, 0, result.stderr + result.stdout)
+        self.assertIn("Part A", result.stdout)
+        self.assertIn("no page cap", result.stdout)
+        metadata["guidance"] = 1
+        path.with_suffix(".hemeta").write_text(json.dumps(metadata))
+        self.assertEqual(self.run_tool("count_pdf.py", path, "--check").returncode, 1)
+
+    def test_document_parts_cannot_bypass_metadata_validation(self):
+        path = self.proposal()
+        for part, limit in (("B", None), ("A", 40), ("C", None)):
+            with self.subTest(part=part, limit=limit):
+                path.with_suffix(".hemeta").write_text(json.dumps({
+                    "document_part": part, "funding": "standard",
+                    "page_limit": limit, "guidance": 0}))
+                self.assertEqual(self.run_tool("count_pdf.py", path, "--check").returncode, 2)
+
     def test_missing_invalid_pdf_and_metadata_fail(self):
         path = self.directory / "missing.pdf"
         self.assertEqual(self.run_tool("count_pdf.py", path).returncode, 2)
@@ -145,6 +167,8 @@ class ToolTests(unittest.TestCase):
         (project / "metadata.tex").write_text("metadata")
         (project / "Makefile").write_text("all:")
         (project / ".latexmkrc").write_text("config")
+        (project / "figure.pdf").write_bytes(b"source figure")
+        (project / "part-a.pdf").write_bytes(b"generated preview")
         (project / "VERSION").write_text("2026.10.01-09-00\n")
         (project / "build").mkdir()
         (project / "build" / "ignore.pdf").write_bytes(b"output")
@@ -157,8 +181,35 @@ class ToolTests(unittest.TestCase):
             names = archive.namelist()
         self.assertIn("he-ria26/part-b2.tex", names)
         self.assertIn("he-ria26/.latexmkrc", names)
+        self.assertIn("he-ria26/figure.pdf", names)
+        self.assertNotIn("he-ria26/part-a.pdf", names)
         self.assertEqual(names.count("he-ria26/VERSION"), 1)
         self.assertFalse(any(".git/" in name or "build/" in name or name.endswith(".log") for name in names))
+
+    def test_distribution_requires_and_packages_all_four_pdfs_and_reports(self):
+        project = self.directory / "release project"
+        project.mkdir()
+        (project / "part-b2.tex").write_text("source")
+        version = "2026.11.25-14-07"
+        pdfs = {"part-a-guidance": "guidance/part-a-guidance.pdf",
+                "part-b2-guidance": "guidance/part-b2-guidance.pdf",
+                "part-a": "submission/part-a.pdf", "part-b2": "submission/part-b2.pdf"}
+        for index, (name, relative) in enumerate(pdfs.items()):
+            path = project / "build" / relative
+            path.parent.mkdir(parents=True, exist_ok=True)
+            path.write_bytes(f"PDF fixture {index}".encode())
+        for name in ("counts", "part-a-counts", "admin-checks", "budget-checks"):
+            (project / "build" / f"{name}.json").write_text("{}")
+        result = self.run_tool("package.py", "--root", project, "--version", version, "--require-pdfs")
+        self.assertEqual(result.returncode, 0, result.stderr + result.stdout)
+        for name, relative in pdfs.items():
+            self.assertEqual((project / "dist" / f"he-ria26-{version}-{name}.pdf").read_bytes(),
+                             (project / "build" / relative).read_bytes())
+        for name in ("part-b2-checks", "part-a-checks", "admin-checks", "budget-checks"):
+            self.assertTrue((project / "dist" / f"he-ria26-{version}-{name}.json").is_file())
+        (project / "build/guidance/part-a-guidance.pdf").unlink()
+        self.assertEqual(self.run_tool("package.py", "--root", project, "--version", version,
+                                       "--require-pdfs").returncode, 2)
 
 
 if __name__ == "__main__":
