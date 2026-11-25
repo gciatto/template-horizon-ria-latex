@@ -90,6 +90,10 @@ class ToolTests(unittest.TestCase):
         self.assertEqual(result.returncode, 1, result.stderr)
         self.assertIn("A4", result.stdout)
 
+    def test_portrait_and_landscape_a4_pages_are_accepted(self):
+        result = self.run_tool("count_pdf.py", self.proposal(dimensions=[(595.276, 841.89), (841.89, 595.276)]), "--check")
+        self.assertEqual(result.returncode, 0, result.stderr)
+
     def test_guidance_pdf_is_not_accepted_by_submission_check(self):
         result = self.run_tool("count_pdf.py", self.proposal(guidance=1), "--check")
         self.assertEqual(result.returncode, 1, result.stderr)
@@ -141,6 +145,7 @@ class ToolTests(unittest.TestCase):
         (project / "metadata.tex").write_text("metadata")
         (project / "Makefile").write_text("all:")
         (project / ".latexmkrc").write_text("config")
+        (project / "VERSION").write_text("2026.10.01-09-00\n")
         (project / "build").mkdir()
         (project / "build" / "ignore.pdf").write_bytes(b"output")
         (project / ".git").mkdir()
@@ -152,6 +157,7 @@ class ToolTests(unittest.TestCase):
             names = archive.namelist()
         self.assertIn("he-ria26/part-b2.tex", names)
         self.assertIn("he-ria26/.latexmkrc", names)
+        self.assertEqual(names.count("he-ria26/VERSION"), 1)
         self.assertFalse(any(".git/" in name or "build/" in name or name.endswith(".log") for name in names))
 
 
