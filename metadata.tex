@@ -9,7 +9,8 @@
 \renewcommand{\HEKeywords}{[project keywords]}
 
 % standard -> 40 pages; lump-sum -> 45 pages (2026-2027 full RIA).
-% \providecommand lets FUNDING / PAGE_LIMIT from make override these defaults.
+% Direct LaTeX / Overleaf default. Make uses FUNDING=standard unless overridden,
+% e.g. make FUNDING=lump-sum. \providecommand preserves those build overrides.
 \providecommand{\HEFunding}{standard}
 % Set this ONLY when the call-specific submission template changes the limit:
 % \providecommand{\HEPageLimit}{40}

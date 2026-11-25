@@ -1,6 +1,8 @@
 PYTHON ?= python3
-# Empty values use metadata.tex. Overrides affect both PDFs and their checks.
-FUNDING ?=
+# Unspecified funding means standard RIA. An empty PAGE_LIMIT uses metadata.tex
+# and the selected profile's default.
+# Overrides affect both PDFs and their checks.
+FUNDING ?= standard
 PAGE_LIMIT ?=
 VERSION ?=
 export FUNDING PAGE_LIMIT VERSION
