@@ -38,14 +38,15 @@ make pages           # Count pages in both clean PDFs
 make chars           # Report text statistics and field-length checks
 make strict          # Also require complete administrative data
 make test            # Run regression tests
+make ci              # Run all CI checks with individual logs and a summary
 make dist            # Validate and create dated release assets
 ```
 
 `make check` accepts unfinished fields and reports them as drafting reminders.
 It fails on invalid populated data or inconsistent arithmetic. `make strict`
 also fails on missing required information; the blank template is expected to
-fail that completeness check. CI uses `make dist`, which includes `make check`
-and tests, so the reusable blank template builds successfully.
+fail that completeness check. CI runs the build, draft checks and regression tests,
+so the reusable blank template builds successfully.
 
 ## Outputs
 
@@ -200,9 +201,31 @@ make dist VERSION=2026.11.25-12-30
 
 Versions use **`YYYY.MM.DD-hh-mm`**, in 24-hour UTC, without a `v` prefix.
 A release contains the source ZIP, all four PDFs, validation reports and SHA-256
-hashes. GitHub Actions builds and checks pull requests and pushes; a validated
-push or manual run on the default branch publishes the dated release. Existing
-releases are preserved when a minute-based version collides.
+hashes. GitHub Actions runs on pushes to every branch, pull requests and manual
+runs. Its behaviour is:
+
+| Run | Build and validate | PDF/log artifacts | Dated GitHub release |
+| --- | --- | --- | --- |
+| Push or manual run on `master` | Yes | Yes | After all checks pass |
+| Push or manual run on any other branch | Yes | Yes | No |
+| Pull request | Yes | Yes | No |
+
+Each run summary shows the status and duration of the four PDF builds,
+administrative and budget checks, both clean-PDF checks and regression tests.
+It also reports page counts and unfinished-field totals, links to downloadable
+PDFs/logs, and includes expandable excerpts for failed checks. Independent checks
+continue after failures; checks needing a failed compilation are marked skipped.
+Failures still fail the job and prevent a release.
+
+The logs artifact retains command output, LaTeX/BibTeX logs and JSON reports,
+including on failed runs. Artifacts are kept for 30 days. Existing releases are
+preserved when a minute-based version collides. Only the release job has write
+permission, and it is restricted to `master`.
+
+Run `make ci` locally to use the same check runner. Its report is
+`build/ci/summary.md`, with structured results in `build/ci/results.json` and
+one log per check. CI creates release packages only on `master`; `make dist`
+remains available locally to validate and package any checkout.
 
 `.gitignore` excludes build/release directories, generated document PDFs,
 LaTeX auxiliary files, Python caches and editor leftovers. Authored figures,
@@ -218,6 +241,9 @@ is 180 × 267 mm, with headers and footers outside that rectangle.
 
 [docs/formatting.md](docs/formatting.md) explains the layout and Part B rules.
 [docs/part-a.md](docs/part-a.md) explains administrative types and constraints.
-The unchanged source RTF and supplied Part A ZIP are retained in `reference/`.
+[docs/proposal-writing.md](docs/proposal-writing.md) adapts the supplied agent
+writing workflow to this project; `AGENTS.md` directs drafting and review agents
+to it. The unchanged source RTF, supplied Part A ZIP and original writing
+instructions are retained in `reference/`.
 See `THIRD_PARTY_NOTICES.md` for attribution. Original code is under the MIT
 licence; the derived BibTeX style retains its LPPL terms.

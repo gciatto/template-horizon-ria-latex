@@ -18,6 +18,22 @@ archive is retained as `reference/part-a-structure-source.zip`. The integration
 adds shared styling, simpler author files, unified checks and current-form
 refinements documented in `docs/part-a.md`.
 
+## Supplied proposal-writing workflow
+
+The agent drafting/review instructions in `docs/proposal-writing.md` are adapted
+from the user-supplied `AGENTS-horizon.md`, retained unchanged in
+`reference/AGENTS-horizon.md`. The adaptation maps the workflow to this
+repository's `.tex`/`.bib` author interface, partner records, build targets and
+validation scope.
+
+The supplied document attributes its origin to a companion paper-writing
+AGENTS.md inspired by [PaperOrchestra](https://github.com/google-research/paper-orchestra).
+It reports checking the linked European Commission guidance on 25 November 2026.
+These are provenance statements from that document; adapting it does not
+constitute a new verification of those external sources. The workflow is not
+an official Commission template, and the actual call's requirements take
+precedence over its examples and generic guidance.
+
 ## Bibliography
 
 The bibliography-formatting policy comes from `erc27.sty` in the user-supplied

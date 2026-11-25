@@ -3,12 +3,17 @@
 These instructions apply to the whole Horizon Europe RIA template repository.
 Read `README.md` for commands, `docs/formatting.md` for layout rules, and
 `docs/part-a.md` for administrative types, limits and budget scope.
+For proposal drafting, substantive revision or critical review, also read and
+apply `docs/proposal-writing.md`. It covers call analysis, evidence, project
+logic, the evaluation sections and final handoff; apply it proportionately to
+the requested change.
 
 ## Author interface and project map
 
 - Ordinary proposal authors edit `.tex` and `.bib` only. Keep presentation,
   repeated-inclusion logic, validation and generation in styles or scripts.
   Do not require authors to edit JSON schemas or run schema generators.
+  Markdown guidance and internal schemas are agent/maintainer interfaces.
 - `metadata.tex` supplies shared project values. Reuse its macros in both parts.
 - `part-a.tex` assembles general information, partners, budget, ethics/security
   and call-specific questions through the other `part-a-*.tex` files.
@@ -42,7 +47,7 @@ Read `README.md` for commands, `docs/formatting.md` for layout rules, and
 - Put author guidance in `heguidance`, `\HEGuide`, `\HECriterion` or `\HEBudget`.
   It appears in blue and disappears in clean mode without executing hidden
   citations or labels. Authored text and unfinished placeholders remain visible.
-- Preserve A4, 15 mm body margins, 11 `bp` body/table text, reference-font
+- Preserve the supplied form's A4, 15 mm body margins, 11 `bp` body/table text, reference-font
   metrics, standard character spacing and single line spacing. Resolve overflow
   through content or layout; avoid shrinking/scaling ordinary table text.
 - Use semantic source lines and ordinary LaTeX cross-references. Keep partner
@@ -52,8 +57,11 @@ Read `README.md` for commands, `docs/formatting.md` for layout rules, and
 
 - Unset or empty `FUNDING` means `standard` RIA. Select `FUNDING=lump-sum`
   explicitly. Make/script settings override direct-compilation metadata defaults.
-- The 40/45-page caps apply to the whole Part B PDF, including references.
-  Part A has field constraints and no inherited Part B page cap.
+- The supplied full-RIA profiles default to 40/45 pages; verify the actual call
+  and submission stage before applying those limits. The applicable cap covers
+  the whole Part B PDF, including references. Part A has field constraints and
+  no inherited Part B page cap. `FUNDING` selects the funding model, not another
+  action type or submission stage.
 - Apply `PAGE_LIMIT` only for an evidenced call-specific Part B limit. The
   footer and PDF checks use the generated `.hemeta` sidecar consistently.
 - Administrative text counts include spaces and paragraph breaks after stated
@@ -81,6 +89,12 @@ Read `README.md` for commands, `docs/formatting.md` for layout rules, and
   builds with `FUNDING` unset so previews use standard RIA.
 - `make dist` validates and packages all four PDFs, sources and reports.
   Preserve UTC version format `YYYY.MM.DD-hh-mm` and existing-release guards.
+- `make ci` runs independent checks to completion and retains per-check logs,
+  JSON results and a Markdown summary under `build/ci/`. Keep failures visible:
+  skipped or unfinished checks must never be reported as passed.
+- GitHub Actions builds and uploads PDFs/logs on every branch and pull request.
+  Publish releases only after a successful push/manual build of `master`.
+  Preserve failure summaries and log uploads even when a check fails.
 - Edit sources, not generated files in `build/` or `dist/`. Keep `.gitignore`
   aligned with generated outputs while retaining authored figures and sources.
 
