@@ -28,13 +28,13 @@ jobs:
           sudo apt-get update
           sudo apt-get install --no-install-recommends -y \
             texlive-latex-base texlive-latex-recommended texlive-latex-extra \
-            texlive-fonts-recommended latexmk poppler-utils python3
+            texlive-fonts-recommended latexmk poppler-utils make python3
       - name: Set UTC date version
         id: version
         run: |
           version="$(python3 scripts/version.py)"
           echo "version=$version" >> "$GITHUB_OUTPUT"
-      - name: Build, check and package
+      - name: Build both parts, validate and package
         env:
           VERSION: ${{ steps.version.outputs.version }}
         run: make dist
@@ -81,4 +81,4 @@ jobs:
           gh release create "$VERSION" dist/* \
             --target "$COMMIT_SHA" \
             --title "$VERSION" \
-            --notes "Horizon Europe RIA template built at UTC version $VERSION from commit $COMMIT_SHA. Includes source, guidance PDF, submission-mode PDF, checks and SHA-256 hashes."
+            --notes "Horizon Europe RIA template built at UTC version $VERSION from commit $COMMIT_SHA. Includes source, Part A and B PDFs with and without guidance, validation reports and SHA-256 hashes."

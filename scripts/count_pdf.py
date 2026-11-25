@@ -46,7 +46,7 @@ def inspect_pdf(pdf):
             "characters_with_whitespace": len(text),
             "characters_without_whitespace": sum(not c.isspace() for c in text),
             "non_a4_pages": non_a4,
-            "character_count_note": "Diagnostic PDF text extraction; includes headers, footers and references. No global Part B character cap."}
+            "character_count_note": "Diagnostic PDF text extraction; includes headers, footers and references. Part A field limits are checked separately."}
 
 
 def read_metadata(path):
@@ -58,8 +58,14 @@ def read_metadata(path):
         raise ValueError("Build metadata must be a JSON object")
     if value.get("funding") not in ("standard", "lump-sum"):
         raise ValueError("Build metadata funding must be standard or lump-sum")
-    if type(value.get("page_limit")) is not int or value["page_limit"] < 1:
-        raise ValueError("Build metadata page_limit must be a positive integer")
+    part = value.setdefault("document_part", "B")
+    if part not in ("A", "B"):
+        raise ValueError("Build metadata document_part must be A or B")
+    if part == "A":
+        if "page_limit" not in value or value["page_limit"] is not None:
+            raise ValueError("Part A metadata page_limit must be null; the Part B cap does not apply")
+    elif type(value.get("page_limit")) is not int or value["page_limit"] < 1:
+        raise ValueError("Part B metadata page_limit must be a positive integer")
     if type(value.get("guidance")) is not int or value["guidance"] not in (0, 1):
         raise ValueError("Build metadata guidance must be 0 or 1")
     return value
@@ -76,7 +82,7 @@ def main():
         report = inspect_pdf(args.pdf)
         report.update(read_metadata(args.metadata or args.pdf.with_suffix(".hemeta")))
         failures = []
-        if report["pages"] > report["page_limit"]:
+        if report["page_limit"] is not None and report["pages"] > report["page_limit"]:
             failures.append(f"page count exceeds the configured {report['page_limit']}-page limit")
         if report["non_a4_pages"]:
             failures.append("non-A4 pages: " + ", ".join(map(str, report["non_a4_pages"])))
@@ -89,15 +95,19 @@ def main():
     except (ValueError, OSError, UnicodeError) as error:
         print(f"Cannot inspect proposal: {error}", file=sys.stderr)
         return 2
-    print(f"Pages: {report['pages']} / {report['page_limit']} ({report['funding']}; all pages including references)")
+    if report["document_part"] == "A":
+        print(f"Part A pages: {report['pages']} (no page cap; {report['funding']}; administrative draft)")
+    else:
+        print(f"Part B pages: {report['pages']} / {report['page_limit']} ({report['funding']}; all pages including references)")
     print(f"Extracted characters: {report['characters_with_whitespace']} including whitespace; "
           f"{report['characters_without_whitespace']} excluding whitespace")
-    print("Character counts are diagnostic; Part B has no general character limit.")
+    print("PDF character counts are diagnostic; Part A field limits use the source-field checker.")
     if args.check:
         for failure in failures:
             print(f"FAIL: {failure}")
         if not failures:
-            print("PASS: configured page cap, A4 pages and guidance disabled.")
+            checks = "A4 pages and guidance disabled" if report["document_part"] == "A" else "configured page cap, A4 pages and guidance disabled"
+            print("PASS: " + checks + ".")
         return 1 if failures else 0
     return 0
 
