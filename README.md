@@ -51,6 +51,7 @@ cannot reuse the other mode's bibliography or cross-reference state.
 | `he-ria26.bst` | The ERC project's compact numeric bibliography formatting, implemented with BibTeX |
 | `scripts/` | Build, page/character counts and dated source archives |
 | `.github/workflows/build.yml` | Continuous validation and dated releases |
+| `AGENTS.md` | Instructions for coding agents working on this template or a proposal |
 | `docs/formatting.md` | Rules, precise layout choices and source provenance |
 | `reference/` | Unchanged supplied RTF |
 
@@ -102,8 +103,9 @@ Full publication details are printed when none of those identifiers is present.
 
 ### Profiles and limits
 
-Default: a standard full RIA, **40 pages**. Set the default profile in
-`metadata.tex`, or select it for a build:
+Default: a standard full RIA, **40 pages**. An unset or empty `FUNDING` selects
+`standard`, both through Make and when calling `scripts/build.py` directly.
+Select a different profile explicitly for a build:
 
 ```sh
 make check FUNDING=lump-sum              # 45-page full RIA profile
@@ -113,8 +115,9 @@ make check FUNDING=standard PAGE_LIMIT=35 # Example call-specific override
 
 Only set a custom page limit when the actual call's submission template
 requires it. The same value is written into the PDF footer and the `.hemeta`
-sidecar used by the checking script. A later build without overrides returns
-to the defaults in `metadata.tex`.
+sidecar used by the checking script. A later build without a `FUNDING` override
+returns to `standard`. Direct LaTeX / Overleaf compilation uses the
+`\HEFunding` default in `metadata.tex`, which is also `standard`.
 
 Every page of Part B counts, including the title, participants, figures,
 tables, landscape canvas and references. A failed page check exits nonzero.
