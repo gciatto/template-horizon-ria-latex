@@ -1,0 +1,137 @@
+% Partner 1 (UNIBO): edit only the values in the second pair of braces.
+% Keep the two records below together: organisation details and this partner's budget.
+% To add a partner, copy this file and update its number/acronym and the manifest.
+% Leave unknown values empty; use yes/no for boolean answers.
+\begin{ARecord}{participant}
+\AField{participant.number}{1}
+% coordinator, partner, or affiliated.
+\AField{participant.role}{coordinator}
+\AField{organisation.pic}{}
+\AField{organisation.legal_name}{\HECoordinator}
+\AField{organisation.short_name}{UNIBO}
+\AField{organisation.street}{}
+\AField{organisation.town}{}
+\AField{organisation.postcode}{}
+\AField{organisation.country}{}
+\AField{organisation.website}{}
+% Registry-derived legal statuses and SME status are read-only in the portal.
+\AField{organisation.legal_person}{unanswered}
+\AField{organisation.public_body}{unanswered}
+\AField{organisation.non_profit}{unanswered}
+\AField{organisation.international_organisation}{unanswered}
+\AField{organisation.higher_education}{unanswered}
+\AField{organisation.research_organisation}{unanswered}
+\AField{organisation.sme_self_declared}{unanswered}
+\AField{organisation.sme_self_declaration_date}{}
+\AField{organisation.sme_self_assessment}{unknown}
+\AField{organisation.sme_self_assessment_date}{}
+\AField{organisation.sme_validation}{unknown}
+\AField{organisation.sme_validation_date}{}
+\subsubsection{Departments carrying out the work}
+\begin{ARecord}{department}
+\AField{department.name}{}
+\AField{department.not_applicable}{no}
+\AField{department.same_as_organisation_address}{unanswered}
+\AField{department.street}{}
+\AField{department.town}{}
+\AField{department.postcode}{}
+\AField{department.country}{}
+\end{ARecord}
+\subsubsection{Links with other participants}
+% Repeat ARecord{participant_link} once for every organisational link.
+\begin{ARecord}{participant_link}
+\AField{link.type}{}
+\AField{link.participant_number}{}
+\end{ARecord}
+% This block may be absent for affiliated entities in the observed form.
+\subsubsection{Main contact person}
+\begin{ARecord}{main_contact}
+\AField{contact.title}{}
+% woman, man, non_binary, or unanswered.
+\AField{contact.gender}{unanswered}
+\AField{contact.first_name}{}
+\AField{contact.last_name}{}
+\AField{contact.email}{}
+\AField{contact.position}{}
+\AField{contact.department}{}
+\AField{contact.same_as_organisation_name}{unanswered}
+\AField{contact.same_as_organisation_address}{unanswered}
+\AField{contact.street}{}
+\AField{contact.town}{}
+\AField{contact.postcode}{}
+\AField{contact.country}{}
+\AField{contact.website}{}
+\AField{contact.phone}{}
+\AField{contact.phone_2}{}
+\end{ARecord}
+\subsubsection{Other contact persons}
+% Repeat ARecord{other_contact} as needed.
+\begin{ARecord}{other_contact}
+\AField{contact.first_name}{}
+\AField{contact.last_name}{}
+\AField{contact.email}{}
+\AField{contact.phone}{}
+\end{ARecord}
+\subsubsection{Researchers involved in the proposal}
+% Repeat ARecord{researcher} as needed.
+\begin{ARecord}{researcher}
+\AField{researcher.title}{}
+\AField{researcher.first_name}{}
+\AField{researcher.last_name}{}
+% woman, man, non_binary, or unanswered.
+\AField{researcher.gender}{unanswered}
+\AField{researcher.nationality}{}
+\AField{researcher.email}{}
+% A, B, C, or D (career-stage code in the reference form).
+\AField{researcher.career_stage}{}
+% leading or team_member.
+\AField{researcher.project_role}{}
+\AField{researcher.reference_identifier}{}
+\AField{researcher.identifier_type}{}
+\end{ARecord}
+\subsubsection{Role of participating organisation in the project}
+% Comma-separated roles, e.g. research_performer,technology_developer.
+% The full vocabulary is listed in docs/part-a.md; use other with an explanation.
+\AField{participant.project_roles}{}
+\AField{participant.other_role_specification}{}
+\subsubsection{Relevant achievements (up to 5)}
+\begin{ARecord}{achievement}
+\AField{achievement.type}{}
+\AField{achievement.description}{}
+\end{ARecord}
+\subsubsection{Previous projects or activities (up to 5)}
+\begin{ARecord}{previous_project}
+\AField{previous_project.name}{}
+\AField{previous_project.description}{}
+\end{ARecord}
+\subsubsection{Relevant infrastructures and equipment}
+\begin{ARecord}{infrastructure}
+\AField{infrastructure.name}{}
+\AField{infrastructure.description}{}
+\end{ARecord}
+\subsubsection{Gender Equality Plan}
+\AField{participant.gep}{unanswered}
+\end{ARecord}
+
+% Budget for this participant. EUR amounts use a decimal point, without grouping
+% separators or a currency symbol. Enter zero explicitly where the amount is zero.
+% Derived totals may be left blank: the budget checker reports the calculations.
+\begin{ARecord}{budget_row}
+\AField{budget.participant_number}{1}
+\AField{budget.personnel_eur}{}
+\AField{budget.subcontracting_eur}{}
+\AField{budget.travel_subsistence_eur}{}
+\AField{budget.equipment_eur}{}
+\AField{budget.other_goods_works_services_eur}{}
+\AField{budget.internally_invoiced_eur}{}
+\AField{budget.indirect_eur}{}
+\AField{budget.total_eligible_eur}{}
+\AField{budget.funding_rate_pct}{}
+\AField{budget.maximum_eu_for_eligible_eur}{}
+\AField{budget.requested_eu_eur}{}
+\AField{budget.max_grant_amount_eur}{}
+\AField{budget.income_generated_eur}{}
+\AField{budget.financial_contributions_eur}{}
+\AField{budget.own_resources_eur}{}
+\AField{budget.total_estimated_income_eur}{}
+\end{ARecord}

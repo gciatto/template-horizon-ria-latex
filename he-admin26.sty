@@ -1,0 +1,317 @@
+\NeedsTeXFormat{LaTeX2e}[2022-06-01]
+\ProvidesPackage{he-admin26}[2026/11/25 Horizon Europe administrative forms]
+\RequirePackage{he-ria26}
+\AtBeginDocument{%
+  \ifdefstring{\HEDocumentPart}{A}{%
+    \pretocmd{\subsubsection}{\par\Needspace{6\baselineskip}}{}{}%
+  }{}%
+}
+
+% Editable sources contain only semantic fields and records. All inclusion,
+% human-readable labels and presentation logic stay in this package.
+\ExplSyntaxOn
+\prop_new:N \g_he_admin_labels_prop
+\prop_new:N \g_he_admin_types_prop
+\prop_new:N \g_he_admin_hints_prop
+\prop_new:N \g_he_admin_values_prop
+\prop_new:N \g_he_admin_names_prop
+\tl_new:N \g_he_admin_rows_tl
+\tl_new:N \l_he_admin_budget_rows_tl
+\tl_new:N \l_he_admin_number_tl
+\tl_new:N \l_he_admin_name_tl
+\tl_new:N \l_he_admin_country_tl
+\tl_new:N \l_he_admin_role_tl
+\tl_new:N \l_he_admin_label_tl
+\tl_new:N \l_he_admin_type_tl
+\tl_new:N \l_he_admin_hint_tl
+\bool_new:N \l_he_admin_collect_bool
+\int_new:N \l_he_admin_mode_int
+% 0: ordinary fields; 1: participant details; 2: budget; 3: Part B list.
+\NewDocumentCommand{\HEAdminDeclareField}{m m m m}{
+  \prop_gput:Nnn \g_he_admin_labels_prop {#1}{#2}
+  \prop_gput:Nnn \g_he_admin_types_prop {#1}{#3}
+  \prop_gput:Nnn \g_he_admin_hints_prop {#1}{#4}
+}
+\cs_new_protected:Npn \he_admin_literal:n #1 {
+  \tl_set:Nx \l_tmpa_tl {\tl_to_str:n {#1}}
+  \regex_replace_all:nnN {_}{\c{space}} \l_tmpa_tl
+  \tl_use:N \l_tmpa_tl
+}
+\cs_new_protected:Npn \he_admin_value:nn #1#2 {
+  \tl_if_blank:nTF {#2}
+    {\textit{[to~be~completed]}}
+    {\str_case:nnF {#1}{
+      {boolean}{\he_admin_literal:n{#2}}
+      {enum}{\he_admin_literal:n{#2}}
+      {multiselect}{\he_admin_literal:n{#2}}
+      {email}{\nolinkurl{#2}}
+      {url}{\nolinkurl{#2}}
+    }{#2}}
+}
+\cs_new_protected:Npn \he_admin_render_field:nn #1#2 {
+  \prop_get:NnNTF \g_he_admin_labels_prop {#1} \l_he_admin_label_tl
+    {}{\tl_set:Nn \l_he_admin_label_tl {\texttt{\detokenize{#1}}}}
+  \prop_get:NnNTF \g_he_admin_types_prop {#1} \l_he_admin_type_tl
+    {}{\tl_set:Nn \l_he_admin_type_tl {string}}
+  \prop_get:NnNTF \g_he_admin_hints_prop {#1} \l_he_admin_hint_tl
+    {}{\tl_clear:N \l_he_admin_hint_tl}
+  \str_if_eq:VnTF \l_he_admin_type_tl {text}{
+    \par\Needspace{4\baselineskip}
+    \noindent\textbf{\tl_use:N \l_he_admin_label_tl}\par
+    \tl_if_blank:VF \l_he_admin_hint_tl {
+      \HEGuide{\noindent\tl_use:N \l_he_admin_hint_tl\par}
+    }
+    \begin{tcolorbox}[enhanced,breakable,colback=white,colframe=black!40,
+      boxrule=0.4bp,arc=0pt,left=5bp,right=5bp,top=4bp,bottom=4bp,
+      before~skip=3bp,after~skip=5bp]
+      \he_admin_value:nn {text}{#2}
+    \end{tcolorbox}
+  }{
+    \par\noindent\textbf{\tl_use:N \l_he_admin_label_tl :}\enspace
+    \exp_args:NV \he_admin_value:nn \l_he_admin_type_tl {#2}\par
+    \tl_if_blank:VF \l_he_admin_hint_tl {
+      \HEGuide{\noindent\tl_use:N \l_he_admin_hint_tl\par}
+    }
+  }
+}
+\NewDocumentCommand{\AField}{m +m}{
+  \bool_if:NTF \l_he_admin_collect_bool
+    {\prop_gput:Nnn \g_he_admin_values_prop {#1}{#2}}
+    {\he_admin_render_field:nn {#1}{#2}}
+}
+\cs_new_protected:Npn \he_admin_collect:n #1 {
+  \prop_gclear:N \g_he_admin_values_prop
+  \group_begin:
+    \bool_set_true:N \l_he_admin_collect_bool
+    \RenewDocumentCommand{\section}{s o m}{}
+    \RenewDocumentCommand{\subsection}{s o m}{}
+    \RenewDocumentCommand{\subsubsection}{s o m}{}
+    \RenewDocumentEnvironment{heguidance}{+b}{}{}
+    \RenewDocumentCommand{\HEGuide}{+m}{}
+    #1
+  \group_end:
+}
+\cs_new_protected:Npn \he_admin_partner:n #1 {
+  \he_admin_collect:n {#1}
+  \subsection{Participant~\prop_item:Nn \g_he_admin_values_prop {participant.number}
+    \texorpdfstring{\enspace---\enspace}{\space---\space}%
+    \prop_item:Nn \g_he_admin_values_prop {organisation.short_name}}
+  #1
+}
+\cs_new_protected:Npn \he_admin_budget_row:n #1 {
+  \prop_item:Nn \g_he_admin_labels_prop {budget.#1} &
+  \prop_get:NnNF \g_he_admin_values_prop {budget.#1} \l_tmpa_tl {\tl_clear:N \l_tmpa_tl}
+  \tl_if_blank:VTF \l_tmpa_tl {\textit{[not~entered]}}{\tl_use:N \l_tmpa_tl}
+  \\ \hline
+}
+\cs_new_protected:Npn \he_admin_budget:n #1 {
+  \he_admin_collect:n {#1}
+  \subsection{Participant~\prop_item:Nn \g_he_admin_values_prop {budget.participant_number}}
+  \tl_clear:N \l_he_admin_budget_rows_tl
+  \clist_map_inline:nn {
+    personnel_eur,subcontracting_eur,travel_subsistence_eur,equipment_eur,
+    other_goods_works_services_eur,internally_invoiced_eur,indirect_eur,
+    total_eligible_eur,funding_rate_pct,maximum_eu_for_eligible_eur,
+    requested_eu_eur,max_grant_amount_eur,income_generated_eur,
+    financial_contributions_eur,own_resources_eur,total_estimated_income_eur
+  }{\tl_put_right:Nn \l_he_admin_budget_rows_tl {\he_admin_budget_row:n {##1}}}
+  \begin{longtable}{|L{\dimexpr\linewidth-48mm-4\tabcolsep-3\arrayrulewidth\relax}|L{48mm}|}
+    \hline
+    \textbf{Budget~item} & \textbf{Value} \\ \hline
+    \endfirsthead
+    \hline \textbf{Budget~item~(continued)} & \textbf{Value} \\ \hline
+    \endhead
+    \tl_use:N \l_he_admin_budget_rows_tl
+  \end{longtable}
+}
+\cs_new_protected:Npn \he_admin_collect_list:n #1 {
+  \he_admin_collect:n {#1}
+  \prop_get:NnN \g_he_admin_values_prop {participant.number} \l_he_admin_number_tl
+  \prop_get:NnN \g_he_admin_values_prop {organisation.legal_name} \l_he_admin_name_tl
+  \prop_get:NnN \g_he_admin_values_prop {organisation.country} \l_he_admin_country_tl
+  \prop_get:NnN \g_he_admin_values_prop {participant.role} \l_he_admin_role_tl
+  \tl_gput_right:Nx \g_he_admin_rows_tl {
+    \exp_not:N \he_admin_list_row:nnnn
+    {\exp_not:V \l_he_admin_number_tl}
+    {\exp_not:V \l_he_admin_name_tl}
+    {\exp_not:V \l_he_admin_country_tl}
+    {\exp_not:V \l_he_admin_role_tl}
+  }
+}
+\cs_new_protected:Npn \he_admin_list_row:nnnn #1#2#3#4 {
+  #1\str_if_eq:nnT {#4}{coordinator}{~(Coordinator)} &
+  \tl_if_blank:nTF {#2}{\HEPlaceholder{organisation~name}}{#2} &
+  \tl_if_blank:nTF {#3}{\HEPlaceholder{country}}{#3}
+  \\ \hline
+}
+\NewDocumentEnvironment{ARecord}{m +b}{
+  \str_case:nnF {#1}{
+    {participant}{
+      \int_case:nn {\l_he_admin_mode_int}{
+        {1}{\he_admin_partner:n {#2}}
+        {3}{\he_admin_collect_list:n {#2}}
+      }
+    }
+    {budget_row}{
+      \int_compare:nNnT {\l_he_admin_mode_int}={2}{\he_admin_budget:n {#2}}
+    }
+  }{
+    \bool_if:NF \l_he_admin_collect_bool {\par\addvspace{3bp}}
+    #2
+    \bool_if:NF \l_he_admin_collect_bool {\par\addvspace{3bp}}
+  }
+}{}
+\NewDocumentCommand{\HEPrintPartners}{}{
+  \group_begin:
+    \int_set:Nn \l_he_admin_mode_int {1}
+    \input{partners/participants.tex}
+  \group_end:
+}
+\NewDocumentCommand{\HEPrintBudget}{}{
+  \group_begin:
+    \int_set:Nn \l_he_admin_mode_int {2}
+    \input{partners/participants.tex}
+  \group_end:
+}
+\NewDocumentCommand{\HEPrintParticipantList}{}{
+  \group_begin:
+    \int_set:Nn \l_he_admin_mode_int {3}
+    \tl_gclear:N \g_he_admin_rows_tl
+    \input{partners/participants.tex}
+    \begin{longtable}{|L{35mm}|L{\dimexpr\linewidth-60mm-6\tabcolsep-4\arrayrulewidth\relax}|L{25mm}|}
+      \hline
+      \textbf{Participant~No.\ *} & \textbf{Participant~organisation~name} & \textbf{Country}
+      \\ \hline
+      \endfirsthead
+      \hline
+      \textbf{Participant~No.\ *} & \textbf{Participant~organisation~name} & \textbf{Country}
+      \\ \hline
+      \endhead
+      \tl_use:N \g_he_admin_rows_tl
+    \end{longtable}
+  \group_end:
+}
+\NewDocumentCommand{\AQuestion}{m +m m m}{
+  \par\Needspace{4\baselineskip}\noindent #2\par\nobreak
+  \noindent\textbf{Answer:}~\he_admin_value:nn {enum}{#3}
+  \hfill\textbf{Part~B~pages:}~\tl_if_blank:nTF {#4}{\textit{[if~applicable]}}{#4}
+  \par\addvspace{5bp}
+}
+\cs_new_protected:Npn \he_admin_declaration:nnn #1#2#3 {
+  \par\Needspace{4\baselineskip}\noindent\textbf{#1.}~#2\par\nobreak
+  \noindent\textbf{Confirmed:}~\he_admin_value:nn {enum}{#3}\par\addvspace{5bp}
+}
+\NewDocumentCommand{\ADeclaration}{m +m m}{
+  \str_if_eq:nnTF {#1}{10}
+    {\str_if_eq:eeT {\HEFunding}{lump-sum}{\he_admin_declaration:nnn {#1}{#2}{#3}}}
+    {\he_admin_declaration:nnn {#1}{#2}{#3}}
+}
+\ExplSyntaxOff
+
+% Human-readable labels and reference guidance; user values stay in .tex files.
+\HEAdminDeclareField{proposal.id}{Proposal identifier}{identifier}{}
+\HEAdminDeclareField{proposal.call}{Call identifier}{string}{}
+\HEAdminDeclareField{proposal.topic}{Topic identifier}{string}{}
+\HEAdminDeclareField{proposal.action_type}{Action type}{enum}{}
+\HEAdminDeclareField{proposal.model_grant_agreement}{Model grant agreement}{string}{}
+\HEAdminDeclareField{proposal.acronym}{Acronym}{string}{}
+\HEAdminDeclareField{proposal.title}{Proposal title}{string}{Reference limit: 200 characters, including spaces.}
+\HEAdminDeclareField{proposal.duration_months}{Duration (months)}{integer}{}
+\HEAdminDeclareField{proposal.fixed_keyword_1}{Fixed keyword}{controlled_vocabulary}{}
+\HEAdminDeclareField{proposal.free_keywords}{Free keywords}{string}{Reference limit: 200 characters, including spaces.}
+\HEAdminDeclareField{proposal.abstract}{Abstract}{text}{Reference limit: 2,000 characters, including spaces.}
+\HEAdminDeclareField{proposal.submitted_similar_last_2y}{Similar proposal submitted in the last two years}{boolean}{}
+\HEAdminDeclareField{proposal.previous_reference}{Previous proposal reference}{identifier}{}
+\HEAdminDeclareField{participant.number}{Participant number}{integer}{}
+\HEAdminDeclareField{participant.role}{Participant role}{enum}{}
+\HEAdminDeclareField{organisation.pic}{Participant Identification Code (PIC)}{identifier}{}
+\HEAdminDeclareField{organisation.legal_name}{Legal organisation name}{string}{}
+\HEAdminDeclareField{organisation.short_name}{Short name / acronym}{string}{}
+\HEAdminDeclareField{organisation.street}{Street}{string}{}
+\HEAdminDeclareField{organisation.town}{Town}{string}{}
+\HEAdminDeclareField{organisation.postcode}{Postal code}{string}{}
+\HEAdminDeclareField{organisation.country}{Country}{string}{}
+\HEAdminDeclareField{organisation.website}{Website}{url}{}
+\HEAdminDeclareField{organisation.legal_person}{Legal person}{boolean}{}
+\HEAdminDeclareField{organisation.public_body}{Public body}{boolean}{}
+\HEAdminDeclareField{organisation.non_profit}{Non-profit organisation}{boolean}{}
+\HEAdminDeclareField{organisation.international_organisation}{International organisation}{boolean}{}
+\HEAdminDeclareField{organisation.higher_education}{Higher education organisation}{boolean}{}
+\HEAdminDeclareField{organisation.research_organisation}{Research organisation}{boolean}{}
+\HEAdminDeclareField{organisation.sme_self_declared}{SME self-declaration}{boolean}{}
+\HEAdminDeclareField{organisation.sme_self_declaration_date}{SME self-declaration date}{date}{}
+\HEAdminDeclareField{organisation.sme_self_assessment}{SME self-assessment status}{enum}{}
+\HEAdminDeclareField{organisation.sme_self_assessment_date}{SME self-assessment date}{date}{}
+\HEAdminDeclareField{organisation.sme_validation}{SME validation status}{enum}{}
+\HEAdminDeclareField{organisation.sme_validation_date}{SME validation date}{date}{}
+\HEAdminDeclareField{department.name}{Department name}{string}{}
+\HEAdminDeclareField{department.not_applicable}{Department not applicable}{boolean}{}
+\HEAdminDeclareField{department.same_as_organisation_address}{Same address as the organisation}{boolean}{}
+\HEAdminDeclareField{department.street}{Street}{string}{}
+\HEAdminDeclareField{department.town}{Town}{string}{}
+\HEAdminDeclareField{department.postcode}{Postal code}{string}{}
+\HEAdminDeclareField{department.country}{Country}{string}{}
+\HEAdminDeclareField{link.type}{Type of organisational link}{string}{}
+\HEAdminDeclareField{link.participant_number}{Linked participant number}{integer}{}
+\HEAdminDeclareField{contact.title}{Title}{string}{}
+\HEAdminDeclareField{contact.gender}{Gender}{enum}{}
+\HEAdminDeclareField{contact.first_name}{First name}{string}{}
+\HEAdminDeclareField{contact.last_name}{Last name}{string}{}
+\HEAdminDeclareField{contact.email}{Email}{email}{}
+\HEAdminDeclareField{contact.position}{Position}{string}{}
+\HEAdminDeclareField{contact.department}{Department}{string}{}
+\HEAdminDeclareField{contact.same_as_organisation_name}{Same organisation name}{boolean}{}
+\HEAdminDeclareField{contact.same_as_organisation_address}{Same address as the organisation}{boolean}{}
+\HEAdminDeclareField{contact.street}{Street}{string}{}
+\HEAdminDeclareField{contact.town}{Town}{string}{}
+\HEAdminDeclareField{contact.postcode}{Postal code}{string}{}
+\HEAdminDeclareField{contact.country}{Country}{string}{}
+\HEAdminDeclareField{contact.website}{Website}{url}{}
+\HEAdminDeclareField{contact.phone}{Telephone}{string}{}
+\HEAdminDeclareField{contact.phone_2}{Additional telephone}{string}{}
+\HEAdminDeclareField{researcher.title}{Title}{string}{}
+\HEAdminDeclareField{researcher.first_name}{First name}{string}{}
+\HEAdminDeclareField{researcher.last_name}{Last name}{string}{}
+\HEAdminDeclareField{researcher.gender}{Gender}{enum}{}
+\HEAdminDeclareField{researcher.nationality}{Nationality}{string}{}
+\HEAdminDeclareField{researcher.email}{Email}{email}{}
+\HEAdminDeclareField{researcher.career_stage}{Career stage}{enum}{}
+\HEAdminDeclareField{researcher.project_role}{Role in the project}{enum}{}
+\HEAdminDeclareField{researcher.reference_identifier}{Researcher identifier}{identifier}{}
+\HEAdminDeclareField{researcher.identifier_type}{Identifier type}{string}{}
+\HEAdminDeclareField{participant.project_roles}{Roles of the organisation in the project}{multiselect}{}
+\HEAdminDeclareField{participant.other_role_specification}{Other role: explanation}{string}{Reference limit: 50 characters, including spaces.}
+\HEAdminDeclareField{achievement.type}{Achievement type}{controlled_vocabulary}{}
+\HEAdminDeclareField{achievement.description}{Description of the achievement}{text}{Reference limit: 500 characters, including spaces.}
+\HEAdminDeclareField{previous_project.name}{Project or activity name}{string}{}
+\HEAdminDeclareField{previous_project.description}{Description of the project or activity}{text}{Reference limit: 500 characters, including spaces.}
+\HEAdminDeclareField{infrastructure.name}{Infrastructure or equipment name}{string}{}
+\HEAdminDeclareField{infrastructure.description}{Description of infrastructure or equipment}{text}{Reference limit: 300 characters, including spaces.}
+\HEAdminDeclareField{participant.gep}{Gender Equality Plan}{boolean}{}
+\HEAdminDeclareField{budget.participant_number}{Participant number}{integer}{}
+\HEAdminDeclareField{budget.personnel_eur}{Personnel costs (EUR)}{decimal}{}
+\HEAdminDeclareField{budget.subcontracting_eur}{Subcontracting costs (EUR)}{decimal}{}
+\HEAdminDeclareField{budget.travel_subsistence_eur}{Travel and subsistence (EUR)}{decimal}{}
+\HEAdminDeclareField{budget.equipment_eur}{Equipment (EUR)}{decimal}{}
+\HEAdminDeclareField{budget.other_goods_works_services_eur}{Other goods, works and services (EUR)}{decimal}{}
+\HEAdminDeclareField{budget.internally_invoiced_eur}{Internally invoiced goods and services (EUR)}{decimal}{}
+\HEAdminDeclareField{budget.indirect_eur}{Indirect costs (EUR)}{decimal}{}
+\HEAdminDeclareField{budget.total_eligible_eur}{Total eligible costs (EUR)}{decimal}{}
+\HEAdminDeclareField{budget.funding_rate_pct}{Funding rate (\%)}{decimal}{}
+\HEAdminDeclareField{budget.maximum_eu_for_eligible_eur}{Maximum EU contribution to eligible costs (EUR)}{decimal}{}
+\HEAdminDeclareField{budget.requested_eu_eur}{Requested EU contribution (EUR)}{decimal}{}
+\HEAdminDeclareField{budget.max_grant_amount_eur}{Maximum grant amount (EUR)}{decimal}{}
+\HEAdminDeclareField{budget.income_generated_eur}{Income generated by the action (EUR)}{decimal}{}
+\HEAdminDeclareField{budget.financial_contributions_eur}{Financial contributions (EUR)}{decimal}{}
+\HEAdminDeclareField{budget.own_resources_eur}{Own resources (EUR)}{decimal}{}
+\HEAdminDeclareField{budget.total_estimated_income_eur}{Total estimated income (EUR)}{decimal}{}
+\HEAdminDeclareField{ethics.data.import.details}{Details of personal-data imports}{text}{}
+\HEAdminDeclareField{ethics.non_eu.activities.details}{Activities in non-EU countries}{text}{}
+\HEAdminDeclareField{ethics.confirmation}{Ethics confirmation}{boolean}{}
+\HEAdminDeclareField{ethics.self_assessment.dimension}{Ethical dimension of the objectives, methodology and likely impact}{text}{Reference limit: 5,000 characters, including spaces.}
+\HEAdminDeclareField{ethics.self_assessment.compliance}{Compliance with ethical principles and relevant legislation}{text}{Reference limit: 5,000 characters, including spaces.}
+\HEAdminDeclareField{security.national_restrictions.details}{Details of national security restrictions}{text}{Reference limit: 1,000 characters, including spaces.}
+\HEAdminDeclareField{security.other.details}{Details of other security issues}{text}{Reference limit: 1,000 characters, including spaces.}
+\HEAdminDeclareField{security.self_assessment}{Assessment}{text}{Reference limit: 5,000 characters, including spaces.}
+\HEAdminDeclareField{ethics.other.details}{Details of other ethics issues}{text}{Reference limit: 1,000 characters, including spaces.}
+\endinput

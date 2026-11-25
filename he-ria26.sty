@@ -1,11 +1,16 @@
 \NeedsTeXFormat{LaTeX2e}[2022-06-01]
-\ProvidesPackage{he-ria26}[2026/11/25 Horizon Europe RIA Part B, template V5.1]
+\ProvidesPackage{he-ria26}[2026/11/25 Horizon Europe RIA shared layout; Part B V5.1]
 
 % Formatting follows the EC template V5.1 (22 January 2026).
 % The full specification and source links are in docs/formatting.md.
 \providecommand{\HEGuidance}{1}
+\newcommand{\HEDocumentPart}{B}
+\newcommand{\HEDocumentTitle}{Proposal template Part B: technical description}
 \DeclareOption{draft}{\renewcommand{\HEGuidance}{1}}
 \DeclareOption{final}{\renewcommand{\HEGuidance}{0}}
+\DeclareOption{part-a}{%
+  \renewcommand{\HEDocumentPart}{A}%
+  \renewcommand{\HEDocumentTitle}{Part A: administrative forms}}
 \ProcessOptions\relax
 
 \RequirePackage[T1]{fontenc}
@@ -122,13 +127,16 @@
     \sffamily\fontsize{8bp}{9bp}\selectfont
     Call: \HECallIdentifier{} --- \HECallName\par
     \raggedleft\color{HEHeaderGrey}%
-    EU Grants: Application form (HE RIA and IA): V5.1 -- 22.01.2026}}
+    \ifdefstring{\HEDocumentPart}{A}
+      {Horizon Europe: Administrative drafting forms}
+      {EU Grants: Application form (HE RIA and IA): V5.1 -- 22.01.2026}}}
   \fancyfoot[C]{%
     \begingroup\setlength{\fboxsep}{3bp}\setlength{\fboxrule}{0.4bp}%
     \fcolorbox{black}{HEFooterGrey}{%
       \parbox{\dimexpr\headwidth-2\fboxsep-2\fboxrule\relax}{%
         \centering\sffamily\fontsize{8.5bp}{10bp}\selectfont
-        Part B -- Page \thepage{} of \HEPageLimit}}%
+        Part \HEDocumentPart{} -- Page \thepage{}%
+        \ifdefstring{\HEDocumentPart}{B}{ of \HEPageLimit}{}}}%
     \endgroup}
   \renewcommand{\headrulewidth}{0pt}
   \renewcommand{\footrulewidth}{0pt}}
@@ -137,7 +145,7 @@
 \NewDocumentCommand{\HEMakeTitle}{}{%
   \noindent\begin{minipage}{\linewidth}
     \centering\fontsize{20bp}{23bp}\selectfont\bfseries
-    Proposal template Part B: technical description\par
+    \HEDocumentTitle\par
     \vspace{5bp}
     \setlength{\fboxsep}{3bp}\setlength{\fboxrule}{0.4bp}%
     \fbox{\parbox{\dimexpr\linewidth-2\fboxsep-2\fboxrule\relax}{%
@@ -249,13 +257,20 @@
   \he@resolveprofile
   \normalsize
   \hypersetup{pdftitle={\HEProjectTitle},pdfauthor={\HECoordinator},
-    pdfsubject={Horizon Europe RIA -- Part B -- \HETopicIdentifier},
+    pdfsubject={Horizon Europe RIA -- Part \HEDocumentPart{} -- \HETopicIdentifier},
     pdfkeywords={\HEKeywords},pdfcreator={LaTeX with he-ria26.sty}}%
   \immediate\openout\he@metastream=\jobname.hemeta
-  \immediate\write\he@metastream{%
-    {"funding":"\HEFunding","page_limit":\HEPageLimit,"guidance":\HEGuidance}}%
+  \ifdefstring{\HEDocumentPart}{A}{%
+    \immediate\write\he@metastream{%
+      {"document_part":"A","funding":"\HEFunding","page_limit":null,"guidance":\HEGuidance}}%
+  }{%
+    \immediate\write\he@metastream{%
+      {"document_part":"B","funding":"\HEFunding","page_limit":\HEPageLimit,"guidance":\HEGuidance}}%
+  }%
   \immediate\closeout\he@metastream
-  \typeout{[he-ria26] Funding: \HEFunding; full-document page limit: \HEPageLimit}%
+  \ifdefstring{\HEDocumentPart}{A}
+    {\typeout{[he-ria26] Part A; funding: \HEFunding; no Part B page cap}}%
+    {\typeout{[he-ria26] Funding: \HEFunding; full-document page limit: \HEPageLimit}}%
   \typeout{[he-ria26] Body: 11bp; baseline: 13.2bp; margins: 15mm}%
 }
 \endinput
