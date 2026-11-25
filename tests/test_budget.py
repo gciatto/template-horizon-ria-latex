@@ -93,6 +93,16 @@ class BudgetTests(unittest.TestCase):
         self.assertEqual(report['rows'][0]['calculated']['total_eligible_eur'],'310.00')
         self.assertTrue(check(self.root,funding='standard')['errors'])
 
+    def test_lump_sum_requires_entered_indirect_costs_for_completeness(self):
+        self.complete_inputs()
+        draft=check(self.root,funding='lump-sum')
+        self.assertEqual(draft['errors'],[])
+        self.assertIn('indirect_eur',draft['rows'][0]['missing_inputs'])
+        self.assertTrue(any('indirect_eur' in error for error in
+                            check(self.root,strict=True,funding='lump-sum')['errors']))
+        self.set_values(indirect_eur='0.00')
+        self.assertEqual(check(self.root,strict=True,funding='lump-sum')['errors'],[])
+
 
 if __name__=='__main__':
     unittest.main()
