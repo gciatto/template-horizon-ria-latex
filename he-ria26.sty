@@ -60,8 +60,13 @@
 \renewcommand{\footnotesize}{\@setfontsize\footnotesize{9bp}{10.8bp}}
 \linespread{1}
 \normalsize
-\setlength{\parindent}{1.2em}
-\setlength{\parskip}{0pt}
+% Separate prose paragraphs with a modest first-line indent, never extra
+% vertical glue. Reapply inside boxes, whose default parbox setup resets it.
+\newcommand{\he@paragraphsetup}{%
+  \setlength{\parindent}{1em}%
+  \setlength{\parskip}{0pt}}
+\he@paragraphsetup
+\tcbset{before upper=\he@paragraphsetup}
 \setlength{\textfloatsep}{7bp plus 2bp minus 1bp}
 \setlength{\floatsep}{7bp plus 2bp minus 1bp}
 \setlength{\intextsep}{7bp plus 2bp minus 1bp}
@@ -86,9 +91,14 @@
   {\makebox[12mm][l]{\thesubsection}}{0pt}{}
 \titleformat{\subsubsection}[hang]{\normalfont\normalsize\bfseries}
   {\thesubsubsection}{0.6em}{}
-\titlespacing*{\section}{0pt}{8bp}{4bp}
-\titlespacing*{\subsection}{0pt}{6bp}{3bp}
-\titlespacing*{\subsubsection}{0pt}{5bp}{2bp}
+% Unstarred spacing preserves the first-line indent after a heading.
+\titlespacing{\section}{0pt}{8bp}{4bp}
+\titlespacing{\subsection}{0pt}{6bp}{3bp}
+\titlespacing{\subsubsection}{0pt}{5bp}{2bp}
+\titleformat{\paragraph}[runin]{\normalfont\normalsize\bfseries}{}{0pt}{}[.]
+\titleformat{\subparagraph}[runin]{\normalfont\normalsize\bfseries}{}{0pt}{}[.]
+\titlespacing{\paragraph}{\parindent}{0pt}{0.5em}
+\titlespacing{\subparagraph}{\parindent}{0pt}{0.5em}
 \setcounter{secnumdepth}{2}
 
 % Every proposal-specific value is set in metadata.tex.
@@ -157,7 +167,7 @@
 \NewDocumentEnvironment{heguidance}{+b}{%
   \ifhe@guidance
     \par\begingroup\color{HEGuidanceBlue}%
-    \setlength{\parindent}{0pt}\setlength{\parskip}{3bp}%
+    \he@paragraphsetup
     #1\par\endgroup
   \fi}{}
 \NewDocumentCommand{\HEGuide}{+m}{%
@@ -173,12 +183,12 @@
     \begin{tcolorbox}[enhanced,breakable,colback=black!3,colframe=black!35,
       boxrule=0.4bp,arc=0pt,left=5bp,right=5bp,top=4bp,bottom=4bp,
       before skip=4bp,after skip=5bp,coltext=HEGuidanceBlue]
-      \textbf{#1}\par #2
+      \noindent\textbf{#1}\par #2
     \end{tcolorbox}
   \fi}
 \NewDocumentCommand{\HEPlaceholder}{+m}{\textit{[#1]}}
 \NewDocumentCommand{\HEParagraph}{m}{%
-  \par\Needspace{3\baselineskip}\noindent\textbf{#1.}\space\ignorespaces}
+  \par\Needspace{3\baselineskip}\indent\textbf{#1.}\space\ignorespaces}
 \newcounter{hetable}
 \newcommand{\he@tablelabel}{}
 \renewcommand{\thehetable}{\he@tablelabel}
@@ -196,7 +206,7 @@
     title={#1},fonttitle=\bfseries,center title,
     left=5bp,right=5bp,top=4bp,bottom=5bp,
     before skip=0pt,after skip=0pt]
-    \HEGuide{\itshape #2\par\medskip}%
+    \HEGuide{\itshape #2\par}%
     #3
   \end{tcolorbox}}
 
