@@ -334,7 +334,7 @@ as a replacement for completing that form.
 ## Provenance and linked guidance
 
 Adapted from the user-supplied
-[`AGENTS-horizon.md`](../reference/AGENTS-horizon.md) and mapped to this project's
+[`AGENTS-horizon.md`](../references/AGENTS-horizon.md) and mapped to this project's
 author files, commands and validation scope. Its attribution and reported
 source-check date are recorded in
 [`THIRD_PARTY_NOTICES.md`](../THIRD_PARTY_NOTICES.md#supplied-proposal-writing-workflow).
@@ -342,9 +342,10 @@ This adaptation does not represent a new verification of the external links.
 Recheck the relevant live topic documents for each application. These are
 editorial instructions, not an official Commission template.
 
-The links below are retained from the supplied workflow. The application form,
-General Annexes and budget-source records remain in `formatting.md` and
-`part-a.md` rather than being duplicated here.
+The links below are retained from the supplied workflow. Their provenance,
+alongside the application form, General Annexes, budget sources and original
+input hashes, is maintained in the [source registry](../references/README.md).
+`formatting.md` and `part-a.md` explain how those sources are applied.
 
 [evaluation-form]: https://ec.europa.eu/info/funding-tenders/opportunities/docs/2021-2027/horizon/temp-form/ef/ef_he-ria-ia_en.pdf
 [exploitation]: https://research-and-innovation.ec.europa.eu/strategy/dissemination-and-exploitation-research-results_en

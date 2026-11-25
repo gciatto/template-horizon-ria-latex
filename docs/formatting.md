@@ -6,12 +6,14 @@ Part B implements the supplied **Horizon Europe RIA/IA Part B V5.1,
 22 January 2026**. It is the full-proposal form for a single-stage call or
 the second stage of a two-stage call.
 
-- [EC standard application form, including Part B V5.1](https://ec.europa.eu/info/funding-tenders/opportunities/docs/2021-2027/horizon/temp-form/af/af_he-ria-ia_en.pdf),
+- [EC standard application form, including Part B V5.1](../references/README.md#ec-application-form),
   Part B instructions, printed page 3; page 30 of the combined 54-page PDF checked on 25 November 2026.
-- [2026–2027 Work Programme General Annexes](https://ec.europa.eu/info/funding-tenders/opportunities/docs/2021-2027/horizon/wp-call/2026-2027/wp-15-general-annexes_horizon-2026-2027_en.pdf),
+- [2026–2027 Work Programme General Annexes](../references/README.md#general-annexes),
   Annex A, page 4, for page limits and the precedence of the actual submission-system form.
-- The supplied RTF is retained unchanged in `reference/template-he-ria-part-b-5.1.rtf`.
-  Its SHA-256 is `507cc6ad2831936b3b41e2bed6ec784cb1c50ba61b1e8dd80590639565575977`.
+- The supplied RTF is retained unchanged in
+  [`references/template-he-ria-part-b-5.1.rtf`](../references/template-he-ria-part-b-5.1.rtf).
+  Its checksum, provenance and the upstream URLs are recorded in the
+  [source registry](../references/README.md).
 
 Use the template downloaded inside the Portal for the actual topic to identify
 call-specific changes. The generic template is the baseline implemented here.
@@ -29,7 +31,7 @@ structure and constraints are documented separately in `docs/part-a.md`.
 | Body and table size | Exactly 11 `bp` | 11 physical PDF points; avoids the smaller size implied by LaTeX's nominal `11pt` option |
 | Line spacing | `\linespread{1}`, 13.2 `bp` baseline for 11 `bp` body | Ordinary single spacing, with no compressed lines |
 | Character spacing | Standard | No tracking, font expansion, condensed font or scaled text |
-| Paragraphs | 1.2 em indentation, zero inter-paragraph skip | Compact paragraph separation following the ERC project's convention |
+| Prose paragraphs | 1 em first-line indentation; exactly 0 pt `\parskip` | Paragraphs are separated by indentation, including the first after headings |
 | Headings | Black bold serif, official numbering and labels | Matches the blank proposal form |
 | Running header | Call identification and official template version | Matches the RTF |
 | Footer | Grey framed band, “Part B – Page n of limit” | Matches the form's page-limit placeholder rather than presenting the limit as a total page count |
@@ -43,6 +45,13 @@ and gives the header and footer their own space inside the permitted margins.
 The instruction cover, revision history, large empty answer areas and
 instruction watermarks are not part of the proposal PDF.
 
+The same paragraph policy applies to authored prose, blue `heguidance`
+paragraphs, administrative narrative answer boxes, `\HEParagraph`, and native
+`\paragraph`/`\subparagraph` run-in headings. Ordinary line spacing stays at
+13.2 `bp`. Lists, field labels, tables, captions and headings retain the
+structural spacing appropriate to those elements. Separate prose paragraphs
+with a blank source line; additional manual vertical space is unnecessary.
+
 Headers, footnotes and captions may be smaller under the form's express
 exception for text other than body text. That exception does **not** apply to
 ordinary text in tables. Template tables retain 11-point text and wrap their
@@ -50,8 +59,8 @@ contents instead of shrinking them.
 
 ## Page and character accounting
 
-The full standard RIA has a **40-page** cap; the full lump-sum RIA has a
-**45-page** cap. The title, participant list, all three evaluation sections,
+The supplied full-proposal baseline uses a **40-page** standard RIA cap and a
+**45-page** lump-sum RIA cap. The title, participant list, all three evaluation sections,
 tables, figures and references all count. There is no ERC-style exemption for
 references. Call-specific limits can override these defaults.
 
@@ -86,15 +95,15 @@ leaves space for the title, participants and bibliography.
 
 ## Relationship to the reference repositories
 
-[logological/heria](https://github.com/logological/heria), commit
-`518f234c1c47e84451cb7705fe1331c4fc72d3b7`, was inspected. Its current release
+[logological/heria](../references/README.md#implementation-references), commit
+`518f234c1c47e84451cb7705fe1331c4fc72d3b7`, was inspected. That snapshot
 supports V5.1, but this project implements its own small style package rather
 than depending on the generated class and its data model. This permits the
 requested file structure, exact physical font size, and a text rectangle that
 does not reserve header/footer height inside the body margins. No `heria`
 source is incorporated.
 
-The uploaded `erc27-formagent-master.zip` supplied the project-organisation
+The uploaded [`erc27-formagent-master.zip` snapshot](../references/README.md#supplied-erc-snapshot) supplied the project-organisation
 reference: shared metadata, a dedicated `.sty`, guidance switching, Make
 targets and a dated release workflow. Its compact bibliography-formatting
 policy is retained, with just one example bibliographic entry. Its proposal text, project identity, personal documents and

@@ -30,7 +30,8 @@ the requested change.
   add relevant sources when drafting a proposal.
 - `scripts/`, `Makefile`, `tests/` and `.github/workflows/build.yml` own automation.
   Internal schemas/scaffolds under `scripts/data/` are maintained with the tools.
-- Keep original inputs in `reference/` unchanged.
+- Keep original inputs in `references/` unchanged. Maintain their origins,
+  versions, SHA-256 hashes and external-source provenance in `references/README.md`.
 
 ## Proposal content and presentation
 
@@ -50,6 +51,9 @@ the requested change.
 - Preserve the supplied form's A4, 15 mm body margins, 11 `bp` body/table text, reference-font
   metrics, standard character spacing and single line spacing. Resolve overflow
   through content or layout; avoid shrinking/scaling ordinary table text.
+- Keep prose at `\parskip=0pt` and `\parindent=1em`, including first paragraphs
+  after headings, guidance and narrative fields. Retain semantic spacing for
+  headings, lists, labels, captions and tables.
 - Use semantic source lines and ordinary LaTeX cross-references. Keep partner
   identifiers, work packages, staff effort and costs consistent across parts.
 

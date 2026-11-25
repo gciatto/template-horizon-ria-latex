@@ -9,12 +9,14 @@ version 5.1 of 22 January 2026, supplied by the user.
 The original form remains attributed to the European Commission. This
 independent LaTeX implementation is not an official Commission publication.
 Source links and version details are in `docs/formatting.md`.
+The originals, input hashes and upstream provenance are indexed in
+[`references/README.md`](references/README.md).
 
 ## Supplied administrative structure
 
 The Part A field structure, question wording and source-confidence annotations
 are adapted from the user-supplied `horizon-part-a-templates(2).zip`. The unchanged
-archive is retained as `reference/part-a-structure-source.zip`. The integration
+archive is retained as `references/part-a-structure-source.zip`. The integration
 adds shared styling, simpler author files, unified checks and current-form
 refinements documented in `docs/part-a.md`.
 
@@ -22,7 +24,7 @@ refinements documented in `docs/part-a.md`.
 
 The agent drafting/review instructions in `docs/proposal-writing.md` are adapted
 from the user-supplied `AGENTS-horizon.md`, retained unchanged in
-`reference/AGENTS-horizon.md`. The adaptation maps the workflow to this
+`references/AGENTS-horizon.md`. The adaptation maps the workflow to this
 repository's `.tex`/`.bib` author interface, partner records, build targets and
 validation scope.
 

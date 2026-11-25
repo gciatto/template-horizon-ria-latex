@@ -4,13 +4,13 @@
 
 The administrative structure comes from the supplied
 `horizon-part-a-templates(2).zip`, preserved as
-`reference/part-a-structure-source.zip`. Its data dictionary identifies
+`references/part-a-structure-source.zip`. Its data dictionary identifies
 `Proposal-SEP-211303496.pdf`, administrative pages 1–202, and form version
 `Horizon Europe ver 1.00 20241022` as its original evidence. That source PDF
 was not supplied with this integration; the archive's evidence labels are
 retained rather than presented as a fresh examination of that proposal.
 
-The [EC standard RIA/IA application form](https://ec.europa.eu/info/funding-tenders/opportunities/docs/2021-2027/horizon/temp-form/af/af_he-ria-ia_en.pdf)
+The [EC standard RIA/IA application form](../references/README.md#ec-application-form)
 was checked on 25 November 2026. Its Part A version 3.0, dated 10 November 2025,
 supplies the title/keyword limits, conditional lump-sum declaration and
 other-ethics explanation added during integration. The actual call's Portal
@@ -149,10 +149,10 @@ total estimated income = requested EU + action income + financial contributions 
 ```
 
 These are the ordinary-category calculations in the supplied source. The
-[Horizon Europe Model Grant Agreement](https://ec.europa.eu/info/funding-tenders/opportunities/docs/2021-2027/common/agr-contr/general-mga_horizon-euratom_en.pdf),
+[Horizon Europe Model Grant Agreement](../references/README.md#model-grant-agreement),
 Articles 6.2.D.2 and 6.2.E, excludes internally invoiced costs from the indirect
 base and establishes the 25% flat rate with its listed exclusions. The
-[2026–2027 General Annexes](https://ec.europa.eu/info/funding-tenders/opportunities/docs/2021-2027/horizon/wp-call/2026-2027/wp-15-general-annexes_horizon-2026-2027_en.pdf)
+[2026–2027 General Annexes](../references/README.md#general-annexes)
 also describe that rate and exclusions.
 
 Calculations use decimal arithmetic. Every supplied amount is checked for
