@@ -1,75 +1,93 @@
 # Agent instructions
 
 These instructions apply to the whole Horizon Europe RIA template repository.
-Read `README.md` for build commands and `docs/formatting.md` before changing
-the document layout or interpreting submission limits.
+Read `README.md` for commands, `docs/formatting.md` for layout rules, and
+`docs/part-a.md` for administrative types, limits and budget scope.
 
-## Project map
+## Author interface and project map
 
-- `metadata.tex`: shared proposal identifiers, participants, optional impact
-  summary and defaults for direct LaTeX compilation. Reuse its macros rather
-  than repeating project data in content files.
-- `part-b2.tex`: main document and section inclusion order. The rendered
-  component is named **Part B**.
-- `sections/` and `tables/`: proposal text, author guidance and implementation
-  tables. Keep prose changes here rather than embedding them in the style.
-- `he-ria26.sty`: typography, layout, guidance controls and document helpers.
-- `bibliography.bib` and `he-ria26.bst`: reference data and compact numeric
-  formatting. Retain the ERC formatting policy and one example entry while
-  maintaining the generic template; add relevant sources when drafting a proposal.
-- `scripts/`, `Makefile`, `tests/` and `.github/workflows/build.yml`: build,
-  validation and date-versioned release automation.
-- `reference/`: original supplied form; keep it unchanged.
+- Ordinary proposal authors edit `.tex` and `.bib` only. Keep presentation,
+  repeated-inclusion logic, validation and generation in styles or scripts.
+  Do not require authors to edit JSON schemas or run schema generators.
+- `metadata.tex` supplies shared project values. Reuse its macros in both parts.
+- `part-a.tex` assembles general information, partners, budget, ethics/security
+  and call-specific questions through the other `part-a-*.tex` files.
+- Each `partners/partner-N-ACRO-admin-form.tex` holds one organisation's
+  administrative records and budget. `partners/participants.tex` is the ordered
+  manifest used by Part A, the budget section and Part B's participant list.
+- `ethics/` contains editable questions and assessment narratives.
+- `part-b2.tex`, `sections/` and `tables/` contain the technical description.
+  The rendered component is named **Part B**.
+- `he-ria26.sty` owns shared typography, layout, headings and guidance;
+  `he-admin26.sty` owns administrative rendering and partner inclusion modes.
+- `bibliography.bib` holds references; `he-ria26.bst` preserves the compact
+  numeric ERC formatting policy. Keep one example in the generic template;
+  add relevant sources when drafting a proposal.
+- `scripts/`, `Makefile`, `tests/` and `.github/workflows/build.yml` own automation.
+  Internal schemas/scaffolds under `scripts/data/` are maintained with the tools.
+- Keep original inputs in `reference/` unchanged.
 
 ## Proposal content and presentation
 
-- Preserve the official V5.1 headings, section numbering and tables 3.1a–3.1h.
-  Follow the actual call-specific Portal template when it changes the generic form.
-- Ground proposal facts in the user's material. Keep missing information as
-  `\HEPlaceholder{...}`; do not invent partners, results, commitments or costs.
-- Put author guidance inside `heguidance`, `\HEGuide`, `\HECriterion` or
-  `\HEBudget`. It must appear in blue in guidance mode and disappear in
-  submission mode without executing hidden citations or labels.
-- Keep authored content, cross-references and unfinished placeholders visible
-  in both modes. Keep participant/WP identifiers and totals consistent across files.
-- Retain A4 pages, 15 mm body margins, 11 `bp` body/table text, reference-font
+- Ground proposal facts in the user's material. Retain empty fields or
+  `\HEPlaceholder{...}` when facts are missing; do not invent participants,
+  research results, commitments, contact details or costs.
+- Preserve Part B V5.1 headings and tables 3.1a–3.1h. The actual call-specific
+  Portal template takes precedence over generic defaults.
+- Keep stable administrative field IDs, record boundaries and partner naming
+  consistent with the checker. Add/update validation and labels when extending
+  the field specification; do not silently ignore unknown fields.
+- Keep incomplete information distinct from known zero/false/no values.
+  Preserve evidence and confidence labels for inferred administrative limits.
+- Put author guidance in `heguidance`, `\HEGuide`, `\HECriterion` or `\HEBudget`.
+  It appears in blue and disappears in clean mode without executing hidden
+  citations or labels. Authored text and unfinished placeholders remain visible.
+- Preserve A4, 15 mm body margins, 11 `bp` body/table text, reference-font
   metrics, standard character spacing and single line spacing. Resolve overflow
-  through content or layout changes, not smaller fonts or scaled tables.
-- Use semantic source lines and ordinary LaTeX labels/cross-references.
-  Part A drafting support is deferred until requested; do not introduce
-  ERC-specific fields or reference-page exemptions.
+  through content or layout; avoid shrinking/scaling ordinary table text.
+- Use semantic source lines and ordinary LaTeX cross-references. Keep partner
+  identifiers, work packages, staff effort and costs consistent across parts.
 
-## Funding and limits
+## Funding, limits and budget checks
 
-- Unset or empty `FUNDING` means `standard` RIA. Select lump-sum explicitly
-  with `FUNDING=lump-sum`; make/script settings override the direct-compilation
-  fallback in `metadata.tex`.
-- The standard/lump-sum defaults are 40/45 pages. Count the entire PDF,
-  including the title, participants, landscape pages, tables and references.
-- Use `PAGE_LIMIT` only for an evidenced call-specific limit. Keep the footer
-  and checking scripts consistent through the generated `.hemeta` sidecar.
-- Part B character counts are diagnostic. For a plain-text field, use
-  `scripts/count_chars.py` with the field's explicitly specified limit.
+- Unset or empty `FUNDING` means `standard` RIA. Select `FUNDING=lump-sum`
+  explicitly. Make/script settings override direct-compilation metadata defaults.
+- The 40/45-page caps apply to the whole Part B PDF, including references.
+  Part A has field constraints and no inherited Part B page cap.
+- Apply `PAGE_LIMIT` only for an evidenced call-specific Part B limit. The
+  footer and PDF checks use the generated `.hemeta` sidecar consistently.
+- Administrative text counts include spaces and paragraph breaks after stated
+  normalisation. Flag unresolved commands instead of presenting an exact count.
+  `count_chars.py` counts literal UTF-8 field text when exact source text is known.
+- Use decimal arithmetic for money, validate each partner separately, and
+  distinguish supplied values, calculated expectations and incomplete totals.
+  Do not apply standard reimbursement formulas to lump-sum awards automatically.
+- Preserve the pristine blank scaffold used by `add_partner.py`. Creating a
+  partner must not clone another partner's completed personal or budget data.
 
 ## Build and validation
 
-- Use pdfLaTeX, BibTeX and the existing packages. Keep dependencies minimal
-  and preserve compilation without shell escape.
-- After content, style or build changes, run `make` and `make check`.
-  Inspect affected rendered pages for overflow, broken tables and page breaks.
-- For behavioral changes, run the relevant tests (`make test` runs all of
-  them). Add focused regression tests when they address a concrete risk;
-  documentation-only edits do not require a PDF rebuild.
-- Check both modes when changing guidance, and both funding profiles when
-  changing profile resolution. Finish a default-template build with `FUNDING`
-  unset so distributed previews use standard RIA.
-- Use `make dist` for release assets. Preserve the UTC version format
-  `YYYY.MM.DD-hh-mm`. Edit sources rather than generated files in `build/` or `dist/`.
+- Use pdfLaTeX, BibTeX and existing packages. Keep dependencies minimal and
+  compilation independent of shell escape or Python source-generation steps.
+- `make` builds both parts with and without guidance; `make check` checks draft
+  values, budgets and both clean PDFs. Blank fields are allowed at this stage.
+- `make strict` checks administrative completeness and intentionally fails the
+  blank template. Keep it separate from the generic template's CI release gate.
+- For behavioral changes, run the relevant tests. Add focused regression tests
+  for concrete risks, keeping test commits separate from implementation commits.
+  Documentation-only changes do not need PDF rebuilds.
+- Inspect affected rendered pages after layout/content changes. Check both modes
+  for guidance changes and both profiles for funding changes. Finish distribution
+  builds with `FUNDING` unset so previews use standard RIA.
+- `make dist` validates and packages all four PDFs, sources and reports.
+  Preserve UTC version format `YYYY.MM.DD-hh-mm` and existing-release guards.
+- Edit sources, not generated files in `build/` or `dist/`. Keep `.gitignore`
+  aligned with generated outputs while retaining authored figures and sources.
 
 ## Working with changes
 
 - Inspect the working tree first and preserve unrelated user edits.
-- Keep changes scoped to the request. Use small Conventional Commits, with
-  test commits separate from implementation commits.
-- Report the changed behavior, checks actually run and any unresolved issue.
-  Distinguish locally validated builds from GitHub Actions runs.
+- Scope work to the request. Use small Conventional Commits; separate test
+  commits from feature/fix/build/documentation commits.
+- Report changed behavior, checks actually run and unresolved issues.
+  Distinguish local validation from GitHub Actions runs.

@@ -2,7 +2,7 @@
 
 ## Authoritative sources
 
-This project implements the supplied **Horizon Europe RIA/IA Part B V5.1,
+Part B implements the supplied **Horizon Europe RIA/IA Part B V5.1,
 22 January 2026**. It is the full-proposal form for a single-stage call or
 the second stage of a two-stage call.
 
@@ -15,6 +15,8 @@ the second stage of a two-stage call.
 
 Use the template downloaded inside the Portal for the actual topic to identify
 call-specific changes. The generic template is the baseline implemented here.
+Part A uses the same visual style for administrative drafting; its field
+structure and constraints are documented separately in `docs/part-a.md`.
 
 ## Layout decisions
 
@@ -61,9 +63,10 @@ Page sizes are checked for each page.
 The form does not impose a global Part B character cap. PDF character counts
 are therefore diagnostics. They measure extracted visible text, including
 repeated headers, footers, table text and bibliography. They are not exact
-Portal-field counts or an estimate of page usage. For future Part A work,
-`scripts/count_chars.py` counts the literal UTF-8 text intended for a field,
-with an explicitly supplied limit.
+Portal-field counts or an estimate of page usage. `scripts/check_admin.py`
+checks bounded Part A fields after normalising ordinary LaTeX text and resolving
+metadata macros. `scripts/count_chars.py` counts literal UTF-8 field text with
+an explicitly supplied limit. Part A has no inherited Part B page cap.
 
 Indicative allocations in the supplied form are 4 pages for 1.1, 14 for 1.2,
 3 for 2.1, 3 for 2.2 excluding 2.3, 12 for 3.1 (17 for lump sum), and 3 for 3.2.
@@ -78,7 +81,8 @@ leaves space for the title, participants and bibliography.
 - Table 3.1h concerns equipment costs exceeding 15% of a participant's personnel costs.
 - The source is named `part-b2.tex` to match the requested project convention;
   the document itself correctly identifies the Horizon component as **Part B**.
-- Part A is produced by the Portal. Its local drafting support is deferred.
+- Part A is produced by the Portal. This project's local administrative PDF
+  supports drafting and coordination and uses an uncapped Part A footer.
 
 ## Relationship to the reference repositories
 

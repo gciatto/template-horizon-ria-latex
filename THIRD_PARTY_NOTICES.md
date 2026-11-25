@@ -10,6 +10,14 @@ The original form remains attributed to the European Commission. This
 independent LaTeX implementation is not an official Commission publication.
 Source links and version details are in `docs/formatting.md`.
 
+## Supplied administrative structure
+
+The Part A field structure, question wording and source-confidence annotations
+are adapted from the user-supplied `horizon-part-a-templates(2).zip`. The unchanged
+archive is retained as `reference/part-a-structure-source.zip`. The integration
+adds shared styling, simpler author files, unified checks and current-form
+refinements documented in `docs/part-a.md`.
+
 ## Bibliography
 
 The bibliography-formatting policy comes from `erc27.sty` in the user-supplied

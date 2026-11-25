@@ -1,13 +1,17 @@
 # Horizon Europe RIA 2026 LaTeX template
 
-A working Part B project matching the supplied European Commission
-**V5.1 template of 22 January 2026**. It uses the shared-metadata and build
-organisation of the supplied ERC project, with Horizon-specific sections,
-tables, formatting and page accounting.
+One project for **Part A administrative drafting and Part B technical writing**.
+Both parts share metadata, partner data, typography, guidance controls and build
+commands. Part B follows the supplied EC V5.1 form of 22 January 2026.
 
-## Build
+**For ordinary proposal work, edit `.tex` and `.bib` files only.** Styles and
+scripts handle layout, repeated inclusion, field checks and releases. There is
+no schema-generation step. The Part A PDF is a coordination document: enter its
+values into the Funding & Tenders Portal, which generates the submitted Part A.
 
-On Ubuntu/Debian, install the tools once:
+## Start
+
+Install the tools once on Ubuntu/Debian:
 
 ```sh
 sudo apt-get update
@@ -17,162 +21,203 @@ sudo apt-get install --no-install-recommends \
   texlive-fonts-recommended
 ```
 
-A normal TeX Live or MacTeX installation with these LaTeX packages also works.
-The engine is **pdfLaTeX**, with **BibTeX** for references.
+TeX Live or MacTeX with the same packages also works. The engine is pdfLaTeX,
+with BibTeX for references; the Python scripts use the standard library.
+
+1. Edit the common project values in `metadata.tex`.
+2. Fill `part-a-consortium.tex`, the files in `partners/` and `ethics/`.
+3. Write Part B in `sections/` and `tables/`, and add sources to `bibliography.bib`.
+4. Run `make` and `make check`.
 
 ```sh
-make                 # Build both PDFs
-make check           # Check the full submission PDF's page limit and A4 page sizes
-make pages           # Page report
-make chars           # Character statistics
-make test            # PDF layout and tooling regression tests
+make                 # Build Part A and Part B, with and without guidance
+make check           # Check field values, budgets and both clean PDFs
+make a               # Build only Part A, in both modes
+make b2              # Build only Part B, in both modes
+make pages           # Count pages in both clean PDFs
+make chars           # Report text statistics and field-length checks
+make strict          # Also require complete administrative data
+make test            # Run regression tests
+make dist            # Validate and create dated release assets
 ```
 
-The two principal outputs are:
+`make check` accepts unfinished fields and reports them as drafting reminders.
+It fails on invalid populated data or inconsistent arithmetic. `make strict`
+also fails on missing required information; the blank template is expected to
+fail that completeness check. CI uses `make dist`, which includes `make check`
+and tests, so the reusable blank template builds successfully.
 
-- `build/guidance/part-b2-guidance.pdf`: blue drafting guidance alongside the author fields.
-- `build/submission/part-b2.pdf`: the same document with guidance removed.
+## Outputs
 
-The latter remains a **template** until its bracketed placeholders are filled.
-Guidance removal leaves authored content, table labels and visible placeholders
-in place. Each build has a separate auxiliary directory, so changing modes
-cannot reuse the other mode's bibliography or cross-reference state.
-
-## Edit
-
-| File | Purpose |
+| PDF | Purpose |
 | --- | --- |
-| `metadata.tex` | Title, acronym, call/topic, coordinator, participants, funding profile and optional impact summary |
-| `he-ria26.sty` | Layout, typography, guidance, headings, canvas and bibliography helpers |
-| `part-b2.tex` | Main document; renders the official name “Part B” |
-| `sections/` | Participant list, the three evaluation sections and the impact canvas |
-| `tables/` | Editable implementation tables 3.1a–3.1h |
-| `bibliography.bib` | One real example reference, ready to replace |
-| `he-ria26.bst` | The ERC project's compact numeric bibliography formatting, implemented with BibTeX |
-| `scripts/` | Build, page/character counts and dated source archives |
-| `.github/workflows/build.yml` | Continuous validation and dated releases |
-| `AGENTS.md` | Instructions for coding agents working on this template or a proposal |
-| `docs/formatting.md` | Rules, precise layout choices and source provenance |
-| `reference/` | Unchanged supplied RTF |
+| `build/guidance/part-a-guidance.pdf` | Administrative forms with blue author guidance |
+| `build/submission/part-a.pdf` | Administrative drafting copy without guidance |
+| `build/guidance/part-b2-guidance.pdf` | Technical description with blue author guidance |
+| `build/submission/part-b2.pdf` | Technical description without guidance |
 
-Edit `metadata.tex` first, then replace the placeholders in `sections/` and
-`tables/`. The participant identifiers, work-package identifiers, staff effort
-and costs must agree with the values entered into Part A.
+Guidance removal preserves authored text and visible unfinished placeholders.
+Each document and mode has separate auxiliary files. Reports in `build/`
+record administrative fields, budgets, page sizes, page counts and text counts.
 
-Part A drafting support is deliberately left for the next iteration.
+## Files to edit
 
-### Guidance and author text
+| File | Content |
+| --- | --- |
+| `metadata.tex` | Project title, acronym, call/topic, coordinator, duration, keywords and direct-compilation defaults |
+| `part-a-consortium.tex` | General information, abstract and declarations |
+| `partners/partner-N-ACRO-admin-form.tex` | One organisation's administrative information **and its budget** |
+| `partners/participants.tex` | Ordered list of partner files |
+| `ethics/ethics-questions.tex` | Ethics answers, Part B page references and explanatory fields |
+| `ethics/ethics-self-assessment.tex` | Ethics narratives |
+| `ethics/security-questions.tex` | Security answers and explanatory fields |
+| `ethics/security-self-assessment.tex` | Security narrative |
+| `part-a-other.tex` | Call-specific administrative questions |
+| `sections/`, `tables/` | Part B content, impact canvas and implementation tables 3.1a–3.1h |
+| `bibliography.bib` | Bibliographic entries; initially one example |
+
+`part-a.tex` and `part-b2.tex` assemble the documents. The other `part-a-*.tex`
+assembly files call presentation helpers; ordinary data entry does not require
+changing them. The style and automation live in `he-ria26.sty`, `he-admin26.sty`,
+`he-ria26.bst`, `scripts/`, `Makefile` and the GitHub workflow. `AGENTS.md`
+provides instructions for agents working in the project.
+
+### Entering administrative information
+
+Each field has a stable name and an editable value:
+
+```tex
+\AField{department.name}{Department of Computer Science}
+\AField{budget.personnel_eur}{120000.00}
+```
+
+Leave an unknown value empty: `\AField{contact.email}{}`. Use `yes`, `no` or
+`unanswered` for question answers, and `unconfirmed` for declarations awaiting
+confirmation. The source files show where each answer belongs. Long text can
+span ordinary source lines and paragraphs inside the value braces.
+
+Repeat a complete `ARecord` environment for another department, researcher,
+achievement or previous project. The checks apply limits to each record and
+partner separately. Known field lengths, value choices, counting conventions
+and evidence are documented in [docs/part-a.md](docs/part-a.md).
+
+### Partners and budgets
+
+The filename convention is `partners/partner-N-ACRO-admin-form.tex`, with an
+unpadded positive participant number and an uppercase acronym. The initial
+partner is `partner-1-UNIBO-admin-form.tex`; its substantive information is blank.
+
+To create another blank partner and update the manifest:
+
+```sh
+python3 scripts/add_partner.py 2 CNRS
+```
+
+The helper starts from a pristine scaffold. It does not copy another partner's
+completed contacts, achievements or budget. You may also copy the blank partner
+structure manually, update its number/acronym/role and add one `\input{...}` line
+to `partners/participants.tex` in participant-number order.
+
+The same partner sources feed Part A, the budget section and Part B's participant
+list. Shared proposal fields use `metadata.tex` macros. The coordinator's legal
+name is supplied through `\HECoordinator` in that metadata file.
+
+Enter EUR amounts as decimals without currency symbols or thousands separators,
+for example `120000.00`. Enter a funding rate as `100`, rather than `100%`.
+Use `0.00` for a known zero and an empty value for an unknown amount. Budget
+checks compute expected totals and compare any supplied calculated fields.
+They retain incomplete rows as incomplete rather than treating blanks as zero.
+
+## Guidance and references
 
 ```tex
 \begin{heguidance}
-Instructions for the author: visible only in the guidance PDF.
+Instructions for the author, visible only in guidance mode.
 \end{heguidance}
 
-This is proposal text, visible in both PDFs.
-
+This proposal text appears in both modes.
 \HEParagraph{Approach}
-A compact run-in heading followed by proposal text.
+Write the approach here, citing \cite{SumersYNG2024}.
 ```
 
-Use ordinary `\section`, `\subsection`, `\label` and `\cref` commands.
-The official section numbering is already in place. Use `\HEPlaceholder{...}`
-for an unfinished field that should remain visible in both modes.
+Use ordinary LaTeX headings, labels and cross-references. `\HEPlaceholder{...}`
+marks an unfinished field that remains visible in both modes. The optional
+landscape impact canvas is controlled by `\HEImpactSummarytrue` or
+`\HEImpactSummaryfalse` in `metadata.tex`.
 
-The optional six-panel impact canvas is controlled in `metadata.tex`:
+References retain the ERC formatting policy: numeric name/year/title ordering,
+initialled given names, at most two authors, otherwise the first author and
+“et al.”; compact author/title/year entries with DOI, otherwise arXiv, otherwise
+URL. Full publication details print when none of those identifiers exists.
+Only cited entries print. Replace the one example in `bibliography.bib` with
+your proposal's sources.
 
-```tex
-\HEImpactSummarytrue   % Include section 2.3 and its landscape canvas
-% \HEImpactSummaryfalse % Remove section 2.3 entirely
-```
+## Funding and limits
 
-### References
-
-```tex
-An article: \cite{SumersYNG2024}.
-The same reference in parentheses: \citep{SumersYNG2024}.
-```
-
-`\HEPrintBibliography` at the end of the main document prints only cited
-entries. An empty proposal builds without an empty bibliography. The database
-contains one example entry; replace it with sources relevant to the proposal.
-The formatting follows the ERC project: numeric references sorted by name,
-year and title; family names with given-name initials; at most two authors,
-or the first author followed by “et al.” for longer lists. Entries retain
-author, title, year and a DOI, otherwise an arXiv identifier, otherwise a URL.
-Full publication details are printed when none of those identifiers is present.
-
-### Profiles and limits
-
-Default: a standard full RIA, **40 pages**. An unset or empty `FUNDING` selects
-`standard`, both through Make and when calling `scripts/build.py` directly.
-Select a different profile explicitly for a build:
+Unset or empty `FUNDING` means **standard RIA**. This applies to Make and to
+`scripts/build.py`. An explicit override applies consistently to both parts,
+checks and PDF metadata:
 
 ```sh
-make check FUNDING=lump-sum              # 45-page full RIA profile
-make check FUNDING=standard              # 40-page full RIA profile
-make check FUNDING=standard PAGE_LIMIT=35 # Example call-specific override
+make check FUNDING=lump-sum              # Lump-sum profile
+make check FUNDING=standard              # Standard RIA profile
+make check FUNDING=standard PAGE_LIMIT=35 # Example call-specific Part B cap
 ```
 
-Only set a custom page limit when the actual call's submission template
-requires it. The same value is written into the PDF footer and the `.hemeta`
-sidecar used by the checking script. A later build without a `FUNDING` override
-returns to `standard`. Direct LaTeX / Overleaf compilation uses the
-`\HEFunding` default in `metadata.tex`, which is also `standard`.
+Part B defaults to **40 pages**, or **45 for lump-sum**. Every Part B page counts,
+including title, participant list, figures, tables, landscape pages and references.
+`PAGE_LIMIT` overrides Part B only. Part A has field constraints and **no inherited
+Part B page cap**. Its footer therefore shows its page number without a 40/45 limit.
 
-Every page of Part B counts, including the title, participants, figures,
-tables, landscape canvas and references. A failed page check exits nonzero.
-The section-specific page suggestions shown in blue are indicative.
+The standard budget checker uses the ordinary cost categories represented in the
+supplied administrative stub. Lump-sum mode retains numeric/total checks without
+applying the standard reimbursement formula as if it defined the lump-sum award.
+Call-specific categories and conditions belong in the actual Portal form.
 
-Part B has no general character cap. `make chars` reports extracted PDF text
-statistics. For an exact future Portal-field check, put the intended plain
-text in a UTF-8 file and supply its applicable limit explicitly:
+PDF character statistics are diagnostic. Administrative field checks count
+normalised text, including spaces and paragraph breaks, resolve shared metadata
+macros, and flag unsupported LaTeX commands when a reliable count is unavailable.
+For literal Portal text, count a UTF-8 file directly:
 
 ```sh
-python3 scripts/count_chars.py my-field.txt --limit 2000
+python3 scripts/count_chars.py abstract.txt --limit 2000
 ```
-
-This counts Unicode code points, including literal spaces and line breaks;
-it does not interpret LaTeX. The number `2000` is only a usage example, not a
-declared limit for any field in this project.
-
-## Releases and source archives
-
-```sh
-make dist                              # UTC version generated at build time
-make dist VERSION=2026.11.25-12-30      # Explicit reproducible version label
-```
-
-Versions have the exact form **`YYYY.MM.DD-hh-mm`**, with a 24-hour UTC time
-and no `v` prefix. Source archives exclude `.git`, temporary files and build
-artefacts. The PDFs are separate release assets.
-
-GitHub Actions builds and checks the template for pull requests and pushes.
-Successful builds on the repository's default branch publish a release with
-the dated version and downloadable source/PDF assets. Pull requests use a
-read-only token. A release-name collision within the same minute never
-overwrites an existing release.
 
 ## Direct compilation and Overleaf
 
-Set `part-b2.tex` as the main document and select pdfLaTeX. Direct compilation
-shows guidance. For a direct compilation without guidance, use
-`\usepackage[final]{he-ria26}` in place of `\usepackage{he-ria26}`.
-With the Makefile, select `make guidance` or `make submission` instead.
+Select `part-a.tex` or `part-b2.tex` as the main document and choose pdfLaTeX.
+No Python generation step is needed to compile either source. Direct compilation
+shows guidance. Hide it with `[part-a,final]` in Part A's `he-ria26` package options,
+or `[final]` in Part B. Direct compilation takes the funding fallback from
+`metadata.tex`; the supplied fallback is `standard`.
 
-## Formatting
+## Releases and generated files
 
-The body and all table text are **11 physical points** in the reference
-Times-compatible family. Margins are exactly **15 mm**, giving a
-**180 × 267 mm** portrait body rectangle. Single line spacing and standard
-character spacing are retained. The supplied RTF already uses the minimum
-margins, so savings come from compact spacing and placing the header/footer
-outside the body rectangle.
+```sh
+make dist
+make dist VERSION=2026.11.25-12-30
+```
 
-See [the formatting notes](docs/formatting.md) for sources, the current
-40/45-page rules and differences from earlier templates.
+Versions use **`YYYY.MM.DD-hh-mm`**, in 24-hour UTC, without a `v` prefix.
+A release contains the source ZIP, all four PDFs, validation reports and SHA-256
+hashes. GitHub Actions builds and checks pull requests and pushes; a validated
+push or manual run on the default branch publishes the dated release. Existing
+releases are preserved when a minute-based version collides.
 
-## Attribution
+`.gitignore` excludes build/release directories, generated document PDFs,
+LaTeX auxiliary files, Python caches and editor leftovers. Authored figures,
+including PDF figures, remain trackable. `make clean` removes build outputs;
+`make distclean` also removes release assets.
 
-See `THIRD_PARTY_NOTICES.md` for the European Commission form, the ERC
-bibliography-formatting policy and the derived BibTeX style. Original project code is under
-the MIT licence. This is an independent template implementation.
+## Formatting and provenance
+
+Both parts use the same Times-compatible 11 physical-point typography, 15 mm
+margins, heading styles, blue guidance and grey footer. Part B preserves the
+supplied RTF's form structure and turquoise impact canvas. Its text rectangle
+is 180 × 267 mm, with headers and footers outside that rectangle.
+
+[docs/formatting.md](docs/formatting.md) explains the layout and Part B rules.
+[docs/part-a.md](docs/part-a.md) explains administrative types and constraints.
+The unchanged source RTF and supplied Part A ZIP are retained in `reference/`.
+See `THIRD_PARTY_NOTICES.md` for attribution. Original code is under the MIT
+licence; the derived BibTeX style retains its LPPL terms.
