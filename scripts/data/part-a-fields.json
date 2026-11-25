@@ -1,0 +1,1469 @@
+{
+  "title": "Horizon Europe RIA Part A - reconstructed data dictionary",
+  "meta": {
+    "source": "Proposal-SEP-211303496.pdf",
+    "pages": "1-202 of 303",
+    "form_version": "Horizon Europe ver 1.00 20241022",
+    "coverage": "Admin form for HORIZON-RIA budget-based grant; do not generalise hard constraints to other calls without checking",
+    "partner_file_pattern": "partners/partner-N-ACRO-admin-form.tex (N unpadded, ACRO uppercase)",
+    "partner_file_contents": "Participant fields and budget row in the same TeX file, included in two mutually exclusive passes",
+    "counting_policy": "Maximum character limits count spaces and paragraph separators; TeX source validator approximates portal text after minimal unescaping.",
+    "confidence_semantics": "explicit_pdf = printed constraint; reverse_engineered = inferred from counter and extracted content; observed = value seen; inferred = generic check only; unknown max_chars null = no limit established.",
+    "integration_note": "Internal constraint catalogue; users edit TeX content. Reconstructed limits retain their original confidence and must be checked against the current topic form."
+  },
+  "record_limits": {
+    "achievement": {
+      "maximum": 5,
+      "source_pdf_pages": [
+        11
+      ]
+    },
+    "previous_project": {
+      "maximum": 5,
+      "source_pdf_pages": [
+        11
+      ]
+    },
+    "infrastructure": {
+      "maximum": null,
+      "source_pdf_pages": [
+        12
+      ]
+    },
+    "department": {
+      "maximum": null,
+      "source_pdf_pages": [
+        7
+      ]
+    },
+    "researcher": {
+      "maximum": null,
+      "source_pdf_pages": [
+        9
+      ]
+    },
+    "main_contact": {
+      "minimum": 0,
+      "maximum": 1,
+      "source_pdf_pages": [
+        8,
+        29,
+        30,
+        31
+      ],
+      "note": "An affiliated entity in the source has no main-contact section; ordinary beneficiaries usually have one."
+    },
+    "participant": {
+      "minimum": 1,
+      "source_pdf_pages": [
+        4
+      ]
+    }
+  },
+  "fields": {
+    "proposal.id": {
+      "type": "identifier",
+      "scope": "consortium",
+      "required": false,
+      "source_pdf_pages": [
+        2,
+        3
+      ],
+      "confidence": "inferred_validation",
+      "max_chars": null,
+      "count_spaces": null,
+      "read_only": true,
+      "pattern": "^\\d{9}$"
+    },
+    "proposal.call": {
+      "type": "string",
+      "scope": "consortium",
+      "required": false,
+      "source_pdf_pages": [
+        2,
+        3
+      ],
+      "confidence": "observed_field",
+      "max_chars": null,
+      "count_spaces": null,
+      "read_only": true
+    },
+    "proposal.topic": {
+      "type": "string",
+      "scope": "consortium",
+      "required": false,
+      "source_pdf_pages": [
+        2,
+        3
+      ],
+      "confidence": "observed_field",
+      "max_chars": null,
+      "count_spaces": null,
+      "read_only": true
+    },
+    "proposal.action_type": {
+      "type": "enum",
+      "scope": "consortium",
+      "required": false,
+      "source_pdf_pages": [
+        2,
+        3
+      ],
+      "confidence": "observed_value_only",
+      "max_chars": null,
+      "count_spaces": null,
+      "read_only": true,
+      "values": [
+        "HORIZON-RIA"
+      ]
+    },
+    "proposal.model_grant_agreement": {
+      "type": "string",
+      "scope": "consortium",
+      "required": false,
+      "source_pdf_pages": [
+        2,
+        3
+      ],
+      "confidence": "observed_field",
+      "max_chars": null,
+      "count_spaces": null,
+      "read_only": true
+    },
+    "proposal.acronym": {
+      "type": "string",
+      "scope": "consortium",
+      "required": true,
+      "source_pdf_pages": [
+        2,
+        3
+      ],
+      "confidence": "inferred_required",
+      "max_chars": null,
+      "count_spaces": null
+    },
+    "proposal.title": {
+      "type": "string",
+      "scope": "consortium",
+      "required": true,
+      "source_pdf_pages": [
+        2,
+        3
+      ],
+      "confidence": "explicit_official_template_v3_2025",
+      "max_chars": 200,
+      "count_spaces": true,
+      "forbidden_characters": "<>\"&",
+      "official_source": "https://ec.europa.eu/info/funding-tenders/opportunities/docs/2021-2027/horizon/temp-form/af/af_he-ria-ia_en.pdf",
+      "official_part_a_page": 4
+    },
+    "proposal.duration_months": {
+      "type": "integer",
+      "scope": "consortium",
+      "required": false,
+      "source_pdf_pages": [
+        2,
+        3
+      ],
+      "confidence": "inferred_positive_constraint",
+      "max_chars": null,
+      "count_spaces": null,
+      "minimum": 1
+    },
+    "proposal.fixed_keyword_1": {
+      "type": "controlled_vocabulary",
+      "scope": "consortium",
+      "required": false,
+      "source_pdf_pages": [
+        2,
+        3
+      ],
+      "confidence": "observed_form_lookup",
+      "max_chars": null,
+      "count_spaces": null
+    },
+    "proposal.free_keywords": {
+      "type": "string",
+      "scope": "consortium",
+      "required": false,
+      "source_pdf_pages": [
+        2,
+        3
+      ],
+      "confidence": "explicit_official_template_v3_2025",
+      "max_chars": 200,
+      "count_spaces": true,
+      "official_source": "https://ec.europa.eu/info/funding-tenders/opportunities/docs/2021-2027/horizon/temp-form/af/af_he-ria-ia_en.pdf",
+      "official_part_a_page": 4
+    },
+    "proposal.abstract": {
+      "type": "text",
+      "scope": "consortium",
+      "required": true,
+      "source_pdf_pages": [
+        2
+      ],
+      "confidence": "reverse_engineered_exact_from_1709_plus_291",
+      "max_chars": 2000,
+      "count_spaces": true
+    },
+    "proposal.submitted_similar_last_2y": {
+      "type": "boolean",
+      "scope": "consortium",
+      "required": false,
+      "source_pdf_pages": [
+        2,
+        3
+      ],
+      "confidence": "observed",
+      "max_chars": null,
+      "count_spaces": null
+    },
+    "proposal.previous_reference": {
+      "type": "identifier",
+      "scope": "consortium",
+      "required": false,
+      "source_pdf_pages": [
+        2
+      ],
+      "confidence": "explicit_pdf",
+      "max_chars": null,
+      "count_spaces": null,
+      "pattern": "^(\\d{6}|\\d{9})$",
+      "required_if": {
+        "field": "proposal.submitted_similar_last_2y",
+        "equals": "yes"
+      }
+    },
+    "participant.number": {
+      "type": "integer",
+      "scope": "partner",
+      "required": true,
+      "source_pdf_pages": [
+        4,
+        5
+      ],
+      "confidence": "observed_field",
+      "max_chars": null,
+      "count_spaces": null,
+      "minimum": 1
+    },
+    "participant.role": {
+      "type": "enum",
+      "scope": "partner",
+      "required": true,
+      "source_pdf_pages": [
+        4,
+        5
+      ],
+      "confidence": "observed_values",
+      "max_chars": null,
+      "count_spaces": null,
+      "values": [
+        "coordinator",
+        "partner",
+        "affiliated"
+      ]
+    },
+    "organisation.pic": {
+      "type": "identifier",
+      "scope": "partner",
+      "required": false,
+      "source_pdf_pages": [
+        6
+      ],
+      "confidence": "observed_9_digit_ids_pattern_inferred",
+      "max_chars": null,
+      "count_spaces": null,
+      "pattern": "^\\d{9}$",
+      "read_only": true
+    },
+    "organisation.legal_name": {
+      "type": "string",
+      "scope": "partner",
+      "required": true,
+      "source_pdf_pages": [
+        6
+      ],
+      "confidence": "inferred_required",
+      "max_chars": null,
+      "count_spaces": null
+    },
+    "organisation.short_name": {
+      "type": "string",
+      "scope": "partner",
+      "required": true,
+      "source_pdf_pages": [
+        6
+      ],
+      "confidence": "inferred_required",
+      "max_chars": null,
+      "count_spaces": null
+    },
+    "organisation.street": {
+      "type": "string",
+      "scope": "partner",
+      "required": false,
+      "source_pdf_pages": [
+        6
+      ],
+      "confidence": "observed_field",
+      "max_chars": null,
+      "count_spaces": null
+    },
+    "organisation.town": {
+      "type": "string",
+      "scope": "partner",
+      "required": false,
+      "source_pdf_pages": [
+        6
+      ],
+      "confidence": "observed_field",
+      "max_chars": null,
+      "count_spaces": null
+    },
+    "organisation.postcode": {
+      "type": "string",
+      "scope": "partner",
+      "required": false,
+      "source_pdf_pages": [
+        6
+      ],
+      "confidence": "observed_field",
+      "max_chars": null,
+      "count_spaces": null
+    },
+    "organisation.country": {
+      "type": "string",
+      "scope": "partner",
+      "required": true,
+      "source_pdf_pages": [
+        6
+      ],
+      "confidence": "inferred_required",
+      "max_chars": null,
+      "count_spaces": null
+    },
+    "organisation.website": {
+      "type": "string",
+      "scope": "partner",
+      "required": false,
+      "source_pdf_pages": [
+        6
+      ],
+      "confidence": "observed_field",
+      "max_chars": null,
+      "count_spaces": null
+    },
+    "organisation.legal_person": {
+      "type": "boolean",
+      "scope": "partner",
+      "required": false,
+      "source_pdf_pages": [
+        6
+      ],
+      "confidence": "observed_read_only_registry",
+      "max_chars": null,
+      "count_spaces": null,
+      "read_only": true
+    },
+    "organisation.public_body": {
+      "type": "boolean",
+      "scope": "partner",
+      "required": false,
+      "source_pdf_pages": [
+        6
+      ],
+      "confidence": "observed_read_only_registry",
+      "max_chars": null,
+      "count_spaces": null,
+      "read_only": true
+    },
+    "organisation.non_profit": {
+      "type": "boolean",
+      "scope": "partner",
+      "required": false,
+      "source_pdf_pages": [
+        6
+      ],
+      "confidence": "observed_read_only_registry",
+      "max_chars": null,
+      "count_spaces": null,
+      "read_only": true
+    },
+    "organisation.international_organisation": {
+      "type": "boolean",
+      "scope": "partner",
+      "required": false,
+      "source_pdf_pages": [
+        6
+      ],
+      "confidence": "observed_read_only_registry",
+      "max_chars": null,
+      "count_spaces": null,
+      "read_only": true
+    },
+    "organisation.higher_education": {
+      "type": "boolean",
+      "scope": "partner",
+      "required": false,
+      "source_pdf_pages": [
+        6
+      ],
+      "confidence": "observed_read_only_registry",
+      "max_chars": null,
+      "count_spaces": null,
+      "read_only": true
+    },
+    "organisation.research_organisation": {
+      "type": "boolean",
+      "scope": "partner",
+      "required": false,
+      "source_pdf_pages": [
+        6
+      ],
+      "confidence": "observed_read_only_registry",
+      "max_chars": null,
+      "count_spaces": null,
+      "read_only": true
+    },
+    "organisation.sme_self_declared": {
+      "type": "boolean",
+      "scope": "partner",
+      "required": false,
+      "source_pdf_pages": [
+        6
+      ],
+      "confidence": "observed_field",
+      "max_chars": null,
+      "count_spaces": null,
+      "read_only": true
+    },
+    "organisation.sme_self_declaration_date": {
+      "type": "date",
+      "scope": "partner",
+      "required": false,
+      "source_pdf_pages": [
+        6
+      ],
+      "confidence": "observed_field",
+      "max_chars": null,
+      "count_spaces": null,
+      "format": "DD/MM/YYYY",
+      "read_only": true
+    },
+    "organisation.sme_self_assessment": {
+      "type": "enum",
+      "scope": "partner",
+      "required": false,
+      "source_pdf_pages": [
+        6
+      ],
+      "confidence": "observed_unknown_no_values",
+      "max_chars": null,
+      "count_spaces": null,
+      "values": [
+        "yes",
+        "no",
+        "unknown"
+      ],
+      "read_only": true
+    },
+    "organisation.sme_self_assessment_date": {
+      "type": "date",
+      "scope": "partner",
+      "required": false,
+      "source_pdf_pages": [
+        6
+      ],
+      "confidence": "observed_field",
+      "max_chars": null,
+      "count_spaces": null,
+      "format": "DD/MM/YYYY",
+      "read_only": true
+    },
+    "organisation.sme_validation": {
+      "type": "enum",
+      "scope": "partner",
+      "required": false,
+      "source_pdf_pages": [
+        6
+      ],
+      "confidence": "observed_unknown_no_values",
+      "max_chars": null,
+      "count_spaces": null,
+      "values": [
+        "yes",
+        "no",
+        "unknown"
+      ],
+      "read_only": true
+    },
+    "organisation.sme_validation_date": {
+      "type": "date",
+      "scope": "partner",
+      "required": false,
+      "source_pdf_pages": [
+        6
+      ],
+      "confidence": "observed_field",
+      "max_chars": null,
+      "count_spaces": null,
+      "format": "DD/MM/YYYY",
+      "read_only": true
+    },
+    "department.name": {
+      "type": "string",
+      "scope": "partner",
+      "required": false,
+      "source_pdf_pages": [
+        7
+      ],
+      "confidence": "observed_field",
+      "max_chars": null,
+      "count_spaces": null
+    },
+    "department.not_applicable": {
+      "type": "boolean",
+      "scope": "partner",
+      "required": false,
+      "source_pdf_pages": [
+        7
+      ],
+      "confidence": "observed_field",
+      "max_chars": null,
+      "count_spaces": null
+    },
+    "department.same_as_organisation_address": {
+      "type": "boolean",
+      "scope": "partner",
+      "required": false,
+      "source_pdf_pages": [
+        7
+      ],
+      "confidence": "observed_field",
+      "max_chars": null,
+      "count_spaces": null
+    },
+    "department.street": {
+      "type": "string",
+      "scope": "partner",
+      "required": false,
+      "source_pdf_pages": [
+        7
+      ],
+      "confidence": "observed_field",
+      "max_chars": null,
+      "count_spaces": null
+    },
+    "department.town": {
+      "type": "string",
+      "scope": "partner",
+      "required": false,
+      "source_pdf_pages": [
+        7
+      ],
+      "confidence": "observed_field",
+      "max_chars": null,
+      "count_spaces": null
+    },
+    "department.postcode": {
+      "type": "string",
+      "scope": "partner",
+      "required": false,
+      "source_pdf_pages": [
+        7
+      ],
+      "confidence": "observed_field",
+      "max_chars": null,
+      "count_spaces": null
+    },
+    "department.country": {
+      "type": "string",
+      "scope": "partner",
+      "required": false,
+      "source_pdf_pages": [
+        7
+      ],
+      "confidence": "observed_field",
+      "max_chars": null,
+      "count_spaces": null
+    },
+    "link.type": {
+      "type": "string",
+      "scope": "partner",
+      "required": false,
+      "source_pdf_pages": [
+        7
+      ],
+      "confidence": "observed_field",
+      "max_chars": null,
+      "count_spaces": null
+    },
+    "link.participant_number": {
+      "type": "integer",
+      "scope": "partner",
+      "required": false,
+      "source_pdf_pages": [
+        7
+      ],
+      "confidence": "inferred_referential",
+      "max_chars": null,
+      "count_spaces": null,
+      "minimum": 1
+    },
+    "contact.title": {
+      "type": "string",
+      "scope": "partner",
+      "required": false,
+      "source_pdf_pages": [
+        8
+      ],
+      "confidence": "observed_field",
+      "max_chars": null,
+      "count_spaces": null
+    },
+    "contact.gender": {
+      "type": "enum",
+      "scope": "partner",
+      "required": false,
+      "source_pdf_pages": [
+        8
+      ],
+      "confidence": "observed_options",
+      "max_chars": null,
+      "count_spaces": null,
+      "values": [
+        "woman",
+        "man",
+        "non_binary"
+      ]
+    },
+    "contact.first_name": {
+      "type": "string",
+      "scope": "partner",
+      "required": true,
+      "source_pdf_pages": [
+        8
+      ],
+      "confidence": "required_for_main_contact_only",
+      "max_chars": null,
+      "count_spaces": null
+    },
+    "contact.last_name": {
+      "type": "string",
+      "scope": "partner",
+      "required": true,
+      "source_pdf_pages": [
+        8
+      ],
+      "confidence": "required_for_main_contact_only",
+      "max_chars": null,
+      "count_spaces": null
+    },
+    "contact.email": {
+      "type": "email",
+      "scope": "partner",
+      "required": true,
+      "source_pdf_pages": [
+        8
+      ],
+      "confidence": "required_for_main_contact_only",
+      "max_chars": null,
+      "count_spaces": null
+    },
+    "contact.position": {
+      "type": "string",
+      "scope": "partner",
+      "required": false,
+      "source_pdf_pages": [
+        8
+      ],
+      "confidence": "observed_field",
+      "max_chars": null,
+      "count_spaces": null
+    },
+    "contact.department": {
+      "type": "string",
+      "scope": "partner",
+      "required": false,
+      "source_pdf_pages": [
+        8
+      ],
+      "confidence": "observed_field",
+      "max_chars": null,
+      "count_spaces": null
+    },
+    "contact.same_as_organisation_name": {
+      "type": "boolean",
+      "scope": "partner",
+      "required": false,
+      "source_pdf_pages": [
+        8
+      ],
+      "confidence": "observed_field",
+      "max_chars": null,
+      "count_spaces": null
+    },
+    "contact.same_as_organisation_address": {
+      "type": "boolean",
+      "scope": "partner",
+      "required": false,
+      "source_pdf_pages": [
+        8
+      ],
+      "confidence": "observed_field",
+      "max_chars": null,
+      "count_spaces": null
+    },
+    "contact.street": {
+      "type": "string",
+      "scope": "partner",
+      "required": false,
+      "source_pdf_pages": [
+        8
+      ],
+      "confidence": "observed_field",
+      "max_chars": null,
+      "count_spaces": null
+    },
+    "contact.town": {
+      "type": "string",
+      "scope": "partner",
+      "required": false,
+      "source_pdf_pages": [
+        8
+      ],
+      "confidence": "observed_field",
+      "max_chars": null,
+      "count_spaces": null
+    },
+    "contact.postcode": {
+      "type": "string",
+      "scope": "partner",
+      "required": false,
+      "source_pdf_pages": [
+        8
+      ],
+      "confidence": "observed_field",
+      "max_chars": null,
+      "count_spaces": null
+    },
+    "contact.country": {
+      "type": "string",
+      "scope": "partner",
+      "required": false,
+      "source_pdf_pages": [
+        8
+      ],
+      "confidence": "observed_field",
+      "max_chars": null,
+      "count_spaces": null
+    },
+    "contact.website": {
+      "type": "string",
+      "scope": "partner",
+      "required": false,
+      "source_pdf_pages": [
+        8
+      ],
+      "confidence": "observed_field",
+      "max_chars": null,
+      "count_spaces": null
+    },
+    "contact.phone": {
+      "type": "string",
+      "scope": "partner",
+      "required": false,
+      "source_pdf_pages": [
+        8
+      ],
+      "confidence": "observed_field",
+      "max_chars": null,
+      "count_spaces": null
+    },
+    "contact.phone_2": {
+      "type": "string",
+      "scope": "partner",
+      "required": false,
+      "source_pdf_pages": [
+        8
+      ],
+      "confidence": "observed_field",
+      "max_chars": null,
+      "count_spaces": null
+    },
+    "researcher.title": {
+      "type": "string",
+      "scope": "partner",
+      "required": false,
+      "source_pdf_pages": [
+        9
+      ],
+      "confidence": "observed_field",
+      "max_chars": null,
+      "count_spaces": null
+    },
+    "researcher.first_name": {
+      "type": "string",
+      "scope": "partner",
+      "required": false,
+      "source_pdf_pages": [
+        9
+      ],
+      "confidence": "observed_field",
+      "max_chars": null,
+      "count_spaces": null
+    },
+    "researcher.last_name": {
+      "type": "string",
+      "scope": "partner",
+      "required": false,
+      "source_pdf_pages": [
+        9
+      ],
+      "confidence": "observed_field",
+      "max_chars": null,
+      "count_spaces": null
+    },
+    "researcher.gender": {
+      "type": "enum",
+      "scope": "partner",
+      "required": false,
+      "source_pdf_pages": [
+        9
+      ],
+      "confidence": "observed_field",
+      "max_chars": null,
+      "count_spaces": null,
+      "values": [
+        "woman",
+        "man",
+        "non_binary"
+      ]
+    },
+    "researcher.nationality": {
+      "type": "string",
+      "scope": "partner",
+      "required": false,
+      "source_pdf_pages": [
+        9
+      ],
+      "confidence": "observed_field",
+      "max_chars": null,
+      "count_spaces": null
+    },
+    "researcher.email": {
+      "type": "email",
+      "scope": "partner",
+      "required": false,
+      "source_pdf_pages": [
+        9
+      ],
+      "confidence": "observed_field",
+      "max_chars": null,
+      "count_spaces": null
+    },
+    "researcher.career_stage": {
+      "type": "enum",
+      "scope": "partner",
+      "required": false,
+      "source_pdf_pages": [
+        9
+      ],
+      "confidence": "A_B_C_observed_D_inferred",
+      "max_chars": null,
+      "count_spaces": null,
+      "values": [
+        "A",
+        "B",
+        "C",
+        "D"
+      ]
+    },
+    "researcher.project_role": {
+      "type": "enum",
+      "scope": "partner",
+      "required": false,
+      "source_pdf_pages": [
+        9
+      ],
+      "confidence": "observed_values",
+      "max_chars": null,
+      "count_spaces": null,
+      "values": [
+        "leading",
+        "team_member"
+      ]
+    },
+    "researcher.reference_identifier": {
+      "type": "identifier",
+      "scope": "partner",
+      "required": false,
+      "source_pdf_pages": [
+        9
+      ],
+      "confidence": "ORCID_pattern_inferred",
+      "max_chars": null,
+      "count_spaces": null,
+      "pattern": "^\\d{4}-\\d{4}-\\d{4}-[\\dX]{4}$",
+      "condition": {
+        "field": "researcher.identifier_type",
+        "equals": "ORCID ID"
+      }
+    },
+    "researcher.identifier_type": {
+      "type": "string",
+      "scope": "partner",
+      "required": false,
+      "source_pdf_pages": [
+        9
+      ],
+      "confidence": "observed_field",
+      "max_chars": null,
+      "count_spaces": null
+    },
+    "participant.project_roles": {
+      "type": "multiselect",
+      "scope": "partner",
+      "required": false,
+      "source_pdf_pages": [
+        10
+      ],
+      "confidence": "observed",
+      "max_chars": null,
+      "count_spaces": null,
+      "values": [
+        "project_management",
+        "communication_dissemination_engagement",
+        "research_technology_infrastructure",
+        "research_market_needs",
+        "civil_society_representative",
+        "policy_maker_regulator_standardisation",
+        "research_performer",
+        "technology_developer",
+        "testing_validation",
+        "prototyping_demonstration",
+        "ipr_management_technology_transfer",
+        "public_procurer",
+        "private_buyer",
+        "finance_provider",
+        "education_training",
+        "social_sciences_humanities",
+        "other"
+      ]
+    },
+    "participant.other_role_specification": {
+      "type": "string",
+      "scope": "partner",
+      "required": false,
+      "source_pdf_pages": [
+        10
+      ],
+      "confidence": "explicit_pdf",
+      "max_chars": 50,
+      "count_spaces": true,
+      "required_if": {
+        "field": "participant.project_roles",
+        "contains": "other"
+      }
+    },
+    "achievement.type": {
+      "type": "controlled_vocabulary",
+      "scope": "partner",
+      "required": false,
+      "source_pdf_pages": [
+        11
+      ],
+      "confidence": "publication_software_observed_others_unknown",
+      "max_chars": null,
+      "count_spaces": null
+    },
+    "achievement.description": {
+      "type": "text",
+      "scope": "partner",
+      "required": false,
+      "source_pdf_pages": [
+        11
+      ],
+      "confidence": "explicit_pdf",
+      "max_chars": 500,
+      "count_spaces": true
+    },
+    "previous_project.name": {
+      "type": "string",
+      "scope": "partner",
+      "required": false,
+      "source_pdf_pages": [
+        11,
+        12
+      ],
+      "confidence": "observed_field",
+      "max_chars": null,
+      "count_spaces": null
+    },
+    "previous_project.description": {
+      "type": "text",
+      "scope": "partner",
+      "required": false,
+      "source_pdf_pages": [
+        11,
+        12
+      ],
+      "confidence": "explicit_pdf",
+      "max_chars": 500,
+      "count_spaces": true
+    },
+    "infrastructure.name": {
+      "type": "string",
+      "scope": "partner",
+      "required": false,
+      "source_pdf_pages": [
+        12
+      ],
+      "confidence": "observed_field",
+      "max_chars": null,
+      "count_spaces": null
+    },
+    "infrastructure.description": {
+      "type": "text",
+      "scope": "partner",
+      "required": false,
+      "source_pdf_pages": [
+        12
+      ],
+      "confidence": "explicit_pdf",
+      "max_chars": 300,
+      "count_spaces": true
+    },
+    "participant.gep": {
+      "type": "boolean",
+      "scope": "partner",
+      "required": false,
+      "source_pdf_pages": [
+        14
+      ],
+      "confidence": "observed",
+      "max_chars": null,
+      "count_spaces": null
+    },
+    "budget.participant_number": {
+      "type": "integer",
+      "scope": "budget",
+      "required": false,
+      "source_pdf_pages": [
+        194,
+        195
+      ],
+      "confidence": "observed_field",
+      "max_chars": null,
+      "count_spaces": null,
+      "minimum": 1
+    },
+    "budget.personnel_eur": {
+      "type": "decimal",
+      "scope": "budget",
+      "required": false,
+      "source_pdf_pages": [
+        194,
+        195
+      ],
+      "confidence": "inferred_numeric_validation",
+      "max_chars": null,
+      "count_spaces": null,
+      "minimum": 0,
+      "unit": "EUR",
+      "precision": 2
+    },
+    "budget.subcontracting_eur": {
+      "type": "decimal",
+      "scope": "budget",
+      "required": false,
+      "source_pdf_pages": [
+        194,
+        195
+      ],
+      "confidence": "inferred_numeric_validation",
+      "max_chars": null,
+      "count_spaces": null,
+      "minimum": 0,
+      "unit": "EUR",
+      "precision": 2
+    },
+    "budget.travel_subsistence_eur": {
+      "type": "decimal",
+      "scope": "budget",
+      "required": false,
+      "source_pdf_pages": [
+        194,
+        195
+      ],
+      "confidence": "inferred_numeric_validation",
+      "max_chars": null,
+      "count_spaces": null,
+      "minimum": 0,
+      "unit": "EUR",
+      "precision": 2
+    },
+    "budget.equipment_eur": {
+      "type": "decimal",
+      "scope": "budget",
+      "required": false,
+      "source_pdf_pages": [
+        194,
+        195
+      ],
+      "confidence": "inferred_numeric_validation",
+      "max_chars": null,
+      "count_spaces": null,
+      "minimum": 0,
+      "unit": "EUR",
+      "precision": 2
+    },
+    "budget.other_goods_works_services_eur": {
+      "type": "decimal",
+      "scope": "budget",
+      "required": false,
+      "source_pdf_pages": [
+        194,
+        195
+      ],
+      "confidence": "inferred_numeric_validation",
+      "max_chars": null,
+      "count_spaces": null,
+      "minimum": 0,
+      "unit": "EUR",
+      "precision": 2
+    },
+    "budget.internally_invoiced_eur": {
+      "type": "decimal",
+      "scope": "budget",
+      "required": false,
+      "source_pdf_pages": [
+        194,
+        195
+      ],
+      "confidence": "inferred_numeric_validation",
+      "max_chars": null,
+      "count_spaces": null,
+      "minimum": 0,
+      "unit": "EUR",
+      "precision": 2
+    },
+    "budget.indirect_eur": {
+      "type": "decimal",
+      "scope": "budget",
+      "required": false,
+      "source_pdf_pages": [
+        194,
+        195
+      ],
+      "confidence": "derived_or_portal_calculated",
+      "max_chars": null,
+      "count_spaces": null,
+      "minimum": 0,
+      "unit": "EUR",
+      "precision": 2,
+      "calculated": true
+    },
+    "budget.total_eligible_eur": {
+      "type": "decimal",
+      "scope": "budget",
+      "required": false,
+      "source_pdf_pages": [
+        194,
+        195
+      ],
+      "confidence": "derived_or_portal_calculated",
+      "max_chars": null,
+      "count_spaces": null,
+      "minimum": 0,
+      "unit": "EUR",
+      "precision": 2,
+      "calculated": true
+    },
+    "budget.funding_rate_pct": {
+      "type": "decimal",
+      "scope": "budget",
+      "required": false,
+      "source_pdf_pages": [
+        194,
+        195
+      ],
+      "confidence": "observed_100_in_this_RIA_not_universal",
+      "max_chars": null,
+      "count_spaces": null,
+      "minimum": 0,
+      "maximum": 100,
+      "unit": "percent"
+    },
+    "budget.maximum_eu_for_eligible_eur": {
+      "type": "decimal",
+      "scope": "budget",
+      "required": false,
+      "source_pdf_pages": [
+        194,
+        195
+      ],
+      "confidence": "derived_or_portal_calculated",
+      "max_chars": null,
+      "count_spaces": null,
+      "minimum": 0,
+      "unit": "EUR",
+      "precision": 2,
+      "calculated": true
+    },
+    "budget.requested_eu_eur": {
+      "type": "decimal",
+      "scope": "budget",
+      "required": false,
+      "source_pdf_pages": [
+        194,
+        195
+      ],
+      "confidence": "inferred_numeric_validation",
+      "max_chars": null,
+      "count_spaces": null,
+      "minimum": 0,
+      "unit": "EUR",
+      "precision": 2
+    },
+    "budget.max_grant_amount_eur": {
+      "type": "decimal",
+      "scope": "budget",
+      "required": false,
+      "source_pdf_pages": [
+        194,
+        195
+      ],
+      "confidence": "derived_or_portal_calculated",
+      "max_chars": null,
+      "count_spaces": null,
+      "minimum": 0,
+      "unit": "EUR",
+      "precision": 2,
+      "calculated": true
+    },
+    "budget.income_generated_eur": {
+      "type": "decimal",
+      "scope": "budget",
+      "required": false,
+      "source_pdf_pages": [
+        194,
+        195
+      ],
+      "confidence": "inferred_numeric_validation",
+      "max_chars": null,
+      "count_spaces": null,
+      "minimum": 0,
+      "unit": "EUR",
+      "precision": 2
+    },
+    "budget.financial_contributions_eur": {
+      "type": "decimal",
+      "scope": "budget",
+      "required": false,
+      "source_pdf_pages": [
+        194,
+        195
+      ],
+      "confidence": "inferred_numeric_validation",
+      "max_chars": null,
+      "count_spaces": null,
+      "minimum": 0,
+      "unit": "EUR",
+      "precision": 2
+    },
+    "budget.own_resources_eur": {
+      "type": "decimal",
+      "scope": "budget",
+      "required": false,
+      "source_pdf_pages": [
+        194,
+        195
+      ],
+      "confidence": "inferred_numeric_validation",
+      "max_chars": null,
+      "count_spaces": null,
+      "minimum": 0,
+      "unit": "EUR",
+      "precision": 2
+    },
+    "budget.total_estimated_income_eur": {
+      "type": "decimal",
+      "scope": "budget",
+      "required": false,
+      "source_pdf_pages": [
+        194,
+        195
+      ],
+      "confidence": "derived_or_portal_calculated",
+      "max_chars": null,
+      "count_spaces": null,
+      "minimum": 0,
+      "unit": "EUR",
+      "precision": 2,
+      "calculated": true
+    },
+    "ethics.data.import.details": {
+      "type": "text",
+      "scope": "ethics_security",
+      "required": false,
+      "source_pdf_pages": [
+        196
+      ],
+      "confidence": "observed_conditional_textbox_limit_unknown",
+      "max_chars": null,
+      "count_spaces": null,
+      "required_if": {
+        "field": "ethics.data.import",
+        "equals": "yes"
+      }
+    },
+    "ethics.non_eu.activities.details": {
+      "type": "text",
+      "scope": "ethics_security",
+      "required": false,
+      "source_pdf_pages": [
+        197
+      ],
+      "confidence": "observed_conditional_textbox_limit_unknown",
+      "max_chars": null,
+      "count_spaces": null,
+      "required_if": {
+        "field": "ethics.non_eu.activities",
+        "equals": "yes"
+      }
+    },
+    "ethics.confirmation": {
+      "type": "boolean",
+      "scope": "ethics_security",
+      "required": true,
+      "source_pdf_pages": [
+        197
+      ],
+      "confidence": "observed_checkbox",
+      "max_chars": null,
+      "count_spaces": null
+    },
+    "ethics.self_assessment.dimension": {
+      "type": "text",
+      "scope": "ethics_security",
+      "required": false,
+      "source_pdf_pages": [
+        198,
+        199,
+        200
+      ],
+      "confidence": "reverse_engineered_from_remaining_characters",
+      "max_chars": 5000,
+      "count_spaces": true,
+      "required_if": {
+        "any_question_prefix": "ethics.",
+        "equals": "yes"
+      },
+      "integration_note": "Request the narrative for substantive ethics issues; checking the ethics confirmation alone is not such an issue."
+    },
+    "ethics.self_assessment.compliance": {
+      "type": "text",
+      "scope": "ethics_security",
+      "required": false,
+      "source_pdf_pages": [
+        198,
+        199,
+        200
+      ],
+      "confidence": "reverse_engineered_from_remaining_characters",
+      "max_chars": 5000,
+      "count_spaces": true,
+      "required_if": {
+        "any_question_prefix": "ethics.",
+        "equals": "yes"
+      },
+      "integration_note": "Request the narrative for substantive ethics issues; checking the ethics confirmation alone is not such an issue."
+    },
+    "security.national_restrictions.details": {
+      "type": "text",
+      "scope": "ethics_security",
+      "required": false,
+      "source_pdf_pages": [
+        201
+      ],
+      "confidence": "explicit_pdf",
+      "max_chars": 1000,
+      "count_spaces": true,
+      "required_if": {
+        "field": "security.national_restrictions",
+        "equals": "yes"
+      }
+    },
+    "security.other.details": {
+      "type": "text",
+      "scope": "ethics_security",
+      "required": false,
+      "source_pdf_pages": [
+        201
+      ],
+      "confidence": "explicit_pdf",
+      "max_chars": 1000,
+      "count_spaces": true,
+      "required_if": {
+        "field": "security.other",
+        "equals": "yes"
+      }
+    },
+    "security.self_assessment": {
+      "type": "text",
+      "scope": "ethics_security",
+      "required": false,
+      "source_pdf_pages": [
+        201
+      ],
+      "confidence": "explicit_official_template_v3_2025",
+      "max_chars": 5000,
+      "count_spaces": true,
+      "required_if": {
+        "any_question_prefix": "security.",
+        "equals": "yes"
+      },
+      "official_source": "https://ec.europa.eu/info/funding-tenders/opportunities/docs/2021-2027/horizon/temp-form/af/af_he-ria-ia_en.pdf"
+    },
+    "ethics.other.details": {
+      "type": "text",
+      "scope": "ethics_security",
+      "required": false,
+      "max_chars": 1000,
+      "count_spaces": true,
+      "required_if": {
+        "field": "ethics.other",
+        "equals": "yes"
+      },
+      "confidence": "explicit_official_template_v3_2025",
+      "official_source": "https://ec.europa.eu/info/funding-tenders/opportunities/docs/2021-2027/horizon/temp-form/af/af_he-ria-ia_en.pdf"
+    }
+  },
+  "declarations": {
+    "count": 9,
+    "required": true,
+    "source_pdf_pages": [
+      3
+    ],
+    "integration_note": "Current official form adds declaration 10 for lump-sum detailed budget; required only when FUNDING=lump-sum."
+  },
+  "budget_rules": {
+    "columns": "participant, personnel, subcontracting, purchase-travel, purchase-equipment, purchase-other, internally-invoiced, indirect, eligible-total, funding-rate, maximum-EU-contribution-to-eligible, requested-EU-contribution, max-grant, action-income, financial-contributions, own-resources, total-estimated-income",
+    "ordinary_indirect_rule": "25 percent of eligible direct costs excluding subcontracting and internally invoiced goods/services; confirm call-specific exceptions.",
+    "computed_columns": [
+      "indirect",
+      "total_eligible",
+      "maximum_eu_for_eligible",
+      "max_grant_amount",
+      "total_estimated_income"
+    ],
+    "total_row": "aggregate monetary columns across participant records; do not sum funding_rate percentages",
+    "source_pdf_pages": [
+      194,
+      195
+    ]
+  }
+}

@@ -1,0 +1,534 @@
+{
+  "ethics": [
+    {
+      "id": "ethics.hesc",
+      "group": 1,
+      "label": "Does this activity involve Human Embryonic Stem Cells (hESCs)?",
+      "type": "boolean",
+      "parent": null,
+      "part_a_pages": [
+        196,
+        197
+      ],
+      "part_b_pages": [],
+      "answer": null,
+      "evidence": "observed"
+    },
+    {
+      "id": "ethics.embryos",
+      "group": 1,
+      "label": "Does this activity involve the use of human embryos?",
+      "type": "boolean",
+      "parent": null,
+      "part_a_pages": [
+        196,
+        197
+      ],
+      "part_b_pages": [],
+      "answer": null,
+      "evidence": "observed"
+    },
+    {
+      "id": "ethics.humans.participants",
+      "group": 2,
+      "label": "Does this activity involve human participants?",
+      "type": "boolean",
+      "parent": null,
+      "part_a_pages": [
+        196,
+        197
+      ],
+      "part_b_pages": [],
+      "answer": null,
+      "evidence": "observed"
+    },
+    {
+      "id": "ethics.humans.nonmedical_volunteers",
+      "group": 2,
+      "label": "Are they volunteers for non medical studies (e.g. social or human sciences research)?",
+      "type": "boolean",
+      "parent": "ethics.humans.participants",
+      "part_a_pages": [
+        196,
+        197
+      ],
+      "part_b_pages": [],
+      "answer": null,
+      "evidence": "observed"
+    },
+    {
+      "id": "ethics.humans.healthy_volunteers",
+      "group": 2,
+      "label": "Are they healthy volunteers for medical studies?",
+      "type": "boolean",
+      "parent": "ethics.humans.participants",
+      "part_a_pages": [
+        196,
+        197
+      ],
+      "part_b_pages": [],
+      "answer": null,
+      "evidence": "observed"
+    },
+    {
+      "id": "ethics.humans.patients",
+      "group": 2,
+      "label": "Are they patients for medical studies?",
+      "type": "boolean",
+      "parent": "ethics.humans.participants",
+      "part_a_pages": [
+        196,
+        197
+      ],
+      "part_b_pages": [],
+      "answer": null,
+      "evidence": "observed"
+    },
+    {
+      "id": "ethics.humans.vulnerable",
+      "group": 2,
+      "label": "Are they potentially vulnerable individuals or groups?",
+      "type": "boolean",
+      "parent": "ethics.humans.participants",
+      "part_a_pages": [
+        196,
+        197
+      ],
+      "part_b_pages": [],
+      "answer": null,
+      "evidence": "observed"
+    },
+    {
+      "id": "ethics.humans.minors",
+      "group": 2,
+      "label": "Are they children/minors?",
+      "type": "boolean",
+      "parent": "ethics.humans.participants",
+      "part_a_pages": [
+        196,
+        197
+      ],
+      "part_b_pages": [],
+      "answer": null,
+      "evidence": "observed"
+    },
+    {
+      "id": "ethics.humans.no_consent",
+      "group": 2,
+      "label": "Are they other persons unable to give informed consent?",
+      "type": "boolean",
+      "parent": "ethics.humans.participants",
+      "part_a_pages": [
+        196,
+        197
+      ],
+      "part_b_pages": [],
+      "answer": null,
+      "evidence": "observed"
+    },
+    {
+      "id": "ethics.humans.interventions",
+      "group": 2,
+      "label": "Does this activity involve interventions (physical also including imaging technology, behavioural treatments, etc.) on the study participants?",
+      "type": "boolean",
+      "parent": null,
+      "part_a_pages": [
+        196,
+        197
+      ],
+      "part_b_pages": [],
+      "answer": null,
+      "evidence": "observed"
+    },
+    {
+      "id": "ethics.humans.clinical_study",
+      "group": 2,
+      "label": "Does this activity involve conducting a clinical study as defined by the Clinical Trial Regulation (EU 536/2014)? (using pharmaceuticals, biologicals, radiopharmaceuticals, or advanced therapy medicinal products)",
+      "type": "boolean",
+      "parent": null,
+      "part_a_pages": [
+        196,
+        197
+      ],
+      "part_b_pages": [],
+      "answer": null,
+      "evidence": "observed"
+    },
+    {
+      "id": "ethics.cells_tissues",
+      "group": 3,
+      "label": "Does this activity involve the use of human cells or tissues?",
+      "type": "boolean",
+      "parent": null,
+      "part_a_pages": [
+        196,
+        197
+      ],
+      "part_b_pages": [],
+      "answer": null,
+      "evidence": "observed"
+    },
+    {
+      "id": "ethics.data.personal",
+      "group": 4,
+      "label": "Does this activity involve processing of personal data?",
+      "type": "boolean",
+      "parent": null,
+      "part_a_pages": [
+        196,
+        197
+      ],
+      "part_b_pages": [],
+      "answer": null,
+      "evidence": "observed"
+    },
+    {
+      "id": "ethics.data.special",
+      "group": 4,
+      "label": "Does it involve the processing of special categories of personal data (e.g.: genetic, biometric and health data, sexual lifestyle, ethnicity, political opinion, religious or philosophical beliefs)?",
+      "type": "boolean",
+      "parent": "ethics.data.personal",
+      "part_a_pages": [
+        196,
+        197
+      ],
+      "part_b_pages": [],
+      "answer": null,
+      "evidence": "observed"
+    },
+    {
+      "id": "ethics.data.genetic_biometric_health",
+      "group": 4,
+      "label": "Does it involve processing of genetic, biometric or health data?",
+      "type": "boolean",
+      "parent": "ethics.data.special",
+      "part_a_pages": [
+        196,
+        197
+      ],
+      "part_b_pages": [],
+      "answer": null,
+      "evidence": "observed"
+    },
+    {
+      "id": "ethics.data.profiling",
+      "group": 4,
+      "label": "Does it involve profiling, systematic monitoring of individuals, or processing of large scale of special categories of data or intrusive methods of data processing (such as, surveillance, geolocation tracking etc.)?",
+      "type": "boolean",
+      "parent": "ethics.data.personal",
+      "part_a_pages": [
+        196,
+        197
+      ],
+      "part_b_pages": [],
+      "answer": null,
+      "evidence": "observed"
+    },
+    {
+      "id": "ethics.data.further_processing",
+      "group": 4,
+      "label": "Does this activity involve further processing of previously collected personal data (including use of preexisting data sets or sources, merging existing data sets)?",
+      "type": "boolean",
+      "parent": null,
+      "part_a_pages": [
+        196,
+        197
+      ],
+      "part_b_pages": [],
+      "answer": null,
+      "evidence": "observed"
+    },
+    {
+      "id": "ethics.data.export",
+      "group": 4,
+      "label": "Is it planned to export personal data from the EU to non-EU countries?",
+      "type": "boolean",
+      "parent": null,
+      "part_a_pages": [
+        196,
+        197
+      ],
+      "part_b_pages": [],
+      "answer": null,
+      "evidence": "observed"
+    },
+    {
+      "id": "ethics.data.import",
+      "group": 4,
+      "label": "Is it planned to import personal data from non-EU countries into the EU or from a non-EU country to another non-EU country?",
+      "type": "boolean",
+      "parent": null,
+      "part_a_pages": [
+        196,
+        197
+      ],
+      "part_b_pages": [],
+      "answer": null,
+      "evidence": "observed"
+    },
+    {
+      "id": "ethics.data.criminal",
+      "group": 4,
+      "label": "Does this activity involve the processing of personal data related to criminal convictions or offences?",
+      "type": "boolean",
+      "parent": null,
+      "part_a_pages": [
+        196,
+        197
+      ],
+      "part_b_pages": [],
+      "answer": null,
+      "evidence": "observed"
+    },
+    {
+      "id": "ethics.animals",
+      "group": 5,
+      "label": "Does this activity involve animals?",
+      "type": "boolean",
+      "parent": null,
+      "part_a_pages": [
+        196,
+        197
+      ],
+      "part_b_pages": [],
+      "answer": null,
+      "evidence": "observed"
+    },
+    {
+      "id": "ethics.non_eu.activities",
+      "group": 6,
+      "label": "Will some of the activities be carried out in non-EU countries?",
+      "type": "boolean",
+      "parent": null,
+      "part_a_pages": [
+        196,
+        197
+      ],
+      "part_b_pages": [],
+      "answer": null,
+      "evidence": "observed"
+    },
+    {
+      "id": "ethics.non_eu.ethics_issues",
+      "group": 6,
+      "label": "In case non-EU countries are involved, do the activities undertaken in these countries raise potential ethics issues?",
+      "type": "boolean",
+      "parent": "ethics.non_eu.activities",
+      "part_a_pages": [
+        196,
+        197
+      ],
+      "part_b_pages": [],
+      "answer": null,
+      "evidence": "observed"
+    },
+    {
+      "id": "ethics.non_eu.local_resources",
+      "group": 6,
+      "label": "It is planned to use local resources (e.g. animal and/or human tissue samples, genetic material, live animals, human remains, materials of historical value, endangered fauna or flora samples, etc.)?",
+      "type": "boolean",
+      "parent": "ethics.non_eu.activities",
+      "part_a_pages": [
+        196,
+        197
+      ],
+      "part_b_pages": [],
+      "answer": null,
+      "evidence": "observed"
+    },
+    {
+      "id": "ethics.non_eu.import_material",
+      "group": 6,
+      "label": "Is it planned to import any material (other than data) from non-EU countries into the EU or from a non-EU country to another non-EU country? For data imports, see section 4.",
+      "type": "boolean",
+      "parent": "ethics.non_eu.activities",
+      "part_a_pages": [
+        196,
+        197
+      ],
+      "part_b_pages": [],
+      "answer": null,
+      "evidence": "observed"
+    },
+    {
+      "id": "ethics.non_eu.export_material",
+      "group": 6,
+      "label": "Is it planned to export any material (other than data) from the EU to non-EU countries? For data exports, see section 4.",
+      "type": "boolean",
+      "parent": "ethics.non_eu.activities",
+      "part_a_pages": [
+        196,
+        197
+      ],
+      "part_b_pages": [],
+      "answer": null,
+      "evidence": "observed"
+    },
+    {
+      "id": "ethics.non_eu.low_income",
+      "group": 6,
+      "label": "Does this activity involve low and/or lower middle income countries (if yes, detail the benefit-sharing actions planned in the self-assessment)?",
+      "type": "boolean",
+      "parent": "ethics.non_eu.activities",
+      "part_a_pages": [
+        196,
+        197
+      ],
+      "part_b_pages": [],
+      "answer": null,
+      "evidence": "observed"
+    },
+    {
+      "id": "ethics.non_eu.individual_risk",
+      "group": 6,
+      "label": "Could the situation in the country put the individuals taking part in the activity at risk?",
+      "type": "boolean",
+      "parent": "ethics.non_eu.activities",
+      "part_a_pages": [
+        196,
+        197
+      ],
+      "part_b_pages": [],
+      "answer": null,
+      "evidence": "observed"
+    },
+    {
+      "id": "ethics.environment.harm",
+      "group": 7,
+      "label": "Does this activity involve the use of substances or processes that may cause harm to the environment, to animals or plants (during the implementation of the activity or further to the use of the results, as a possible impact)?",
+      "type": "boolean",
+      "parent": null,
+      "part_a_pages": [
+        196,
+        197
+      ],
+      "part_b_pages": [],
+      "answer": null,
+      "evidence": "observed"
+    },
+    {
+      "id": "ethics.environment.endangered",
+      "group": 7,
+      "label": "Does this activity deal with endangered fauna and/or flora / protected areas?",
+      "type": "boolean",
+      "parent": null,
+      "part_a_pages": [
+        196,
+        197
+      ],
+      "part_b_pages": [],
+      "answer": null,
+      "evidence": "observed"
+    },
+    {
+      "id": "ethics.environment.human_harm",
+      "group": 7,
+      "label": "Does this activity involve the use of substances or processes that may cause harm to humans, including those performing the activity (during the implementation of the activity or further to the use of the results, as a possible impact)?",
+      "type": "boolean",
+      "parent": null,
+      "part_a_pages": [
+        196,
+        197
+      ],
+      "part_b_pages": [],
+      "answer": null,
+      "evidence": "observed"
+    },
+    {
+      "id": "ethics.ai",
+      "group": 8,
+      "label": "Does this activity involve the development, deployment and/or use of Artificial Intelligence-based systems?",
+      "type": "boolean",
+      "parent": null,
+      "part_a_pages": [
+        196,
+        197
+      ],
+      "part_b_pages": [],
+      "answer": null,
+      "evidence": "observed"
+    },
+    {
+      "id": "ethics.other",
+      "group": 9,
+      "label": "Are there any other ethics issues that should be taken into consideration?",
+      "type": "boolean",
+      "parent": null,
+      "part_a_pages": [
+        196,
+        197
+      ],
+      "part_b_pages": [],
+      "answer": null,
+      "evidence": "observed"
+    }
+  ],
+  "security": [
+    {
+      "id": "security.eu_classified_info",
+      "group": 1,
+      "label": "Does this activity involve information and/or materials requiring protection against unauthorised disclosure (EUCI)?",
+      "type": "boolean",
+      "part_a_pages": [
+        201
+      ],
+      "part_b_pages": [],
+      "answer": null,
+      "evidence": "observed"
+    },
+    {
+      "id": "security.non_eu_access",
+      "group": 1,
+      "label": "Does this activity involve non-EU countries which need to have access to EUCI?",
+      "type": "boolean",
+      "part_a_pages": [
+        201
+      ],
+      "part_b_pages": [],
+      "answer": null,
+      "evidence": "observed"
+    },
+    {
+      "id": "security.misuse",
+      "group": 2,
+      "label": "Does this activity have the potential for misuse of results?",
+      "type": "boolean",
+      "part_a_pages": [
+        201
+      ],
+      "part_b_pages": [],
+      "answer": null,
+      "evidence": "observed"
+    },
+    {
+      "id": "security.national_restrictions",
+      "group": 3,
+      "label": "Does this activity involve information and/or materials subject to national security restrictions?",
+      "type": "boolean",
+      "part_a_pages": [
+        201
+      ],
+      "part_b_pages": [],
+      "answer": null,
+      "evidence": "observed"
+    },
+    {
+      "id": "security.other",
+      "group": 3,
+      "label": "Are there any other security issues that should be taken into consideration?",
+      "type": "boolean",
+      "part_a_pages": [
+        201
+      ],
+      "part_b_pages": [],
+      "answer": null,
+      "evidence": "observed"
+    }
+  ],
+  "metadata": {
+    "source": "Proposal-SEP-211303496.pdf",
+    "source_part_a_version": "Horizon Europe ver 1.00 20241022",
+    "reference": "pages 196-197 and 201 (PDF pages, 1-indexed)",
+    "note": "Parent-child visibility inferred from indentation; page references point to Part B, not administrative-form pages."
+  }
+}
