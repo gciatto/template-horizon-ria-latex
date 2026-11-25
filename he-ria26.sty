@@ -1,0 +1,261 @@
+\NeedsTeXFormat{LaTeX2e}[2022-06-01]
+\ProvidesPackage{he-ria26}[2026/11/25 Horizon Europe RIA Part B, template V5.1]
+
+% Formatting follows the EC template V5.1 (22 January 2026).
+% The full specification and source links are in docs/formatting.md.
+\providecommand{\HEGuidance}{1}
+\DeclareOption{draft}{\renewcommand{\HEGuidance}{1}}
+\DeclareOption{final}{\renewcommand{\HEGuidance}{0}}
+\ProcessOptions\relax
+
+\RequirePackage[T1]{fontenc}
+\RequirePackage[utf8]{inputenc}
+\RequirePackage[english]{babel}
+\RequirePackage{mathptmx}
+\RequirePackage{helvet}
+\RequirePackage{courier}
+\RequirePackage{amsmath}
+\RequirePackage[table]{xcolor}
+\RequirePackage[a4paper,left=15mm,right=15mm,top=15mm,bottom=15mm,
+  headheight=7mm,headsep=3mm,footskip=8mm]{geometry}
+\RequirePackage{graphicx}
+\RequirePackage{array,tabularx,longtable,booktabs}
+\RequirePackage{tabularray}
+\UseTblrLibrary{booktabs}
+\RequirePackage[skins,breakable,raster]{tcolorbox}
+\RequirePackage{enumitem}
+\RequirePackage{fancyhdr}
+\RequirePackage{titlesec}
+\RequirePackage{needspace}
+\RequirePackage{etoolbox}
+\RequirePackage{refcount}
+\RequirePackage[numbers,square,sort&compress]{natbib}
+\RequirePackage{xurl}
+\RequirePackage[hidelinks]{hyperref}
+\RequirePackage{cleveref}
+\urlstyle{same}
+
+\definecolor{HEGuidanceBlue}{HTML}{006699}
+\definecolor{HECanvasBlue}{HTML}{00AEE6}
+\definecolor{HEFooterGrey}{HTML}{D9D9D9}
+\definecolor{HEHeaderGrey}{HTML}{777777}
+\definecolor{HETableGrey}{HTML}{F2F2F2}
+
+% 11bp is exactly 11 physical PDF/PostScript points. The article class's
+% nominal [11pt] alone gives 10.95 TeX points, which is slightly smaller.
+% Standard glyph metrics and spacing: no font scaling, expansion or tracking.
+\renewcommand{\normalsize}{%
+  \@setfontsize\normalsize{11bp}{13.2bp}%
+  \abovedisplayskip=6bp plus 2bp minus 2bp
+  \belowdisplayskip=6bp plus 2bp minus 2bp
+  \abovedisplayshortskip=3bp plus 1bp
+  \belowdisplayshortskip=3bp plus 1bp
+  \let\@listi\@listI}
+\renewcommand{\small}{\@setfontsize\small{10bp}{12bp}}
+\renewcommand{\footnotesize}{\@setfontsize\footnotesize{9bp}{10.8bp}}
+\linespread{1}
+\normalsize
+\setlength{\parindent}{1.2em}
+\setlength{\parskip}{0pt}
+\setlength{\textfloatsep}{7bp plus 2bp minus 1bp}
+\setlength{\floatsep}{7bp plus 2bp minus 1bp}
+\setlength{\intextsep}{7bp plus 2bp minus 1bp}
+\setlength{\abovecaptionskip}{3bp}
+\setlength{\belowcaptionskip}{0bp}
+\setlength{\tabcolsep}{4bp}
+\setlength{\arrayrulewidth}{0.4bp}
+\renewcommand{\arraystretch}{1.12}
+\setlength{\LTpre}{4bp}
+\setlength{\LTpost}{4bp}
+\setlength{\emergencystretch}{1.5em}
+\raggedbottom
+\setlist{leftmargin=1.6em,topsep=3bp,itemsep=2bp,parsep=0bp,partopsep=0bp}
+\setlist[enumerate]{leftmargin=2em}
+\SetTblrInner{font=\normalsize,colsep=4bp,rowsep=3bp}
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+
+\titleformat{\section}[hang]{\normalfont\normalsize\bfseries}
+  {\makebox[12mm][l]{\thesection.}}{0pt}{}
+\titleformat{\subsection}[hang]{\normalfont\normalsize\bfseries}
+  {\makebox[12mm][l]{\thesubsection}}{0pt}{}
+\titleformat{\subsubsection}[hang]{\normalfont\normalsize\bfseries}
+  {\thesubsubsection}{0.6em}{}
+\titlespacing*{\section}{0pt}{8bp}{4bp}
+\titlespacing*{\subsection}{0pt}{6bp}{3bp}
+\titlespacing*{\subsubsection}{0pt}{5bp}{2bp}
+\setcounter{secnumdepth}{2}
+
+% Every proposal-specific value is set in metadata.tex.
+\newcommand{\HEProjectTitle}{Title of the proposal}
+\newcommand{\HEAcronym}{ACRONYM}
+\newcommand{\HECallIdentifier}{[insert call identifier]}
+\newcommand{\HECallName}{[insert call name]}
+\newcommand{\HETopicIdentifier}{[insert topic identifier]}
+\newcommand{\HECoordinator}{[coordinating organisation]}
+\newcommand{\HEDuration}{36}
+\newcommand{\HEKeywords}{[project keywords]}
+\newcommand{\HEParticipants}{}
+\newcommand{\HEImplementationBudget}{12 pages}
+\newif\ifHEImpactSummary
+\HEImpactSummarytrue
+\newif\ifhe@guidance
+
+\newcommand{\he@resolveprofile}{%
+  \providecommand{\HEFunding}{standard}%
+  \ifdefstring{\HEFunding}{standard}
+    {\providecommand{\HEPageLimit}{40}%
+     \renewcommand{\HEImplementationBudget}{12 pages}}
+    {\ifdefstring{\HEFunding}{lump-sum}
+       {\providecommand{\HEPageLimit}{45}%
+        \renewcommand{\HEImplementationBudget}{17 pages}}
+       {\PackageError{he-ria26}{Unknown funding profile: \HEFunding}
+          {Use standard or lump-sum in metadata.tex.}}}%
+  \ifnum\HEGuidance=1\relax\he@guidancetrue\else\he@guidancefalse\fi
+}
+
+% The body retains the full 180 x 267 mm rectangle. Header and footer occupy
+% the permitted margin area; they do not reduce the text height.
+\fancypagestyle{horizon}{%
+  \fancyhf{}
+  \fancyhead[L]{\parbox[b]{\headwidth}{%
+    \sffamily\fontsize{8bp}{9bp}\selectfont
+    Call: \HECallIdentifier{} --- \HECallName\par
+    \raggedleft\color{HEHeaderGrey}%
+    EU Grants: Application form (HE RIA and IA): V5.1 -- 22.01.2026}}
+  \fancyfoot[C]{%
+    \begingroup\setlength{\fboxsep}{3bp}\setlength{\fboxrule}{0.4bp}%
+    \fcolorbox{black}{HEFooterGrey}{%
+      \parbox{\dimexpr\headwidth-2\fboxsep-2\fboxrule\relax}{%
+        \centering\sffamily\fontsize{8.5bp}{10bp}\selectfont
+        Part B -- Page \thepage{} of \HEPageLimit}}%
+    \endgroup}
+  \renewcommand{\headrulewidth}{0pt}
+  \renewcommand{\footrulewidth}{0pt}}
+\pagestyle{horizon}
+
+\NewDocumentCommand{\HEMakeTitle}{}{%
+  \noindent\begin{minipage}{\linewidth}
+    \centering\fontsize{20bp}{23bp}\selectfont\bfseries
+    Proposal template Part B: technical description\par
+    \vspace{5bp}
+    \setlength{\fboxsep}{3bp}\setlength{\fboxrule}{0.4bp}%
+    \fbox{\parbox{\dimexpr\linewidth-2\fboxsep-2\fboxrule\relax}{%
+      \centering\fontsize{14bp}{16.8bp}\selectfont
+      \scshape\HEProjectTitle}}%
+  \end{minipage}\par\vspace{5bp}}
+
+% Guidance disappears at token level; hidden citations and labels are not run.
+\NewDocumentEnvironment{heguidance}{+b}{%
+  \ifhe@guidance
+    \par\begingroup\color{HEGuidanceBlue}%
+    \setlength{\parindent}{0pt}\setlength{\parskip}{3bp}%
+    #1\par\endgroup
+  \fi}{}
+\NewDocumentCommand{\HEGuide}{+m}{%
+  \ifhe@guidance{\color{HEGuidanceBlue}#1}\fi}
+\NewDocumentCommand{\HEBudget}{m}{%
+  \ifhe@guidance\space{\normalfont\itshape\color{HEGuidanceBlue}[#1]}\fi}
+\pdfstringdefDisableCommands{%
+  \def\HEBudget#1{}%
+  \def\HEGuide#1{}%
+}
+\NewDocumentCommand{\HECriterion}{m +m}{%
+  \ifhe@guidance
+    \begin{tcolorbox}[enhanced,breakable,colback=black!3,colframe=black!35,
+      boxrule=0.4bp,arc=0pt,left=5bp,right=5bp,top=4bp,bottom=4bp,
+      before skip=4bp,after skip=5bp,coltext=HEGuidanceBlue]
+      \textbf{#1}\par #2
+    \end{tcolorbox}
+  \fi}
+\NewDocumentCommand{\HEPlaceholder}{+m}{\textit{[#1]}}
+\NewDocumentCommand{\HEParagraph}{m}{%
+  \par\Needspace{3\baselineskip}\noindent\textbf{#1.}\space\ignorespaces}
+\newcounter{hetable}
+\newcommand{\he@tablelabel}{}
+\renewcommand{\thehetable}{\he@tablelabel}
+\providecommand{\theHhetable}{\arabic{hetable}}
+\crefname{hetable}{table}{tables}
+\Crefname{hetable}{Table}{Tables}
+\NewDocumentCommand{\HETableTitle}{m m}{%
+  \par\Needspace{5\baselineskip}\vspace{5bp}%
+  \renewcommand{\he@tablelabel}{#1}\refstepcounter{hetable}%
+  \def\@currentlabelname{#2}%
+  \noindent\textbf{Table #1:\quad #2}\par\nobreak\vspace{3bp}}
+\NewDocumentCommand{\HECanvasCell}{m +m +m}{%
+  \begin{tcolorbox}[enhanced,colback=white,colframe=HECanvasBlue,
+    colbacktitle=HECanvasBlue,coltitle=white,boxrule=0.7bp,arc=0pt,
+    title={#1},fonttitle=\bfseries,center title,
+    left=5bp,right=5bp,top=4bp,bottom=5bp,
+    before skip=0pt,after skip=0pt]
+    \HEGuide{\itshape #2\par\medskip}%
+    #3
+  \end{tcolorbox}}
+
+% Landscape pages keep horizontal headers and footers, as the RTF does.
+% This is a real A4 landscape MediaBox, not a scaled or rotated content box.
+\newenvironment{HELandscape}{%
+  \clearpage\begingroup
+  \setlength{\paperwidth}{297mm}\setlength{\paperheight}{210mm}%
+  \ifdefined\pdfpagewidth
+    \pdfpagewidth=\paperwidth\pdfpageheight=\paperheight
+  \else
+    \special{papersize=297mm,210mm}%
+  \fi
+  \setlength{\textwidth}{267mm}\setlength{\textheight}{180mm}%
+  \setlength{\hsize}{\textwidth}\setlength{\linewidth}{\textwidth}%
+  \setlength{\columnwidth}{\textwidth}\setlength{\vsize}{\textheight}%
+  \global\@colht=\textheight\global\@colroom=\textheight
+  \@floatplacement
+  \global\@fpmin=\floatpagefraction\textheight
+  \setlength{\headwidth}{\textwidth}%
+}{%
+  \clearpage\endgroup
+  \ifdefined\pdfpagewidth
+    \pdfpagewidth=\paperwidth\pdfpageheight=\paperheight
+  \else
+    \special{papersize=210mm,297mm}%
+  \fi
+  % The output routine globally updates these registers. Restore them globally
+  % too, so the environment's outer group cannot reinstate landscape values.
+  \global\@colht=\textheight\global\@colroom=\textheight
+  \global\vsize=\textheight
+  \@floatplacement
+  \global\@fpmin=\floatpagefraction\textheight
+}
+
+% Print only references actually cited. An empty template builds without
+% triggering an empty BibTeX run; adding \cite, \citet, \citep or \nocite works.
+\newif\ifhe@citations
+\pretocmd{\NAT@citexnum}{\global\he@citationstrue}{}{
+  \PackageError{he-ria26}{Cannot initialise numeric citation tracking}{}}
+\pretocmd{\NAT@citex}{\global\he@citationstrue}{}{
+  \PackageError{he-ria26}{Cannot initialise citation tracking}{}}
+\pretocmd{\nocite}{\global\he@citationstrue}{}{
+  \PackageError{he-ria26}{Cannot initialise nocite tracking}{}}
+\renewcommand{\bibfont}{\normalsize}
+\setlength{\bibsep}{2bp}
+\renewcommand{\bibsection}{\section*{References}}
+\NewDocumentCommand{\HEPrintBibliography}{}{%
+  \ifhe@citations
+    \bibliographystyle{he-ria26}%
+    \bibliography{bibliography}%
+  \fi}
+\providecommand{\doi}[1]{\href{https://doi.org/#1}{doi:\nolinkurl{#1}}}
+
+% A machine-readable sidecar makes the PDF profile authoritative for checks.
+\newwrite\he@metastream
+\AtBeginDocument{%
+  \he@resolveprofile
+  \normalsize
+  \hypersetup{pdftitle={\HEProjectTitle},pdfauthor={\HECoordinator},
+    pdfsubject={Horizon Europe RIA -- Part B -- \HETopicIdentifier},
+    pdfkeywords={\HEKeywords},pdfcreator={LaTeX with he-ria26.sty}}%
+  \immediate\openout\he@metastream=\jobname.hemeta
+  \immediate\write\he@metastream{%
+    {"funding":"\HEFunding","page_limit":\HEPageLimit,"guidance":\HEGuidance}}%
+  \immediate\closeout\he@metastream
+  \typeout{[he-ria26] Funding: \HEFunding; full-document page limit: \HEPageLimit}%
+  \typeout{[he-ria26] Body: 11bp; baseline: 13.2bp; margins: 15mm}%
+}
+\endinput

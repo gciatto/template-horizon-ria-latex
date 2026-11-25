@@ -1,0 +1,25 @@
+% Single source of truth. These values must match the Portal's Part A.
+\renewcommand{\HEProjectTitle}{Title of the proposal}
+\renewcommand{\HEAcronym}{ACRONYM}
+\renewcommand{\HECallIdentifier}{[insert call identifier]}
+\renewcommand{\HECallName}{[insert call name]}
+\renewcommand{\HETopicIdentifier}{[insert topic identifier]}
+\renewcommand{\HECoordinator}{[coordinating organisation]}
+\renewcommand{\HEDuration}{36}
+\renewcommand{\HEKeywords}{[project keywords]}
+
+% standard -> 40 pages; lump-sum -> 45 pages (2026-2027 full RIA).
+% \providecommand lets FUNDING / PAGE_LIMIT from make override these defaults.
+\providecommand{\HEFunding}{standard}
+% Set this ONLY when the call-specific submission template changes the limit:
+% \providecommand{\HEPageLimit}{40}
+
+% V5.1 section 2.3 is optional. Use \HEImpactSummaryfalse to remove it entirely.
+\HEImpactSummarytrue
+
+% Participant numbering must match Part A. Add/remove complete table rows.
+\renewcommand{\HEParticipants}{%
+  1 (Coordinator) & \HECoordinator & [country] \\
+  2 & [participant organisation name] & [country] \\
+  3 & [participant organisation name] & [country] \\
+}
