@@ -41,7 +41,7 @@ class BuildTests(unittest.TestCase):
 
     def build(self, mode="submission", document="part-b", **overrides):
         env = os.environ.copy()
-        for key in ("FUNDING", "PAGE_LIMIT", "COMPILER_EXIT"):
+        for key in ("FUNDING", "PAGE_LIMIT", "COMPILER_EXIT", "BUDGET_XLSX"):
             env.pop(key, None)
         env.update(overrides)
         env["PATH"] = str(self.bin) + os.pathsep + env["PATH"]
@@ -88,6 +88,21 @@ class BuildTests(unittest.TestCase):
         self.assertEqual(self.build(FUNDING="unexpected").returncode, 2)
         self.assertFalse(self.record.exists())
         self.assertEqual(self.build(PAGE_LIMIT="0").returncode, 2)
+        self.assertFalse(self.record.exists())
+
+    def test_excel_generation_and_disabling_do_not_reuse_stale_tables(self):
+        shutil.copytree(ROOT / 'scripts', self.project / 'scripts', dirs_exist_ok=True)
+        shutil.copytree(ROOT / 'part-a/partners', self.project / 'part-a/partners')
+        shutil.copy2(ROOT / 'metadata.sty', self.project / 'metadata.sty')
+        shutil.copy2(ROOT / 'budget.xlsx', self.project / 'budget.xlsx')
+        self.assertEqual(self.build(BUDGET_XLSX='budget.xlsx').returncode, 0)
+        enabled = json.loads(self.record.read_text())['driver']
+        self.assertIn(r'\def\HEExcelBudgetDirectory{build/submission/part-b-budget}', enabled)
+        self.assertTrue((self.project / 'build/submission/part-b-budget/staff-effort.tex').exists())
+        self.assertEqual(self.build(BUDGET_XLSX='').returncode, 0)
+        self.assertNotIn('HEExcelBudgetDirectory', json.loads(self.record.read_text())['driver'])
+        self.record.unlink()
+        self.assertEqual(self.build(BUDGET_XLSX='missing.xlsx').returncode, 2)
         self.assertFalse(self.record.exists())
 
 
