@@ -81,7 +81,7 @@
 \raggedbottom
 \setlist{leftmargin=1.6em,topsep=3bp,itemsep=2bp,parsep=0bp,partopsep=0bp}
 \setlist[enumerate]{leftmargin=2em}
-\SetTblrInner{font=\normalsize,colsep=4bp,rowsep=3bp}
+\SetTblrInner{cells={font=\normalsize},colsep=4bp,rowsep=3bp}
 \newcolumntype{Y}{>{\raggedright\arraybackslash}X}
 \newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
 
@@ -101,7 +101,7 @@
 \titlespacing{\subparagraph}{\parindent}{0pt}{0.5em}
 \setcounter{secnumdepth}{2}
 
-% Every proposal-specific value is set in metadata.tex.
+% Every proposal-specific value is set in metadata.sty.
 \newcommand{\HEProjectTitle}{Title of the proposal}
 \newcommand{\HEAcronym}{ACRONYM}
 \newcommand{\HECallIdentifier}{[insert call identifier]}
@@ -125,7 +125,7 @@
        {\providecommand{\HEPageLimit}{45}%
         \renewcommand{\HEImplementationBudget}{17 pages}}
        {\PackageError{he-ria26}{Unknown funding profile: \HEFunding}
-          {Use standard or lump-sum in metadata.tex.}}}%
+          {Use standard or lump-sum in metadata.sty.}}}%
   \ifnum\HEGuidance=1\relax\he@guidancetrue\else\he@guidancefalse\fi
 }
 

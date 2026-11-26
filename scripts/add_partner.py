@@ -22,11 +22,11 @@ def add_partner(number,acronym,role='partner',root=ROOT):
         raise ValueError('Role must be coordinator, partner or affiliated')
     root=Path(root).resolve()
     name=format_name(number,acronym)
-    partners=root/'partners'
+    partners=root/'part-a/partners'
     manifest=partners/'participants.tex'
     existing=read_manifest(root) if manifest.exists() else []
     if not manifest.exists() and list(partners.glob('partner-*.tex')):
-        raise ValueError('Register existing partner files in partners/participants.tex first')
+        raise ValueError('Register existing partner files in part-a/partners/participants.tex first')
     if any(int(PARTNER_NAME.fullmatch(path.name).group(1))==number for path in existing):
         raise ValueError(f'Participant number {number} is already in use')
     path=partners/name
@@ -43,7 +43,7 @@ def add_partner(number,acronym,role='partner',root=ROOT):
         if found and int(found.group(1)) > number:
             insertion=body.rfind('\n',0,start)+1
             break
-    line=f'\\input{{partners/{name}}}\n'
+    line=f'\\input{{part-a/partners/{name}}}\n'
     prefix=body[:insertion]
     if prefix and not prefix.endswith('\n'):
         prefix+='\n'
@@ -69,7 +69,7 @@ def main():
         path=add_partner(args.number,args.acronym,args.role,args.root)
     except (OSError,ValueError) as error:
         parser.error(str(error))
-    print(f'Created {path.relative_to(args.root.resolve())}; updated partners/participants.tex')
+    print(f'Created {path.relative_to(args.root.resolve())}; updated part-a/partners/participants.tex')
     return 0
 
 

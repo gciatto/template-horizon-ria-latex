@@ -1,5 +1,5 @@
 PYTHON ?= python3
-# Unspecified funding means standard RIA. An empty PAGE_LIMIT uses metadata.tex
+# Unspecified funding means standard RIA. An empty PAGE_LIMIT uses metadata.sty
 # and the selected profile's default.
 # FUNDING affects both parts. PAGE_LIMIT applies only to Part B.
 FUNDING ?= standard
@@ -7,35 +7,35 @@ PAGE_LIMIT ?=
 VERSION ?=
 export FUNDING PAGE_LIMIT VERSION
 
-.PHONY: all guidance submission guidance-a guidance-b2 submission-a submission-b2 \
-        a part-a b2 part-b2 counts pages chars check check-admin check-budget \
+.PHONY: all guidance submission guidance-a guidance-b submission-a submission-b \
+        a part-a b part-b counts pages chars check check-admin check-budget \
         strict test ci dist clean distclean help
 
 all: guidance submission
 
-guidance: guidance-a guidance-b2
+guidance: guidance-a guidance-b
 
-submission: submission-a submission-b2
+submission: submission-a submission-b
 
 guidance-a:
 	$(PYTHON) scripts/build.py guidance --document part-a
 
-guidance-b2:
-	$(PYTHON) scripts/build.py guidance --document part-b2
+guidance-b:
+	$(PYTHON) scripts/build.py guidance --document part-b
 
 submission-a:
 	$(PYTHON) scripts/build.py submission --document part-a
 
-submission-b2:
-	$(PYTHON) scripts/build.py submission --document part-b2
+submission-b:
+	$(PYTHON) scripts/build.py submission --document part-b
 
 a part-a: guidance-a submission-a
 
-b2 part-b2: guidance-b2 submission-b2
+b part-b: guidance-b submission-b
 
 counts: submission
 	$(PYTHON) scripts/count_pdf.py build/submission/part-a.pdf --json build/part-a-counts.json
-	$(PYTHON) scripts/count_pdf.py build/submission/part-b2.pdf --json build/counts.json
+	$(PYTHON) scripts/count_pdf.py build/submission/part-b.pdf --json build/counts.json
 
 pages: counts
 
@@ -49,7 +49,7 @@ check-budget:
 
 check: check-admin check-budget submission
 	$(PYTHON) scripts/count_pdf.py build/submission/part-a.pdf --check --json build/part-a-counts.json
-	$(PYTHON) scripts/count_pdf.py build/submission/part-b2.pdf --check --json build/counts.json
+	$(PYTHON) scripts/count_pdf.py build/submission/part-b.pdf --check --json build/counts.json
 
 # Completeness is a separate author-requested check, never a blank-template CI gate.
 strict: check
@@ -73,7 +73,7 @@ distclean: clean
 
 help:
 	@echo "make                 Build Part A and B, each with and without guidance"
-	@echo "make a / b2          Build both modes of the selected part"
+	@echo "make a / b           Build both modes of the selected part"
 	@echo "make guidance        Build both parts with coloured guidance"
 	@echo "make submission      Build both parts without guidance"
 	@echo "make pages / chars   Report PDF counts / source-field character checks"

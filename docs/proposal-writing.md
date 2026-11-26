@@ -6,7 +6,7 @@ project logic and a feasible delivery plan. Never improve apparent
 competitiveness by inventing facts or commitments.
 
 This is an agent/maintainer workflow. Ordinary proposal authors work in the
-existing `.tex` and `.bib` files. Apply the workflow proportionately: a new
+existing `.tex`, `.bib` and `metadata.sty` files. Apply the workflow proportionately: a new
 application needs call analysis and project design; a local wording correction
 needs the relevant inputs and checks, not a second planning system.
 
@@ -58,20 +58,20 @@ The funding switch does not change the action type or submission stage.
 
 | Content | Author source |
 | --- | --- |
-| Shared title, acronym, topic, coordinator, duration and keywords | `metadata.tex`; reuse the macros across both parts |
-| Consortium general information, abstract and declarations | `part-a-consortium.tex` |
-| Each organisation's identity, contacts, researchers, achievements, previous projects, facilities and budget | Its `partners/partner-N-ACRO-admin-form.tex` |
-| Participant inclusion and numbering order | `partners/participants.tex`; shared by both parts and the budget |
-| Budget presentation | `part-a-budget.tex`; the actual amounts remain in each partner's file |
-| Ethics/security questions and assessment narratives | `ethics/ethics-questions.tex`, `ethics/security-questions.tex`, `ethics/ethics-self-assessment.tex`, `ethics/security-self-assessment.tex` |
-| Additional call-specific administrative questions | `part-a-other.tex` |
-| Objectives, ambition and methodology | `sections/1-excellence.tex` |
-| Pathways to impact, dissemination/exploitation/communication and optional summary | `sections/2-impact.tex` |
-| Work plan, resources and consortium capacity | `sections/3-implementation.tex` and the corresponding files in `tables/` |
+| Shared title, acronym, topic, coordinator, duration and keywords | `metadata.sty`; reuse the macros across both parts |
+| Consortium general information, abstract and declarations | `part-a/part-a-consortium.tex` |
+| Each organisation's identity, contacts, researchers, achievements, previous projects, facilities and budget | Its `part-a/partners/partner-N-ACRO-admin-form.tex` |
+| Participant inclusion and numbering order | `part-a/partners/participants.tex`; shared by both parts and the budget |
+| Budget presentation | `part-a/part-a-budget.tex`; the actual amounts remain in each partner's file |
+| Ethics/security questions and assessment narratives | `part-a/ethics/ethics-questions.tex`, `part-a/ethics/security-questions.tex`, `part-a/ethics/ethics-self-assessment.tex`, `part-a/ethics/security-self-assessment.tex` |
+| Additional call-specific administrative questions | `part-a/part-a-other.tex` |
+| Objectives, ambition and methodology | `part-b/sections/1-excellence.tex` |
+| Pathways to impact, dissemination/exploitation/communication and optional summary | `part-b/sections/2-impact.tex` |
+| Work plan, resources and consortium capacity | `part-b/sections/3-implementation.tex` and the corresponding files in `part-b/tables/` |
 | Verified reference data | `bibliography.bib` |
 
-Preserve the assembly files `part-a.tex`, `part-a-partner.tex`,
-`part-a-ethics-security.tex` and `part-b2.tex` unless their structure must change.
+Preserve the assembly files `part-a.tex`, `part-a/part-a-partner.tex`,
+`part-a/part-a-ethics-security.tex` and `part-b.tex` unless their structure must change.
 Keep layout and inclusion logic in `he-ria26.sty` and `he-admin26.sty`.
 
 Administrative values use `\AField{field.id}{value}`. Edit the value while
@@ -137,7 +137,7 @@ topic outcomes → destination impacts.**
 ## 5. Excellence: explain why the approach can work
 
 Write objectives and ambition in section 1.1 and methodology in section 1.2 of
-`sections/1-excellence.tex`, using the actual call's evaluation criteria.
+`part-b/sections/1-excellence.tex`, using the actual call's evaluation criteria.
 
 - Establish the problem and closest existing solutions, then identify the
   specific advance. Test novelty claims against contrary evidence; replace
@@ -159,7 +159,7 @@ Use the evaluation criteria applicable to the selected instrument and call.
 ## 6. Impact: explain who will use results and what changes
 
 Use section 2.1 for pathways towards impact and section 2.2 for measures in
-`sections/2-impact.tex`. Keep the optional section 2.3 canvas consistent with
+`part-b/sections/2-impact.tex`. Keep the optional section 2.3 canvas consistent with
 those explanations.
 
 - Identify concrete users, beneficiaries and adoption settings. Explain the
@@ -249,7 +249,7 @@ the required call-specific budget form or an institutional budget review.
   follow the call's data-management planning requirements without inventing
   submission annexes.
 - Identify ethics, personal-data, security and misuse issues arising from the
-  actual activities. Align answers in `ethics/` with Part B safeguards and
+  actual activities. Align answers in `part-a/ethics/` with Part B safeguards and
   declarations. State required approvals, responsible roles and timing;
   describe existing approvals only when evidenced. Check the applicable
   ethics self-assessment requirements.

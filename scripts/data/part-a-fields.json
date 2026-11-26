@@ -5,7 +5,7 @@
     "pages": "1-202 of 303",
     "form_version": "Horizon Europe ver 1.00 20241022",
     "coverage": "Admin form for HORIZON-RIA budget-based grant; do not generalise hard constraints to other calls without checking",
-    "partner_file_pattern": "partners/partner-N-ACRO-admin-form.tex (N unpadded, ACRO uppercase)",
+    "partner_file_pattern": "part-a/partners/partner-N-ACRO-admin-form.tex (N unpadded, ACRO uppercase)",
     "partner_file_contents": "Participant fields and budget row in the same TeX file, included in two mutually exclusive passes",
     "counting_policy": "Maximum character limits count spaces and paragraph separators; TeX source validator approximates portal text after minimal unescaping.",
     "confidence_semantics": "explicit_pdf = printed constraint; reverse_engineered = inferred from counter and extracted content; observed = value seen; inferred = generic check only; unknown max_chars null = no limit established.",

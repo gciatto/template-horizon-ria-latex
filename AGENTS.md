@@ -10,18 +10,18 @@ the requested change.
 
 ## Author interface and project map
 
-- Ordinary proposal authors edit `.tex` and `.bib` only. Keep presentation,
+- Ordinary proposal authors edit `.tex`, `.bib` and `metadata.sty` only. Keep presentation,
   repeated-inclusion logic, validation and generation in styles or scripts.
   Do not require authors to edit JSON schemas or run schema generators.
   Markdown guidance and internal schemas are agent/maintainer interfaces.
-- `metadata.tex` supplies shared project values. Reuse its macros in both parts.
+- `metadata.sty` supplies shared project values. Reuse its macros in both parts.
 - `part-a.tex` assembles general information, partners, budget, ethics/security
-  and call-specific questions through the other `part-a-*.tex` files.
-- Each `partners/partner-N-ACRO-admin-form.tex` holds one organisation's
-  administrative records and budget. `partners/participants.tex` is the ordered
+  and call-specific questions through the `part-a/part-a-*.tex` files.
+- Each `part-a/partners/partner-N-ACRO-admin-form.tex` holds one organisation's
+  administrative records and budget. `part-a/partners/participants.tex` is the ordered
   manifest used by Part A, the budget section and Part B's participant list.
-- `ethics/` contains editable questions and assessment narratives.
-- `part-b2.tex`, `sections/` and `tables/` contain the technical description.
+- `part-a/ethics/` contains editable questions and assessment narratives.
+- `part-b.tex`, `part-b/sections/` and `part-b/tables/` contain the technical description.
   The rendered component is named **Part B**.
 - `he-ria26.sty` owns shared typography, layout, headings and guidance;
   `he-admin26.sty` owns administrative rendering and partner inclusion modes.

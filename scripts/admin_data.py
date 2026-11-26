@@ -78,7 +78,7 @@ def args_of(text: str, macro: str, count: int):
 
 
 def metadata_macros(root: Path) -> dict[str, str]:
-    path = root / 'metadata.tex'
+    path = root / 'metadata.sty'
     if not path.exists():
         return {}
     text = strip_comments(path.read_text(encoding='utf-8'))
@@ -291,15 +291,15 @@ def read_source(path: Path, macros: dict[str, str]) -> Source:
 
 
 def read_manifest(root: Path) -> list[Path]:
-    path = root / 'partners' / 'participants.tex'
+    path = root / 'part-a/partners/participants.tex'
     if not path.is_file():
-        raise ValueError('partners/participants.tex is missing')
+        raise ValueError('part-a/partners/participants.tex is missing')
     contents = strip_comments(path.read_text(encoding='utf-8'))
     names, spans = [], []
     for (name,), start in args_of(contents, 'input', 1):
         name = name.strip()
         target = Path(name)
-        if (target.parent != Path('partners') or not PARTNER_NAME.fullmatch(target.name)
+        if (target.parent != Path('part-a/partners') or not PARTNER_NAME.fullmatch(target.name)
                 or target.is_absolute()):
             raise ValueError(f'Invalid partner manifest entry: {name}')
         names.append(root / target)
@@ -308,12 +308,12 @@ def read_manifest(root: Path) -> list[Path]:
     for start, end in reversed(spans):
         contents = contents[:start] + contents[end:]
     if contents.strip():
-        raise ValueError('Partner manifest accepts only comments and ordinary \\input{partners/...} entries')
+        raise ValueError('Partner manifest accepts only comments and ordinary \\input{part-a/partners/...} entries')
     if not names:
         raise ValueError('The partner manifest is empty')
     if len(names) != len(set(names)):
         raise ValueError('The partner manifest contains duplicate inputs')
-    actual = set((root / 'partners').glob('partner-*.tex'))
+    actual = set((root / 'part-a/partners').glob('partner-*.tex'))
     if set(names) != actual:
         missing = sorted(p.name for p in set(names) - actual)
         unlisted = sorted(p.name for p in actual - set(names))
@@ -327,7 +327,7 @@ def read_manifest(root: Path) -> list[Path]:
 def read_project(root: Path) -> list[Source]:
     root = root.resolve()
     macros = metadata_macros(root)
-    names = [root / 'part-a-consortium.tex', *sorted((root / 'ethics').glob('*.tex')),
+    names = [root / 'part-a/part-a-consortium.tex', *sorted((root / 'part-a/ethics').glob('*.tex')),
              *read_manifest(root)]
     return [read_source(path, macros) for path in names]
 

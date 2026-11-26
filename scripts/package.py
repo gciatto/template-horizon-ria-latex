@@ -17,7 +17,7 @@ EXCLUDED_SUFFIXES = {".aux", ".bbl", ".bcf", ".blg", ".fdb_latexmk", ".fls", ".h
                      ".glg", ".glo", ".gls", ".glsdefs", ".ist", ".lof", ".lot", ".loa",
                      ".lol", ".nav", ".snm", ".vrb", ".idx", ".ind", ".ilg", ".dvi",
                      ".xdv", ".synctex", ".fmt", ".swp", ".swo", ".bak"}
-PREVIEW_PDFS = {"part-a.pdf", "part-a-guidance.pdf", "part-b2.pdf", "part-b2-guidance.pdf"}
+PREVIEW_PDFS = {"part-a.pdf", "part-a-guidance.pdf", "part-b.pdf", "part-b-guidance.pdf"}
 
 
 def source_file(path, root):
@@ -49,16 +49,16 @@ def main():
     try:
         version = validate_version(args.version) if args.version else release_version()
         root = args.root.resolve()
-        if not (root / "part-b2.tex").is_file():
-            raise ValueError("Project root must contain part-b2.tex")
+        if not (root / "part-b.tex").is_file():
+            raise ValueError("Project root must contain part-b.tex")
         sources = sorted(p for p in root.rglob("*") if source_file(p, root))
         timestamp = datetime.strptime(version, "%Y.%m.%d-%H-%M").timetuple()[:6]
         if timestamp[0] < 1980:
             raise ValueError("ZIP release versions must be 1980 or later")
         pdfs = {"part-a-guidance": root / "build/guidance/part-a-guidance.pdf",
-                "part-b2-guidance": root / "build/guidance/part-b2-guidance.pdf",
+                "part-b-guidance": root / "build/guidance/part-b-guidance.pdf",
                 "part-a": root / "build/submission/part-a.pdf",
-                "part-b2": root / "build/submission/part-b2.pdf"}
+                "part-b": root / "build/submission/part-b.pdf"}
         if args.require_pdfs and any(not path.is_file() for path in pdfs.values()):
             raise ValueError("All four Part A/B guidance/clean PDFs are required; run make all first")
         dist = root / "dist"
@@ -80,7 +80,7 @@ def main():
                 target = dist / f"he-ria26-{version}-{name}.pdf"
                 shutil.copyfile(path, target)
                 outputs.append(target)
-        reports = {"part-b2-checks": root / "build/counts.json",
+        reports = {"part-b-checks": root / "build/counts.json",
                    "part-a-checks": root / "build/part-a-counts.json",
                    "admin-checks": root / "build/admin-checks.json",
                    "budget-checks": root / "build/budget-checks.json"}

@@ -75,8 +75,8 @@ leaves space for the title, participants and bibliography.
 - Section 2.3 is optional. `\HEImpactSummaryfalse` removes both its heading and canvas.
 - The implementation tables are 3.1a through 3.1h.
 - Table 3.1h concerns equipment costs exceeding 15% of a participant's personnel costs.
-- The source is named `part-b2.tex` to match the requested project convention;
-  the document itself correctly identifies the Horizon component as **Part B**.
+- `part-b.tex` assembles the technical description from `part-b/sections/`
+  and `part-b/tables/`.
 - Part A is produced by the Portal. This project's local administrative PDF
   supports drafting and coordination and uses an uncapped Part A footer.
 

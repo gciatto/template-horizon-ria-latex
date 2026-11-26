@@ -14,7 +14,7 @@ into the Portal.
 
 ## What to edit
 
-All author input belongs in `.tex` and `.bib` files. The administrative sources
+Author input belongs in `.tex`, `.bib` and `metadata.sty`. The administrative sources
 use four small constructs:
 
 | Construct | Meaning |
@@ -56,7 +56,7 @@ The title excludes `<`, `>`, `"` and `&`. Unknown lengths remain unspecified.
 Each participant may provide up to five achievements and five previous projects.
 Other repeated-record counts have no invented maximum.
 
-The checker resolves the shared values defined in `metadata.tex` and understands
+The checker resolves the shared values defined in `metadata.sty` and understands
 ordinary text formatting. It reports a count as uncertain when unresolved
 commands prevent reliable text extraction. Exact final Portal text can be
 checked independently with `scripts/count_chars.py`; that command counts
@@ -109,9 +109,9 @@ organisation statuses should match the organisation's Portal record.
 
 ## Partner identity and completeness
 
-Every organisation has one `partners/partner-N-ACRO-admin-form.tex` source.
+Every organisation has one `part-a/partners/partner-N-ACRO-admin-form.tex` source.
 It contains its participant record, repeated administrative records and one
-budget record. The ordered manifest `partners/participants.tex` supplies both
+budget record. The ordered manifest `part-a/partners/participants.tex` supplies both
 Part A passes and Part B's participant list.
 
 Checks match the filename number/acronym against the fields, detect duplicate
@@ -124,7 +124,7 @@ requires the known mandatory fields, confirmations and applicable explanatory
 narratives. It does not certify that every call-specific online field is covered.
 The ethics/security catalogue is maintained in `scripts/data/part-a-questions.json`.
 Add call-specific follow-up prompts and answers as ordinary
-LaTeX in the relevant `.tex` source or `part-a-other.tex`. Adding a new typed
+LaTeX in the relevant `.tex` source or `part-a/part-a-other.tex`. Adding a new typed
 field ID is a template-maintenance change and also requires its checker definition.
 
 ## Budget arithmetic

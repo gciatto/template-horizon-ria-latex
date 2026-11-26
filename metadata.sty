@@ -1,3 +1,7 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{metadata}[2026/11/26 Shared proposal metadata]
+\RequirePackage{he-ria26}
+
 % Single source of truth. These values must match the Portal's Part A.
 \renewcommand{\HEProjectTitle}{[proposal title]}
 \renewcommand{\HEAcronym}{[acronym]}
@@ -18,5 +22,5 @@
 % V5.1 section 2.3 is optional. Use \HEImpactSummaryfalse to remove it entirely.
 \HEImpactSummarytrue
 
-% Partner-specific data, including budget rows, live in partners/.
-% The ordered manifest partners/participants.tex feeds both Part A and Part B.
+% Partner-specific data, including budget rows, live in part-a/partners/.
+% The ordered manifest part-a/partners/participants.tex feeds both Part A and Part B.

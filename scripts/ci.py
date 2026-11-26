@@ -28,16 +28,16 @@ class Check:
 def default_checks():
     return [
         Check("a-guidance", "Compile Part A with guidance", ("make", "guidance-a")),
-        Check("b-guidance", "Compile Part B with guidance", ("make", "guidance-b2")),
+        Check("b-guidance", "Compile Part B with guidance", ("make", "guidance-b")),
         Check("a-clean", "Compile clean Part A", ("make", "submission-a")),
-        Check("b-clean", "Compile clean Part B", ("make", "submission-b2")),
+        Check("b-clean", "Compile clean Part B", ("make", "submission-b")),
         Check("admin", "Administrative fields and character limits", ("make", "check-admin")),
         Check("budget", "Partner budgets and consortium totals", ("make", "check-budget")),
         Check("a-pdf", "Part A page size and guidance removal",
               (sys.executable, "scripts/count_pdf.py", "build/submission/part-a.pdf",
                "--check", "--json", "build/part-a-counts.json"), ("a-clean",)),
         Check("b-pdf", "Part B page limit, page size and guidance removal",
-              (sys.executable, "scripts/count_pdf.py", "build/submission/part-b2.pdf",
+              (sys.executable, "scripts/count_pdf.py", "build/submission/part-b.pdf",
                "--check", "--json", "build/counts.json"), ("b-clean",)),
         Check("tests", "Regression tests", ("make", "test")),
     ]

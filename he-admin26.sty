@@ -164,20 +164,20 @@
 \NewDocumentCommand{\HEPrintPartners}{}{
   \group_begin:
     \int_set:Nn \l_he_admin_mode_int {1}
-    \input{partners/participants.tex}
+    \input{part-a/partners/participants.tex}
   \group_end:
 }
 \NewDocumentCommand{\HEPrintBudget}{}{
   \group_begin:
     \int_set:Nn \l_he_admin_mode_int {2}
-    \input{partners/participants.tex}
+    \input{part-a/partners/participants.tex}
   \group_end:
 }
 \NewDocumentCommand{\HEPrintParticipantList}{}{
   \group_begin:
     \int_set:Nn \l_he_admin_mode_int {3}
     \tl_gclear:N \g_he_admin_rows_tl
-    \input{partners/participants.tex}
+    \input{part-a/partners/participants.tex}
     \begin{longtable}{|L{35mm}|L{\dimexpr\linewidth-60mm-6\tabcolsep-4\arrayrulewidth\relax}|L{25mm}|}
       \hline
       \textbf{Participant~No.\ *} & \textbf{Participant~organisation~name} & \textbf{Country}

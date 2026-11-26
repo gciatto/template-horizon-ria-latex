@@ -4,7 +4,7 @@ One project for **Part A administrative drafting and Part B technical writing**.
 Both parts share metadata, partner data, typography, guidance controls and build
 commands. Part B implements the EC V5.1 structure of 22 January 2026.
 
-**For ordinary proposal work, edit `.tex` and `.bib` files only.** Styles and
+**For ordinary proposal work, edit `.tex`, `.bib` and `metadata.sty` only.** Styles and
 scripts handle layout, repeated inclusion, field checks and releases. There is
 no schema-generation step. The Part A PDF is a coordination document: enter its
 values into the Funding & Tenders Portal, which generates the submitted Part A.
@@ -38,16 +38,16 @@ On macOS, use MacTeX together with `make`, Python 3 and Poppler's `pdfinfo` and
 `pdftotext` commands. Direct LaTeX compilation needs the TeX packages; the full
 Make/check workflow also needs those command-line tools.
 
-1. Edit the common project values in `metadata.tex`.
-2. Fill `part-a-consortium.tex`, the files in `partners/` and `ethics/`.
-3. Write Part B in `sections/` and `tables/`, and add sources to `bibliography.bib`.
+1. Edit the common project values in `metadata.sty`.
+2. Fill `part-a/part-a-consortium.tex`, the files in `part-a/partners/` and `part-a/ethics/`.
+3. Write Part B in `part-b/sections/` and `part-b/tables/`, and add sources to `bibliography.bib`.
 4. Run `make` and `make check`.
 
 ```sh
 make                 # Build Part A and Part B, with and without guidance
 make check           # Check field values, budgets and both clean PDFs
 make a               # Build only Part A, in both modes
-make b2              # Build only Part B, in both modes
+make b               # Build only Part B, in both modes
 make pages           # Count pages in both clean PDFs
 make chars           # Report text statistics and field-length checks
 make strict          # Also require complete administrative data
@@ -62,8 +62,8 @@ also fails on missing required information; the blank template is expected to
 fail that completeness check. CI runs the build, draft checks and regression tests,
 so the reusable blank template builds successfully.
 
-Use `make help` for a compact command list. `make part-a` and `make part-b2`
-are aliases of `make a` and `make b2`.
+Use `make help` for a compact command list. `make part-a` and `make part-b`
+are aliases of `make a` and `make b`.
 
 ## Outputs
 
@@ -71,16 +71,16 @@ are aliases of `make a` and `make b2`.
 | --- | --- |
 | `build/guidance/part-a-guidance.pdf` | Administrative forms with blue author guidance |
 | `build/submission/part-a.pdf` | Administrative drafting copy without guidance |
-| `build/guidance/part-b2-guidance.pdf` | Technical description with blue author guidance |
-| `build/submission/part-b2.pdf` | Technical description without guidance |
+| `build/guidance/part-b-guidance.pdf` | Technical description with blue author guidance |
+| `build/submission/part-b.pdf` | Technical description without guidance |
 
 Guidance removal preserves authored text and visible unfinished placeholders.
 Each document and mode has separate auxiliary files. Reports in `build/`
 record administrative fields, budgets, page sizes, page counts and text counts.
 
 To select a mode, use `make guidance` or `make submission`. For one document
-and one mode, use `make guidance-a`, `make guidance-b2`, `make submission-a` or
-`make submission-b2`. Changing funding/profile options regenerates the relevant
+and one mode, use `make guidance-a`, `make guidance-b`, `make submission-a` or
+`make submission-b`. Changing funding/profile options regenerates the relevant
 driver while keeping the other document's bibliography and cross-reference
 state separate.
 
@@ -96,25 +96,28 @@ state separate.
 
 | File | Content |
 | --- | --- |
-| `metadata.tex` | Project title, acronym, call/topic, coordinator, duration, keywords and direct-compilation defaults |
-| `part-a-consortium.tex` | General information, abstract and declarations |
-| `partners/partner-N-ACRO-admin-form.tex` | One organisation's administrative information **and its budget** |
-| `partners/participants.tex` | Ordered list of partner files |
-| `ethics/ethics-questions.tex` | Ethics answers, Part B page references and explanatory fields |
-| `ethics/ethics-self-assessment.tex` | Ethics narratives |
-| `ethics/security-questions.tex` | Security answers and explanatory fields |
-| `ethics/security-self-assessment.tex` | Security narrative |
-| `part-a-other.tex` | Call-specific administrative questions |
-| `sections/`, `tables/` | Part B content, impact canvas and implementation tables 3.1a–3.1h |
+| `metadata.sty` | Project title, acronym, call/topic, coordinator, duration, keywords and direct-compilation defaults |
+| `part-a/part-a-consortium.tex` | General information, abstract and declarations |
+| `part-a/partners/partner-N-ACRO-admin-form.tex` | One organisation's administrative information **and its budget** |
+| `part-a/partners/participants.tex` | Ordered list of partner files |
+| `part-a/ethics/ethics-questions.tex` | Ethics answers, Part B page references and explanatory fields |
+| `part-a/ethics/ethics-self-assessment.tex` | Ethics narratives |
+| `part-a/ethics/security-questions.tex` | Security answers and explanatory fields |
+| `part-a/ethics/security-self-assessment.tex` | Security narrative |
+| `part-a/part-a-other.tex` | Call-specific administrative questions |
+| `part-b/sections/`, `part-b/tables/` | Part B content, impact canvas and implementation tables 3.1a–3.1h |
 | `bibliography.bib` | Bibliographic entries; initially one example |
 
-`part-a.tex` and `part-b2.tex` assemble the documents. The other `part-a-*.tex`
-assembly files call presentation helpers; ordinary data entry does not require
+`part-a.tex` and `part-b.tex` are the only root `.tex` files. They load the shared
+`metadata.sty` package and assemble the sources under `part-a/` and `part-b/`.
+Documentation and build/configuration files also remain at the repository root.
+The `part-a/part-a-*.tex` assembly files call presentation helpers;
+ordinary data entry does not require
 changing them. The style and automation live in `he-ria26.sty`, `he-admin26.sty`,
 `he-ria26.bst`, `scripts/`, `Makefile` and the GitHub workflow. `AGENTS.md`
 provides instructions for agents working in the project. Markdown documentation
 and internal validation schemas are maintainer interfaces; proposal authors
-keep their inputs in `.tex` and `.bib`.
+keep their inputs in `.tex`, `.bib` and `metadata.sty`.
 
 ### Entering administrative information
 
@@ -138,12 +141,12 @@ and evidence are documented in [docs/part-a.md](docs/part-a.md).
 Keep field identifiers and record names unchanged. Add text to the value braces,
 and use ordinary LaTeX escapes for special characters in prose. Numeric fields
 use literal numbers without formatting macros. A new call-specific narrative
-question can be written directly in `part-a-other.tex`; adding a new *typed*
+question can be written directly in `part-a/part-a-other.tex`; adding a new *typed*
 field is a maintainer change that also extends the checker.
 
 ### Partners and budgets
 
-The filename convention is `partners/partner-N-ACRO-admin-form.tex`, with an
+The filename convention is `part-a/partners/partner-N-ACRO-admin-form.tex`, with an
 unpadded positive participant number and an uppercase acronym. The initial
 partner is `partner-1-UNIBO-admin-form.tex`; its substantive information is blank.
 
@@ -157,10 +160,10 @@ python3 scripts/add_partner.py 3 INSTITUTE --role affiliated
 The helper starts from a pristine scaffold. It does not copy another partner's
 completed contacts, achievements or budget. You may also copy the blank partner
 structure manually, update its number/acronym/role and add one `\input{...}` line
-to `partners/participants.tex` in participant-number order.
+to `part-a/partners/participants.tex` in participant-number order.
 
 The same partner sources feed Part A, the budget section and Part B's participant
-list. Shared proposal fields use `metadata.tex` macros. The coordinator's legal
+list. Shared proposal fields use `metadata.sty` macros. The coordinator's legal
 name is supplied through `\HECoordinator` in that metadata file.
 
 Enter EUR amounts as decimals without currency symbols or thousands separators,
@@ -186,7 +189,7 @@ Write the approach here, citing \cite{SumersYNG2024}.
 Use ordinary LaTeX headings, labels and cross-references. `\HEPlaceholder{...}`
 marks an unfinished field that remains visible in both modes. The optional
 landscape impact canvas is controlled by `\HEImpactSummarytrue` or
-`\HEImpactSummaryfalse` in `metadata.tex`.
+`\HEImpactSummaryfalse` in `metadata.sty`.
 
 For inline guidance use `\HEGuide{...}`. The template also uses
 `\HECriterion{heading}{guidance}` for evaluation boxes and `\HEBudget{...}` for
@@ -224,7 +227,7 @@ including title, participant list, figures, tables, landscape pages and referenc
 `PAGE_LIMIT` overrides Part B only. Part A has field constraints and **no inherited
 Part B page cap**. Its footer therefore shows its page number without a 40/45 limit.
 
-An omitted `PAGE_LIMIT` uses the direct-compilation override in `metadata.tex`
+An omitted `PAGE_LIMIT` uses the direct-compilation override in `metadata.sty`
 when present, otherwise the profile default. Make's `FUNDING` value is explicit:
 omitting it returns to `standard`, even if the previous build used lump-sum.
 The `FUNDING` switch changes the funding profile, not the action type or stage.
@@ -280,14 +283,14 @@ their source requirements.
 
 ## Direct compilation and Overleaf
 
-Select `part-a.tex` or `part-b2.tex` as the main document and choose pdfLaTeX.
+Select `part-a.tex` or `part-b.tex` as the main document and choose pdfLaTeX.
 No Python generation step is needed to compile either source. Direct compilation
 shows guidance. Hide it with `[part-a,final]` in Part A's `he-ria26` package options,
 or `[final]` in Part B. Direct compilation takes the funding fallback from
-`metadata.tex`; the supplied fallback is `standard`.
+`metadata.sty`; the supplied fallback is `standard`.
 
 For local direct compilation, use `latexmk -pdf part-a.tex` or
-`latexmk -pdf part-b2.tex`. The supplied `.latexmkrc` selects pdfLaTeX/BibTeX
+`latexmk -pdf part-b.tex`. The supplied `.latexmkrc` selects pdfLaTeX/BibTeX
 and disables shell escape. Make remains the entry point for field, budget and
 PDF-limit checks.
 
