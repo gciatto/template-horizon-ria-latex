@@ -3,6 +3,7 @@
 import argparse
 from datetime import datetime
 import hashlib
+import os
 from pathlib import Path
 import shutil
 import sys
@@ -22,13 +23,17 @@ PREVIEW_PDFS = {"part-a.pdf", "part-a-guidance.pdf", "part-b.pdf", "part-b-guida
 
 def source_file(path, root):
     relative = path.relative_to(root)
+    if len(relative.parts) == 1 and path.suffix.lower() == '.xlsx':
+        active = Path(os.environ.get('BUDGET_XLSX') or 'budget.xlsx').name
+        if path.name not in {'budget.xlsx', active}:
+            return False  # Only the selected budget inputs belong in the source archive.
     if any(part in EXCLUDED_DIRS for part in relative.parts):
         return False
     if path.is_symlink() or not path.is_file():
         return False
     if path.name in {".DS_Store", "Thumbs.db", "desktop.ini", ".coverage"} or path.name.endswith(("~", ".run.xml", ".synctex.gz", "-blx.bib")):
         return False
-    if path.name.startswith((".~lock.", "._", ".coverage.")):
+    if path.name.startswith((".~lock.", "~$", "._", ".coverage.")):
         return False
     if relative.as_posix() == "VERSION":
         return False  # Replaced with this archive's validated version below.

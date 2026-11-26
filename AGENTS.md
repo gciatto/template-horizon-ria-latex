@@ -10,7 +10,7 @@ the requested change.
 
 ## Author interface and project map
 
-- Ordinary proposal authors edit `.tex`, `.bib` and `metadata.sty` only. Keep presentation,
+- Ordinary proposal authors edit `.tex`, `.bib`, `metadata.sty` and `budget.xlsx`. Keep presentation,
   repeated-inclusion logic, validation and generation in styles or scripts.
   Do not require authors to edit JSON schemas or run schema generators.
   Markdown guidance and internal schemas are agent/maintainer interfaces.
@@ -21,6 +21,11 @@ the requested change.
   administrative records and budget. `part-a/partners/participants.tex` is the ordered
   manifest used by Part A, the budget section and Part B's participant list.
 - `part-a/ethics/` contains editable questions and assessment narratives.
+- `budget.xlsx` contains `partner-N` sheets plus generated `total`/`effort` views
+  and instructions. `scripts/add_partner.py` extends both representations from
+  pristine scaffolds. Excel mode is the Make default; `BUDGET_XLSX=` retains
+  TeX-only budgets. Generated TeX stays under `build/`; never copy filled partner
+  data into `scripts/data/budget-template.xlsx`.
 - `part-b.tex`, `part-b/sections/` and `part-b/tables/` contain the technical description.
   The rendered component is named **Part B**.
 - `he-ria26.sty` owns shared typography, layout, headings and guidance;
@@ -77,7 +82,8 @@ the requested change.
 
 ## Build and validation
 
-- Use pdfLaTeX, BibTeX and existing packages. Keep dependencies minimal and
+- Use pdfLaTeX, BibTeX and existing packages. Excel tools use `openpyxl` from
+  `requirements-budget.txt`. Keep other dependencies minimal and
   compilation independent of shell escape or Python source-generation steps.
 - `make` builds both parts with and without guidance; `make check` checks draft
   values, budgets and both clean PDFs. Blank fields are allowed at this stage.

@@ -33,7 +33,7 @@ jobs:
           sudo apt-get update 2>&1 | tee build/ci/dependencies.log
           sudo apt-get install --no-install-recommends -y \
             texlive-latex-base texlive-latex-recommended texlive-latex-extra \
-            texlive-fonts-recommended latexmk poppler-utils make python3 \
+            texlive-fonts-recommended latexmk poppler-utils make python3 python3-openpyxl \
             2>&1 | tee -a build/ci/dependencies.log
       - name: Set UTC date version
         id: version

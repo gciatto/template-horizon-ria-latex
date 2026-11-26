@@ -5,11 +5,12 @@ PYTHON ?= python3
 FUNDING ?= standard
 PAGE_LIMIT ?=
 VERSION ?=
-export FUNDING PAGE_LIMIT VERSION
+BUDGET_XLSX ?= $(wildcard budget.xlsx)
+export FUNDING PAGE_LIMIT VERSION BUDGET_XLSX
 
 .PHONY: all guidance submission guidance-a guidance-b submission-a submission-b \
         a part-a b part-b counts pages chars check check-admin check-budget \
-        strict test ci dist clean distclean help
+        strict test ci dist clean distclean help budget-tables budget-sync
 
 all: guidance submission
 
@@ -47,6 +48,12 @@ check-admin:
 check-budget:
 	$(PYTHON) scripts/check_budget.py --json build/budget-checks.json
 
+budget-tables:
+	$(PYTHON) scripts/budget_excel.py "$(BUDGET_XLSX)" --output build/excel-budget
+
+budget-sync:
+	$(PYTHON) scripts/budget_workbook.py "$(BUDGET_XLSX)"
+
 check: check-admin check-budget submission
 	$(PYTHON) scripts/count_pdf.py build/submission/part-a.pdf --check --json build/part-a-counts.json
 	$(PYTHON) scripts/count_pdf.py build/submission/part-b.pdf --check --json build/counts.json
@@ -80,6 +87,9 @@ help:
 	@echo "make check           Check fields, budgets, A4 pages and the Part B cap"
 	@echo "make check-admin     Check Part A field types, lengths and partner records"
 	@echo "make check-budget    Check partner budgets and consortium totals"
+	@echo "make BUDGET_XLSX=budget.xlsx  Read Excel budgets and staff effort for both parts"
+	@echo "make budget-tables BUDGET_XLSX=budget.xlsx  Export standalone LaTeX tables"
+	@echo "make budget-sync     Rebuild Excel summaries after changing work packages"
 	@echo "make strict          Also require completed administrative/budget fields"
 	@echo "make test            Run layout, validation, build and packaging tests"
 	@echo "make ci              Run every CI check, with logs and a Markdown summary"

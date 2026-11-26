@@ -7,6 +7,9 @@
 /part-b-guidance.pdf
 /he-ria26*.zip
 
+# Excel temporary lock files
+~$*.xlsx
+
 # LaTeX/BibTeX auxiliary files (keep authored .tex/.bib and PDF figures)
 *.aux
 *.bbl

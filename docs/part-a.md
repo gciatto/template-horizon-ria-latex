@@ -14,7 +14,7 @@ into the Portal.
 
 ## What to edit
 
-Author input belongs in `.tex`, `.bib` and `metadata.sty`. The administrative sources
+Author input belongs in `.tex`, `.bib`, `metadata.sty` and `budget.xlsx`. The administrative sources
 use four small constructs:
 
 | Construct | Meaning |
@@ -129,32 +129,60 @@ field ID is a template-maintenance change and also requires its checker definiti
 
 ## Budget arithmetic
 
-The budget fields represent six ordinary direct-cost categories: personnel,
+The original budget fields represent six ordinary direct-cost categories: personnel,
 subcontracting, travel/subsistence, equipment, other goods/works/services, and
 internally invoiced goods/services. For the standard profile, the checker uses:
 
 ```text
 indirect = round_to_cents(0.25 × (personnel + travel + equipment + other purchases))
-total eligible = sum(six direct-cost categories) + indirect
+total eligible = sum(direct-cost categories) + indirect
 maximum EU contribution = round_to_cents(total eligible × funding rate / 100)
 total estimated income = requested EU + action income + financial contributions + own resources
 ```
 
 The implemented indirect-cost base excludes subcontracting and internally
-invoiced costs. Verify the applicable rate, categories and exclusions for
+invoiced costs. Four additional fields cover financial support to third parties,
+transnational access, virtual access and PCP/PPI procurement. These optional
+fields do not establish that a particular call enables or
+funds them. They are included in eligible-cost
+addition but excluded from the implemented indirect-cost base. Once any of these
+fields is populated in TeX, supply all four (including explicit zeroes).
+Existing six-category TeX budgets keep their original scope.
+Verify the applicable rate, categories and exclusions for
 the selected call.
 
 Calculations use decimal arithmetic. Every supplied amount is checked for
 finiteness, sign and precision. Empty means unknown; zero means known zero.
 The report separates computed expectations from supplied values and aggregates
 monetary totals without adding funding-rate percentages. For a call enabling
-additional categories, adapt the budget field/check specification before using
+other categories, adapt the budget field/check specification before using
 its totals as complete.
 
 For `FUNDING=lump-sum`, the checker validates supplied numeric values and generic
 arithmetic without treating the standard reimbursement calculation as the
 lump-sum award. The detailed lump-sum budget is a separate call deliverable when
 required; declaration 10 is displayed and checked only in this profile.
+
+## Excel detail calculations
+
+Make reads `budget.xlsx` by default. See the README for partner creation,
+table extension, profile selection and `BUDGET_XLSX=` for TeX-only mode.
+Excel and Python use the same calculation policy:
+
+- Personnel: sum annual cost / 12 × project PM, rounded to cents per row.
+  The displayed average PM cost is diagnostic; it is not rounded and multiplied
+  back into the budget. Total staff PM must equal allocated WP PM.
+- Travel: trips × people × cost per person per trip, rounded per row.
+- Equipment: purchase cost × min(use months, depreciation months) /
+  depreciation months × project share, rounded per row. Depreciation months
+  must be positive and the share must be between zero and one.
+- Subcontracting and other purchases: sum supplied eligible amounts.
+
+Until a partner confirms `C7=yes`, its detail totals remain unknown. Confirmation
+means unused rows and blank optional cost categories are known zeroes; partially
+filled rows remain incomplete. Income inputs and WP allocations still require
+explicit values. The report records unfinished detail rows and WP leaders.
+Python reads named detail tables and literal inputs, not cached formula totals.
 
 ## Reports and commands
 

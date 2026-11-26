@@ -1,0 +1,20 @@
+% Manual fallback; Excel mode supplies the body of table 3.1f instead.
+\noindent
+\begin{tblr}{
+  width=\linewidth,
+  colspec={X[2.2,l] X[0.75,r] X[0.75,r] X[0.75,r] X[1.6,r]},
+  hlines, vlines,
+  row{1}={font=\bfseries,bg=HETableGrey},
+  row{5}={font=\bfseries},
+}
+Participant number / short name & WP1 & WP2 & WP3 &
+{Total person-months\\per participant} \\
+1 / [short name] & \textbf{\HEPlaceholder{PM}} & \HEPlaceholder{PM} &
+\HEPlaceholder{PM} & \HEPlaceholder{total} \\
+2 / [short name] & \HEPlaceholder{PM} & \textbf{\HEPlaceholder{PM}} &
+\HEPlaceholder{PM} & \HEPlaceholder{total} \\
+3 / [short name] & \HEPlaceholder{PM} & \HEPlaceholder{PM} &
+\textbf{\HEPlaceholder{PM}} & \HEPlaceholder{total} \\
+Total person-months & \HEPlaceholder{total} & \HEPlaceholder{total} &
+\HEPlaceholder{total} & \HEPlaceholder{total} \\
+\end{tblr}

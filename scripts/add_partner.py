@@ -3,9 +3,11 @@
 from __future__ import annotations
 
 import argparse
+import os
 from pathlib import Path
 import re
 import sys
+import tempfile
 
 from admin_data import ROOT, DATA, PARTNER_NAME, args_of, read_manifest
 
@@ -17,7 +19,7 @@ def format_name(number,acronym):
     return f'partner-{number}-{acronym}-admin-form.tex'
 
 
-def add_partner(number,acronym,role='partner',root=ROOT):
+def add_partner(number,acronym,role='partner',root=ROOT,workbook=None):
     if role not in ('coordinator','partner','affiliated'):
         raise ValueError('Role must be coordinator, partner or affiliated')
     root=Path(root).resolve()
@@ -48,13 +50,33 @@ def add_partner(number,acronym,role='partner',root=ROOT):
     if prefix and not prefix.endswith('\n'):
         prefix+='\n'
     updated=prefix+line+body[insertion:]
+    if workbook is not None and not Path(workbook).is_file():
+        raise ValueError(f'Budget workbook does not exist: {workbook}')
+    workbook = Path(workbook) if workbook else root/'budget.xlsx'
+    staged = None
+    if workbook.exists():
+        from budget_workbook import with_partner
+        book = with_partner(workbook, number, acronym)
+        with tempfile.NamedTemporaryFile(dir=workbook.parent, suffix='.xlsx', delete=False) as handle:
+            staged = Path(handle.name)
+        try:
+            book.save(staged)
+        except Exception:
+            staged.unlink(missing_ok=True)
+            raise
     partners.mkdir(parents=True,exist_ok=True)
-    path.write_text(text,encoding='utf-8')
     try:
+        path.write_text(text,encoding='utf-8')
         manifest.write_text(updated,encoding='utf-8')
+        if staged:
+            staged.replace(workbook)
     except OSError:
-        path.unlink()  # Only the new file created by this call is rolled back.
+        path.unlink(missing_ok=True)
+        manifest.write_text(body,encoding='utf-8')
         raise
+    finally:
+        if staged:
+            staged.unlink(missing_ok=True)
     return path
 
 
@@ -64,9 +86,10 @@ def main():
     parser.add_argument('acronym')
     parser.add_argument('--role',choices=('coordinator','partner','affiliated'),default='partner')
     parser.add_argument('--root',type=Path,default=ROOT)
+    parser.add_argument('--workbook',type=Path,default=os.environ.get('BUDGET_XLSX') or None)
     args=parser.parse_args()
     try:
-        path=add_partner(args.number,args.acronym,args.role,args.root)
+        path=add_partner(args.number,args.acronym,args.role,args.root,args.workbook)
     except (OSError,ValueError) as error:
         parser.error(str(error))
     print(f'Created {path.relative_to(args.root.resolve())}; updated part-a/partners/participants.tex')

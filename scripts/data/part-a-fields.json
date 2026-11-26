@@ -1440,6 +1440,54 @@
       },
       "confidence": "explicit_official_template_v3_2025",
       "official_source": "https://ec.europa.eu/info/funding-tenders/opportunities/docs/2021-2027/horizon/temp-form/af/af_he-ria-ia_en.pdf"
+    },
+    "budget.financial_support_eur": {
+      "type": "decimal",
+      "scope": "budget",
+      "required": false,
+      "source_pdf_pages": [],
+      "confidence": "template_optional_field",
+      "max_chars": null,
+      "count_spaces": null,
+      "minimum": 0,
+      "unit": "EUR",
+      "precision": 2
+    },
+    "budget.transnational_access_eur": {
+      "type": "decimal",
+      "scope": "budget",
+      "required": false,
+      "source_pdf_pages": [],
+      "confidence": "template_optional_field",
+      "max_chars": null,
+      "count_spaces": null,
+      "minimum": 0,
+      "unit": "EUR",
+      "precision": 2
+    },
+    "budget.virtual_access_eur": {
+      "type": "decimal",
+      "scope": "budget",
+      "required": false,
+      "source_pdf_pages": [],
+      "confidence": "template_optional_field",
+      "max_chars": null,
+      "count_spaces": null,
+      "minimum": 0,
+      "unit": "EUR",
+      "precision": 2
+    },
+    "budget.pcp_ppi_eur": {
+      "type": "decimal",
+      "scope": "budget",
+      "required": false,
+      "source_pdf_pages": [],
+      "confidence": "template_optional_field",
+      "max_chars": null,
+      "count_spaces": null,
+      "minimum": 0,
+      "unit": "EUR",
+      "precision": 2
     }
   },
   "declarations": {

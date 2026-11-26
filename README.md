@@ -4,7 +4,7 @@ One project for **Part A administrative drafting and Part B technical writing**.
 Both parts share metadata, partner data, typography, guidance controls and build
 commands. Part B implements the EC V5.1 structure of 22 January 2026.
 
-**For ordinary proposal work, edit `.tex`, `.bib` and `metadata.sty` only.** Styles and
+**For ordinary proposal work, edit `.tex`, `.bib`, `metadata.sty` and `budget.xlsx`.** Styles and
 scripts handle layout, repeated inclusion, field checks and releases. There is
 no schema-generation step. The Part A PDF is a coordination document: enter its
 values into the Funding & Tenders Portal, which generates the submitted Part A.
@@ -27,19 +27,28 @@ Install the tools once on Ubuntu/Debian:
 ```sh
 sudo apt-get update
 sudo apt-get install --no-install-recommends \
-  make python3 latexmk poppler-utils \
+  make python3 python3-openpyxl latexmk poppler-utils \
   texlive-latex-base texlive-latex-recommended texlive-latex-extra \
   texlive-fonts-recommended
 ```
 
 TeX Live or MacTeX with the same packages also works. The engine is pdfLaTeX,
-with BibTeX for references; the Python scripts use the standard library.
+with BibTeX for references. Excel budgets additionally require `openpyxl`:
+
+```sh
+python3 -m venv .venv
+.venv/bin/pip install -r requirements-budget.txt
+make PYTHON=.venv/bin/python
+```
+
+Alternatively install the distribution's `python3-openpyxl` package alongside
+Python. The TeX-only workflow uses the Python standard library.
 On macOS, use MacTeX together with `make`, Python 3 and Poppler's `pdfinfo` and
 `pdftotext` commands. Direct LaTeX compilation needs the TeX packages; the full
 Make/check workflow also needs those command-line tools.
 
 1. Edit the common project values in `metadata.sty`.
-2. Fill `part-a/part-a-consortium.tex`, the files in `part-a/partners/` and `part-a/ethics/`.
+2. Fill `part-a/part-a-consortium.tex`, the files in `part-a/partners/`, `part-a/ethics/`, and `budget.xlsx`.
 3. Write Part B in `part-b/sections/` and `part-b/tables/`, and add sources to `bibliography.bib`.
 4. Run `make` and `make check`.
 
@@ -97,6 +106,7 @@ state separate.
 | File | Content |
 | --- | --- |
 | `metadata.sty` | Project title, acronym, call/topic, coordinator, duration, keywords and direct-compilation defaults |
+| `budget.xlsx` | Detailed partner costs and WP effort, with computed Excel summaries |
 | `part-a/part-a-consortium.tex` | General information, abstract and declarations |
 | `part-a/partners/partner-N-ACRO-admin-form.tex` | One organisation's administrative information **and its budget** |
 | `part-a/partners/participants.tex` | Ordered list of partner files |
@@ -117,7 +127,7 @@ changing them. The style and automation live in `he-ria26.sty`, `he-admin26.sty`
 `he-ria26.bst`, `scripts/`, `Makefile` and the GitHub workflow. `AGENTS.md`
 provides instructions for agents working in the project. Markdown documentation
 and internal validation schemas are maintainer interfaces; proposal authors
-keep their inputs in `.tex`, `.bib` and `metadata.sty`.
+keep their inputs in `.tex`, `.bib`, `metadata.sty` and the Excel budget.
 
 ### Entering administrative information
 
@@ -166,7 +176,67 @@ The same partner sources feed Part A, the budget section and Part B's participan
 list. Shared proposal fields use `metadata.sty` macros. The coordinator's legal
 name is supplied through `\HECoordinator` in that metadata file.
 
-Enter EUR amounts as decimals without currency symbols or thousands separators,
+The helper also adds a pristine sheet to `budget.xlsx` and rebuilds its `total`
+and `effort` summaries, including all registered partners. It preserves existing
+budget inputs. Use `--workbook path.xlsx` to select another workbook. If the
+default workbook is absent, the helper retains its TeX-only behaviour.
+Save and close the workbook before running the partner helper or `budget-sync`.
+
+### Detailed Excel budgets
+
+The supplied `budget.xlsx` starts with `partner-1`, `total`, `effort` and
+`instructions`. The first sheet matches the initial participant in the TeX
+manifest. There is no fixed participant count: add participants with the helper
+above, which updates both the TeX manifest and Excel summaries. Its blank Excel
+scaffold is maintained under `scripts/data/`; never fill that internal copy.
+
+Each partner fills the yellow inputs for permanent, hired and seconded staff,
+subcontracting, equipment depreciation, other purchases, travel and WP effort.
+The workbook computes eligible costs and summaries. Set `C7` to `yes` only after
+reviewing all cost sections: unused detail rows and blank additional cost
+categories then mean confirmed zero. Unconfirmed details remain incomplete.
+WP effort requires explicit zeroes. Exactly one participant should identify
+itself as each WP's leader. Enter requested EU contributions and income sources
+explicitly. The maximum grant field is optional.
+
+```sh
+make                   # Read budget.xlsx and build both parts in both modes
+make check-budget      # Recompute and validate detailed costs and WP allocations
+make budget-tables     # Export standalone tables under build/excel-budget/
+make budget-sync       # Refresh Excel summary rows/columns after changing WPs
+make BUDGET_XLSX=other.xlsx  # Use another workbook
+make BUDGET_XLSX=       # Use TeX-only budgets and the manual effort table
+```
+
+Use the same `PYTHON` setting as above for these commands and the partner helper.
+No Excel application, macros, shell escape or spreadsheet recalculation command
+is needed for the build. Python reads literal inputs, recalculates with decimal
+arithmetic, and generates files under `build/`. Compilation does not trust
+Excel's saved formula results or rewrite the workbook. Part A receives a
+consortium summary and each participant's budget. Part B table 3.1f receives
+WP effort and totals, with leaders in bold. Wide effort tables use repeated
+panels at the normal font size. Keep table 3.1a's work plan consistent manually.
+
+The partner detail areas are named Excel Tables. Extend them with table rows,
+keeping their headers and names. Add the same WP identifiers to every partner's
+effort table, then run `make budget-sync`; the next partner inherits those WP
+identifiers with empty allocations. Summary sheets are generated views: edit
+partner inputs and the funding profile in `total!C2`, not summary formulas.
+Partner numbers/acronyms must match the TeX manifest. Country and duration should
+agree with the administrative sources and `metadata.sty`.
+
+In Excel mode, leave TeX budget amounts empty. A populated conflicting TeX amount
+fails validation. Editable numeric inputs must be literal numbers; formula cells
+in the detail areas are calculations. Unknown values produce visible `pending`
+placeholders in the generated tables.
+
+For lump-sum estimates, select `lump-sum` in `total!C2`, replace each partner's
+`C21` formula with an explicit indirect-cost estimate (or clear it while
+drafting), and run with `FUNDING=lump-sum`. Requested contributions remain
+explicit inputs. The workflow does not infer lump-sum awards or WP payments.
+Verify cost eligibility, rates and extra categories against the actual call.
+
+For the TeX-only workflow, enter EUR amounts as decimals without currency symbols or thousands separators,
 for example `120000.00`. Enter a funding rate as `100`, rather than `100%`.
 Use `0.00` for a known zero and an empty value for an unknown amount. Budget
 checks compute expected totals and compare any supplied calculated fields.
@@ -285,6 +355,8 @@ their source requirements.
 
 Select `part-a.tex` or `part-b.tex` as the main document and choose pdfLaTeX.
 No Python generation step is needed to compile either source. Direct compilation
+uses TeX-only budgets and the manual effort table; use Make to include Excel data.
+Direct compilation
 shows guidance. Hide it with `[part-a,final]` in Part A's `he-ria26` package options,
 or `[final]` in Part B. Direct compilation takes the funding fallback from
 `metadata.sty`; the supplied fallback is `standard`.

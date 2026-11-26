@@ -17,6 +17,7 @@ CENT = Decimal('0.01')
 ZERO = Decimal('0.00')
 INPUTS = ('personnel_eur','subcontracting_eur','travel_subsistence_eur',
           'equipment_eur','other_goods_works_services_eur','internally_invoiced_eur')
+EXTRA_INPUTS = ('financial_support_eur','transnational_access_eur','virtual_access_eur','pcp_ppi_eur')
 INDIRECT_BASE = ('personnel_eur','travel_subsistence_eur','equipment_eur','other_goods_works_services_eur')
 INCOME = ('income_generated_eur','financial_contributions_eur','own_resources_eur')
 MONEY = tuple(k.removeprefix('budget.') for k in SCHEMA['fields']
@@ -43,12 +44,18 @@ def rounded(value):
     return value.quantize(CENT,rounding=ROUND_HALF_UP)
 
 
-def check(root=ROOT,strict=False,funding='standard'):
+def check(root=ROOT,strict=False,funding='standard',workbook=None):
     root = Path(root).resolve()
     errors, incomplete, rows = [], [], []
     totals = defaultdict(lambda:ZERO)
     monetary_coverage = defaultdict(int)
     macros = metadata_macros(root)
+    excel = None
+    if workbook:
+        from budget_excel import read_workbook
+        excel = read_workbook(workbook, root, funding)
+        incomplete.extend(excel['incomplete'])
+    excel_rows = {row['file']: row['budget'] for row in excel['rows']} if excel else {}
     for path in read_manifest(root):
         source = read_source(path,macros)
         records = [r for r in source.records if r.kind == 'budget_row' and len(r.path) == 1]
@@ -74,23 +81,31 @@ def check(root=ROOT,strict=False,funding='standard'):
                 values[key] = amount(field.value.text,rate=key == 'funding_rate_pct')
             except ValueError as error:
                 errors.append(f'{path.name}: {key}: {error}')
+        source_values = values if excel else {}
+        if excel:
+            imported = {key: Decimal(value) for key,value in
+                        excel_rows[path.relative_to(root).as_posix()].items()}
+            values = imported
         computed = {}
-        missing = [key for key in INPUTS if key not in values]
+        # Older TeX-only budgets cover six categories. Once an extended category
+        # is used, require all four so a missing cost cannot disappear into zero.
+        inputs = INPUTS + EXTRA_INPUTS if any(key in values for key in EXTRA_INPUTS) else INPUTS
+        missing = [key for key in inputs if key not in values]
         if funding == 'standard' and 'funding_rate_pct' not in values:
             missing.append('funding_rate_pct')
         if funding == 'lump-sum' and 'indirect_eur' not in values:
             missing.append('indirect_eur')
         if missing:
             incomplete.append(f'{path.name}: missing budget inputs: {", ".join(missing)}')
-        if funding == 'standard' and all(key in values for key in INPUTS):
+        if funding == 'standard' and all(key in values for key in inputs):
             computed['indirect_eur'] = rounded(sum((values[key] for key in INDIRECT_BASE),ZERO)*Decimal('0.25'))
-            computed['total_eligible_eur'] = sum((values[key] for key in INPUTS),computed['indirect_eur'])
+            computed['total_eligible_eur'] = sum((values[key] for key in inputs),computed['indirect_eur'])
             if 'funding_rate_pct' in values:
                 computed['maximum_eu_for_eligible_eur'] = rounded(computed['total_eligible_eur']*values['funding_rate_pct']/100)
-        elif funding == 'lump-sum' and all(key in values for key in (*INPUTS,'indirect_eur')):
+        elif funding == 'lump-sum' and all(key in values for key in (*inputs,'indirect_eur')):
             # Estimated costs may be checked for addition, but this checker does
             # not turn them into a lump-sum reimbursement or WP payment amount.
-            computed['total_eligible_eur'] = sum((values[key] for key in INPUTS),values['indirect_eur'])
+            computed['total_eligible_eur'] = sum((values[key] for key in inputs),values['indirect_eur'])
         for key,expected in computed.items():
             if key in values and values[key] != expected:
                 errors.append(f'{path.name}: {key}: entered {values[key]:.2f}, calculated {expected:.2f}')
@@ -111,6 +126,9 @@ def check(root=ROOT,strict=False,funding='standard'):
                     errors.append(f'{path.name}: total_estimated_income_eur: entered {values["total_estimated_income_eur"]:.2f}, calculated {expected_income:.2f}')
             else:
                 incomplete.append(f'{path.name}: income sources are incomplete; enter 0 explicitly where appropriate')
+        for key,value in source_values.items():
+            if effective.get(key) != value:
+                errors.append(f'{path.name}: {key} conflicts with Excel; clear the TeX budget value or reconcile it')
         for key in MONEY:
             if key in effective:
                 totals[key] += effective[key]
@@ -122,6 +140,7 @@ def check(root=ROOT,strict=False,funding='standard'):
     if strict:
         errors.extend(incomplete)
     return {'funding':funding,'strict':strict,'rows':rows,
+            **({'excel':excel} if excel else {}),
             'totals':{key:format(value,'.2f') for key,value in totals.items()},
             'totals_rows_included':dict(monetary_coverage),
             'incomplete':incomplete,'errors':errors,
@@ -136,11 +155,14 @@ def main():
     parser.add_argument('--strict',action='store_true')
     parser.add_argument('--funding',choices=('standard','lump-sum'),default=os.environ.get('FUNDING') or 'standard')
     parser.add_argument('--json',type=Path)
+    parser.add_argument('--workbook',type=Path)
     args=parser.parse_args()
     try:
         if args.funding not in ('standard','lump-sum'):
             raise ValueError('FUNDING must be standard or lump-sum')
-        report=check(args.root,args.strict,args.funding)
+        workbook = args.workbook or os.environ.get('BUDGET_XLSX',
+            str(args.root/'budget.xlsx') if (args.root/'budget.xlsx').exists() else '')
+        report=check(args.root,args.strict,args.funding,workbook or None)
         if args.json:
             args.json.parent.mkdir(parents=True,exist_ok=True)
             args.json.write_text(json.dumps(report,indent=2,ensure_ascii=False)+'\n',encoding='utf-8')

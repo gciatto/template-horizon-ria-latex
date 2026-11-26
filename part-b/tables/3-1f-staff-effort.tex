@@ -7,25 +7,8 @@ Show person-months over the whole project for every participant and work
 package. Identify the work-package leader by putting that participant's
 person-month figure for the work package in bold. Add/remove WP columns and
 participant rows as needed. Check all row/column totals against table 3.1a and
-the Part A budget.
+the Part A budget. With \texttt{make BUDGET\_XLSX=budget.xlsx}, this table is
+generated from the partner worksheets; identify WP leaders there.
 \end{heguidance}
-\noindent
-\begin{tblr}{
-  width=\linewidth,
-  colspec={X[2.2,l] X[0.75,r] X[0.75,r] X[0.75,r] X[1.6,r]},
-  hlines, vlines,
-  row{1}={font=\bfseries,bg=HETableGrey},
-  row{5}={font=\bfseries},
-}
-Participant number / short name & WP1 & WP2 & WP3 &
-{Total person-months\\per participant} \\
-1 / [short name] & \textbf{\HEPlaceholder{PM}} & \HEPlaceholder{PM} &
-\HEPlaceholder{PM} & \HEPlaceholder{total} \\
-2 / [short name] & \HEPlaceholder{PM} & \textbf{\HEPlaceholder{PM}} &
-\HEPlaceholder{PM} & \HEPlaceholder{total} \\
-3 / [short name] & \HEPlaceholder{PM} & \HEPlaceholder{PM} &
-\textbf{\HEPlaceholder{PM}} & \HEPlaceholder{total} \\
-Total person-months & \HEPlaceholder{total} & \HEPlaceholder{total} &
-\HEPlaceholder{total} & \HEPlaceholder{total} \\
-\end{tblr}
+\HEStaffEffortTable
 

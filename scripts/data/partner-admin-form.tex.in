@@ -124,6 +124,10 @@
 \AField{budget.equipment_eur}{}
 \AField{budget.other_goods_works_services_eur}{}
 \AField{budget.internally_invoiced_eur}{}
+\AField{budget.financial_support_eur}{}
+\AField{budget.transnational_access_eur}{}
+\AField{budget.virtual_access_eur}{}
+\AField{budget.pcp_ppi_eur}{}
 \AField{budget.indirect_eur}{}
 \AField{budget.total_eligible_eur}{}
 \AField{budget.funding_rate_pct}{}

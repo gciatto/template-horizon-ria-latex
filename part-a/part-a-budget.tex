@@ -1,10 +1,14 @@
 \clearpage
 \section{Budget}
 \begin{heguidance}
-Edit each partner's budget in that partner's admin-form file. Values are in EUR
-unless stated otherwise. Leave unavailable amounts blank and enter zero explicitly
-where applicable. Use \texttt{make check-budget} to check arithmetic and report
-consortium totals. The detailed cost categories are documented in
+Fill detailed costs and work-package effort in \texttt{budget.xlsx}; Make reads
+it by default and generates the budget values and consortium summary.
+Confirm each partner's cost details only after reviewing unused rows.
+For TeX-only builds, set \texttt{BUDGET\_XLSX=} and fill the budget in each
+partner's admin-form file. Values are in EUR unless stated otherwise.
+Leave unavailable amounts blank and enter zero explicitly where applicable.
+Use \texttt{make check-budget} to check arithmetic and report consortium totals.
+The detailed cost categories are documented in
 \texttt{docs/part-a.md}; the selected call determines the applicable budget form.
 \end{heguidance}
 \HEPrintBudget
