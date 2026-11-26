@@ -15,10 +15,14 @@ POINTS_PER_MM = 72 / 25.4
 
 FIXTURE = r"""\documentclass[a4paper,11pt]{article}
 \usepackage[MODE]{he-ria26}
-\input{metadata}
+\usepackage{metadata}
 \begin{document}
 \section{First portrait page\HEBudget{GUIDANCEBUDGETPROBE}}
 AUTHOREDPORTRAITFIRST
+TABLEFONTPROBE
+\begin{tblr}{colspec={l}}
+TABLEFONTPROBE
+\end{tblr}
 \begin{heguidance}
 GUIDANCEENVPROBE
 \label{hidden-guidance-label}
@@ -128,6 +132,17 @@ class LayoutTests(unittest.TestCase):
         self.assertNotIn(r"\citation", fixture["aux"])
         self.assertNotIn(r"\bibdata", fixture["aux"])
         self.assertFalse(fixture["pdf"].with_suffix(".bbl").exists())
+
+    def test_table_text_retains_body_font_metrics(self):
+        for mode, fixture in self.fixtures.items():
+            with self.subTest(mode=mode):
+                probes = [word for word in fixture["pages"][0]["words"]
+                          if word.text == "TABLEFONTPROBE"]
+                self.assertEqual(len(probes), 2)
+                for start, end in (("xMin", "xMax"), ("yMin", "yMax")):
+                    sizes = [float(word.attrib[end]) - float(word.attrib[start])
+                             for word in probes]
+                    self.assertAlmostEqual(*sizes, delta=0.01)
 
     def test_visible_guidance_resolves_numeric_example_citation(self):
         fixture = self.fixtures["draft"]

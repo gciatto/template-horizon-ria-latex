@@ -163,8 +163,12 @@ class ToolTests(unittest.TestCase):
     def test_distribution_includes_sources_and_omits_outputs(self):
         project = self.directory / "example project"
         project.mkdir()
-        (project / "part-b2.tex").write_text("source")
-        (project / "metadata.tex").write_text("metadata")
+        (project / "part-b.tex").write_text("source")
+        (project / "metadata.sty").write_text("metadata")
+        for directory, source in (("part-a/partners", "participants.tex"),
+                                  ("part-b/sections", "1-excellence.tex")):
+            (project / directory).mkdir(parents=True)
+            (project / directory / source).write_text("source")
         (project / "Makefile").write_text("all:")
         (project / ".latexmkrc").write_text("config")
         (project / "figure.pdf").write_bytes(b"source figure")
@@ -179,7 +183,10 @@ class ToolTests(unittest.TestCase):
         self.assertEqual(result.returncode, 0, result.stderr)
         with zipfile.ZipFile(project / "dist" / "he-ria26-2026.11.25-14-07-source.zip") as archive:
             names = archive.namelist()
-        self.assertIn("he-ria26/part-b2.tex", names)
+        self.assertIn("he-ria26/part-b.tex", names)
+        self.assertIn("he-ria26/metadata.sty", names)
+        self.assertIn("he-ria26/part-a/partners/participants.tex", names)
+        self.assertIn("he-ria26/part-b/sections/1-excellence.tex", names)
         self.assertIn("he-ria26/.latexmkrc", names)
         self.assertIn("he-ria26/figure.pdf", names)
         self.assertNotIn("he-ria26/part-a.pdf", names)
@@ -189,11 +196,11 @@ class ToolTests(unittest.TestCase):
     def test_distribution_requires_and_packages_all_four_pdfs_and_reports(self):
         project = self.directory / "release project"
         project.mkdir()
-        (project / "part-b2.tex").write_text("source")
+        (project / "part-b.tex").write_text("source")
         version = "2026.11.25-14-07"
         pdfs = {"part-a-guidance": "guidance/part-a-guidance.pdf",
-                "part-b2-guidance": "guidance/part-b2-guidance.pdf",
-                "part-a": "submission/part-a.pdf", "part-b2": "submission/part-b2.pdf"}
+                "part-b-guidance": "guidance/part-b-guidance.pdf",
+                "part-a": "submission/part-a.pdf", "part-b": "submission/part-b.pdf"}
         for index, (name, relative) in enumerate(pdfs.items()):
             path = project / "build" / relative
             path.parent.mkdir(parents=True, exist_ok=True)
@@ -205,7 +212,7 @@ class ToolTests(unittest.TestCase):
         for name, relative in pdfs.items():
             self.assertEqual((project / "dist" / f"he-ria26-{version}-{name}.pdf").read_bytes(),
                              (project / "build" / relative).read_bytes())
-        for name in ("part-b2-checks", "part-a-checks", "admin-checks", "budget-checks"):
+        for name in ("part-b-checks", "part-a-checks", "admin-checks", "budget-checks"):
             self.assertTrue((project / "dist" / f"he-ria26-{version}-{name}.json").is_file())
         (project / "build/guidance/part-a-guidance.pdf").unlink()
         self.assertEqual(self.run_tool("package.py", "--root", project, "--version", version,

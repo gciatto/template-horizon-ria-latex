@@ -17,11 +17,9 @@ class AdminTests(unittest.TestCase):
         self.temp=tempfile.TemporaryDirectory(prefix='he admin ')
         self.addCleanup(self.temp.cleanup)
         self.root=Path(self.temp.name)
-        for name in ('metadata.tex','part-a-consortium.tex'):
-            shutil.copy2(ROOT/name,self.root/name)
-        for name in ('partners','ethics'):
-            shutil.copytree(ROOT/name,self.root/name)
-        self.partner=self.root/'partners/partner-1-UNIBO-admin-form.tex'
+        shutil.copy2(ROOT/'metadata.sty',self.root/'metadata.sty')
+        shutil.copytree(ROOT/'part-a',self.root/'part-a')
+        self.partner=self.root/'part-a/partners/partner-1-UNIBO-admin-form.tex'
 
     def replace_field(self,path,key,value):
         source=path.read_text()
@@ -54,7 +52,7 @@ class AdminTests(unittest.TestCase):
         self.assertEqual(text_value(parsed[0][0][1]).text,'A%B')
 
     def test_metadata_macro_expands_before_enforcing_current_title_limit(self):
-        meta=self.root/'metadata.tex'
+        meta=self.root/'metadata.sty'
         source=meta.read_text()
         source=source.replace(r'\renewcommand{\HEProjectTitle}{[proposal title]}',r'\renewcommand{\HEProjectTitle}{'+('A'*200)+'}')
         meta.write_text(source)
@@ -66,7 +64,7 @@ class AdminTests(unittest.TestCase):
         self.assertTrue(any('201 > 200' in e for e in check(self.root)['errors']))
 
     def test_unresolved_macro_is_not_certified_as_a_character_count(self):
-        self.replace_field(self.root/'part-a-consortium.tex','proposal.abstract',r'\PrivateMacro{content}')
+        self.replace_field(self.root/'part-a/part-a-consortium.tex','proposal.abstract',r'\PrivateMacro{content}')
         draft=check(self.root)
         count=next(x for x in draft['field_counts'] if x['field']=='proposal.abstract')
         self.assertIsNone(count['characters'])
@@ -104,20 +102,20 @@ class AdminTests(unittest.TestCase):
         self.assertTrue(any('other_role_specification' in e for e in draft['incomplete']))
 
     def test_ethics_confirmation_does_not_itself_require_self_assessment(self):
-        for path in (self.root/'ethics').glob('*questions.tex'):
+        for path in (self.root/'part-a/ethics').glob('*questions.tex'):
             source=path.read_text().replace('{unanswered}{}','{no}{}')
             source=source.replace(r'\AField{ethics.confirmation}{unconfirmed}',r'\AField{ethics.confirmation}{yes}')
             path.write_text(source)
         report=check(self.root,strict=True)
         self.assertFalse(any('ethics.self_assessment' in e for e in report['errors']))
-        path=self.root/'ethics/ethics-questions.tex'
+        path=self.root/'part-a/ethics/ethics-questions.tex'
         source=path.read_text()
         source=source.replace('Artificial Intelligence-based systems?}{no}{}','Artificial Intelligence-based systems?}{yes}{}')
         path.write_text(source)
         self.assertTrue(any('ethics.self_assessment.dimension' in e for e in check(self.root,strict=True)['errors']))
 
     def test_inferred_question_hierarchy_is_advisory(self):
-        path=self.root/'ethics/ethics-questions.tex'
+        path=self.root/'part-a/ethics/ethics-questions.tex'
         source=path.read_text().replace('human participants?}{unanswered}{}','human participants?}{no}{}')
         source=source.replace('children/minors?}{unanswered}{}','children/minors?}{yes}{}')
         path.write_text(source)
@@ -134,14 +132,14 @@ class AdminTests(unittest.TestCase):
     def test_manifest_mismatch_and_identifier_mismatch_fail(self):
         self.replace_field(self.partner,'budget.participant_number','2')
         self.assertTrue(any('budget.participant_number must match' in e for e in check(self.root)['errors']))
-        (self.root/'partners/participants.tex').write_text(r'\input{partners/partner-2-MISSING-admin-form.tex}')
+        (self.root/'part-a/partners/participants.tex').write_text(r'\input{part-a/partners/partner-2-MISSING-admin-form.tex}')
         with self.assertRaisesRegex(ValueError,'manifest mismatch'):
             check(self.root)
 
     def test_add_partner_uses_pristine_data_and_preserves_manifest_comments(self):
         self.replace_field(self.partner,'organisation.legal_name','PRIVATE ORGANISATION')
         self.replace_field(self.partner,'budget.personnel_eur','987654.00')
-        manifest=self.root/'partners/participants.tex'
+        manifest=self.root/'part-a/partners/participants.tex'
         manifest.write_text('% Keep this author comment\n'+manifest.read_text())
         later=add_partner(12,'CnRs',root=self.root)
         earlier=add_partner(2,'uu',root=self.root)

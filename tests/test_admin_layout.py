@@ -45,10 +45,10 @@ class AdminLayoutTests(unittest.TestCase):
         for path in ROOT.glob('*.def'):
             shutil.copy2(path, root / path.name)
         shutil.copy2(ROOT / '.latexmkrc', root / '.latexmkrc')
-        (root / 'partners').mkdir()
-        (root / 'partners/partner-1-UNI-admin-form.tex').write_text(PARTNER)
-        (root / 'partners/participants.tex').write_text(
-            r'\input{partners/partner-1-UNI-admin-form.tex}' + '\n')
+        (root / 'part-a/partners').mkdir(parents=True)
+        (root / 'part-a/partners/partner-1-UNI-admin-form.tex').write_text(PARTNER)
+        (root / 'part-a/partners/participants.tex').write_text(
+            r'\input{part-a/partners/partner-1-UNI-admin-form.tex}' + '\n')
         cls.results = {}
         for part, funding in [('B', 'standard'), ('A', 'standard'), ('A', 'lump-sum')]:
             name = f'part-{part}-{funding}'

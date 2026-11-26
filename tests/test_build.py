@@ -13,13 +13,18 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 class BuildTests(unittest.TestCase):
+    def test_only_document_roots_are_tex_files_at_project_root(self):
+        self.assertEqual({path.name for path in ROOT.glob("*.tex")},
+                         {"part-a.tex", "part-b.tex"})
+        self.assertTrue((ROOT / "metadata.sty").is_file())
+
     def setUp(self):
         self.temp = tempfile.TemporaryDirectory(prefix="horizon build with spaces ")
         self.addCleanup(self.temp.cleanup)
         self.project = Path(self.temp.name)
         (self.project / "scripts").mkdir()
         shutil.copy2(ROOT / "scripts/build.py", self.project / "scripts/build.py")
-        for document in ("part-a", "part-b2"):
+        for document in ("part-a", "part-b"):
             (self.project / f"{document}.tex").write_text("source", encoding="utf-8")
         self.bin = self.project / "bin"
         self.bin.mkdir()
@@ -34,7 +39,7 @@ class BuildTests(unittest.TestCase):
         compiler.chmod(0o755)
         self.record = self.project / "compiler-record.json"
 
-    def build(self, mode="submission", document="part-b2", **overrides):
+    def build(self, mode="submission", document="part-b", **overrides):
         env = os.environ.copy()
         for key in ("FUNDING", "PAGE_LIMIT", "COMPILER_EXIT"):
             env.pop(key, None)
@@ -60,7 +65,7 @@ class BuildTests(unittest.TestCase):
         reset = json.loads(self.record.read_text())
         self.assertIn(r"\def\HEFunding{standard}", reset["driver"])
         self.assertNotIn(r"\def\HEPageLimit", reset["driver"])
-        self.assertEqual(reset["cwd"], str(self.project))
+        self.assertEqual(reset["cwd"], str(self.project.resolve()))
 
     def test_empty_funding_and_part_b_limit_do_not_cap_part_a(self):
         self.assertEqual(self.build(document="part-a", FUNDING="", PAGE_LIMIT="1").returncode, 0)

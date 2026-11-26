@@ -16,9 +16,9 @@ class BudgetTests(unittest.TestCase):
         self.temp=tempfile.TemporaryDirectory(prefix='he budget ')
         self.addCleanup(self.temp.cleanup)
         self.root=Path(self.temp.name)
-        shutil.copy2(ROOT/'metadata.tex',self.root/'metadata.tex')
-        shutil.copytree(ROOT/'partners',self.root/'partners')
-        self.path=self.root/'partners/partner-1-UNIBO-admin-form.tex'
+        shutil.copy2(ROOT/'metadata.sty',self.root/'metadata.sty')
+        shutil.copytree(ROOT/'part-a/partners',self.root/'part-a/partners')
+        self.path=self.root/'part-a/partners/partner-1-UNIBO-admin-form.tex'
 
     def set_values(self,**values):
         source=self.path.read_text()
