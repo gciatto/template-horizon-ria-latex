@@ -2,29 +2,21 @@
 
 One project for **Part A administrative drafting and Part B technical writing**.
 Both parts share metadata, partner data, typography, guidance controls and build
-commands. Part B follows the supplied EC V5.1 form of 22 January 2026.
-
-**Reference RTF: `template-he-ria-part-b-5.1.rtf`, Part B version 5.1,
-22 January 2026.** The version and date appear in the original cover and change
-history. The unchanged file is tracked under `references/`.
+commands. Part B implements the EC V5.1 structure of 22 January 2026.
 
 **For ordinary proposal work, edit `.tex` and `.bib` files only.** Styles and
 scripts handle layout, repeated inclusion, field checks and releases. There is
 no schema-generation step. The Part A PDF is a coordination document: enter its
 values into the Funding & Tenders Portal, which generates the submitted Part A.
 
-## Source baseline
+## Template baseline
 
-| Component | Baseline used |
+| Component | Implementation |
 | --- | --- |
-| Part B appearance and structure | EC RIA/IA full-proposal **V5.1, 22 January 2026**, from the supplied RTF |
-| Part A administrative structure | Supplied `horizon-part-a-templates(2).zip`; its dictionary cites source form **Horizon Europe ver 1.00 20241022** |
-| Part A current-form refinements | EC standard form **version 3.0, 10 November 2025**, checked during integration on 25 November 2026 |
-| Agent proposal-writing workflow | Supplied `AGENTS-horizon.md`, adapted to this repository |
+| Part B appearance and structure | RIA/IA full-proposal **V5.1, 22 January 2026** |
+| Part A administrative structure and constraints | `scripts/data/part-a-fields.json` and `scripts/data/part-a-questions.json`; see `docs/part-a.md` |
+| Agent proposal-writing workflow | `docs/proposal-writing.md` |
 
-The [source registry](references/README.md) records the original inputs,
-SHA-256 hashes, origins, versions, verification provenance and official URLs.
-It also identifies the supplied ERC snapshot and the inspected `heria` commit.
 Use the actual topic's Submission System form to resolve call-specific changes;
 the shipped baseline supports a full RIA, not every Horizon instrument or stage.
 
@@ -226,7 +218,7 @@ make check FUNDING=standard              # Standard RIA profile
 make check FUNDING=standard PAGE_LIMIT=35 # Example call-specific Part B cap
 ```
 
-For the supplied full-proposal form, Part B defaults to **40 pages**, or
+For the full-proposal profile, Part B defaults to **40 pages**, or
 **45 for lump-sum**. Every Part B page counts,
 including title, participant list, figures, tables, landscape pages and references.
 `PAGE_LIMIT` overrides Part B only. Part A has field constraints and **no inherited
@@ -237,19 +229,16 @@ when present, otherwise the profile default. Make's `FUNDING` value is explicit:
 omitting it returns to `standard`, even if the previous build used lump-sum.
 The `FUNDING` switch changes the funding profile, not the action type or stage.
 
-The standard budget checker uses the ordinary cost categories represented in the
-supplied administrative stub. Lump-sum mode retains numeric/total checks without
+The standard budget checker uses the ordinary cost categories documented in
+`docs/part-a.md`. Lump-sum mode retains numeric/total checks without
 applying the standard reimbursement formula as if it defined the lump-sum award.
 Call-specific categories and conditions belong in the actual Portal form.
 
 PDF character statistics are diagnostic. Administrative field checks count
 normalised text, including spaces and paragraph breaks, resolve shared metadata
 macros, and flag unsupported LaTeX commands when a reliable count is unavailable.
-For literal Portal text, count a UTF-8 file directly:
-
-```sh
-python3 scripts/count_chars.py abstract.txt --limit 2000
-```
+For literal Portal text, use `scripts/count_chars.py` with the path to your
+UTF-8 input and an optional `--limit`.
 
 The literal counter includes spaces and line breaks exactly as present in the
 UTF-8 file. It does not expand LaTeX. `make strict` adds known administrative and
@@ -272,8 +261,8 @@ ethics/security page references and call-specific Portal requirements.
 The paragraph policy also applies to blue guidance, administrative narrative
 answer boxes, `\HEParagraph` and native `\paragraph`/`\subparagraph` headings.
 Lists, labels, tables, captions and headings retain their structural spacing.
-The RTF already uses essentially the minimum margins; space savings come from
-compact paragraph/layout spacing while retaining the required text size.
+Space savings come from compact paragraph/layout spacing while retaining the
+required text size.
 
 Separate prose paragraphs with a blank source line:
 
@@ -348,7 +337,7 @@ LaTeX auxiliary files, Python caches and editor leftovers. Authored figures,
 including PDF figures, remain trackable. `make clean` removes build outputs;
 `make distclean` also removes release assets.
 
-## Maintainer documentation, sources and licensing
+## Maintainer documentation and licensing
 
 | Document | Purpose |
 | --- | --- |
@@ -356,16 +345,9 @@ including PDF figures, remain trackable. `make clean` removes build outputs;
 | [docs/proposal-writing.md](docs/proposal-writing.md) | Call analysis, evidence, proposal logic, drafting/review and handoff |
 | [docs/part-a.md](docs/part-a.md) | Administrative value types, field lengths, source confidence and budget calculations |
 | [docs/formatting.md](docs/formatting.md) | Layout decisions and Part B formatting rules |
-| [references/README.md](references/README.md) | Source inventory, original input hashes, versions, official URLs and upstream snapshot identifiers |
 | [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) | Attribution and source-specific terms |
-
-The original RTF, Part A ZIP and writing instructions are tracked unchanged in
-`references/`; adaptations live in the author files, styles, scripts and docs.
-The ERC archive's provenance is recorded without bundling its proposal or
-personal documents. The project implements its own style; no `heria` source
-is incorporated.
 
 Original project code is under the [MIT licence](LICENSE). The modified
 `he-ria26.bst` retains the `plainnat` family's LPPL terms and attribution.
-Those terms do not replace the rights in supplied forms, reference data or
+Those terms do not replace the rights in adapted guidance, bibliographic data or
 proposals subsequently written with the template.

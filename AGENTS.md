@@ -30,8 +30,6 @@ the requested change.
   add relevant sources when drafting a proposal.
 - `scripts/`, `Makefile`, `tests/` and `.github/workflows/build.yml` own automation.
   Internal schemas/scaffolds under `scripts/data/` are maintained with the tools.
-- Keep original inputs in `references/` unchanged. Maintain their origins,
-  versions, SHA-256 hashes and external-source provenance in `references/README.md`.
 
 ## Proposal content and presentation
 
@@ -48,7 +46,7 @@ the requested change.
 - Put author guidance in `heguidance`, `\HEGuide`, `\HECriterion` or `\HEBudget`.
   It appears in blue and disappears in clean mode without executing hidden
   citations or labels. Authored text and unfinished placeholders remain visible.
-- Preserve the supplied form's A4, 15 mm body margins, 11 `bp` body/table text, reference-font
+- Preserve A4, 15 mm body margins, 11 `bp` body/table text, reference-font
   metrics, standard character spacing and single line spacing. Resolve overflow
   through content or layout; avoid shrinking/scaling ordinary table text.
 - Keep prose at `\parskip=0pt` and `\parindent=1em`, including first paragraphs
@@ -61,7 +59,7 @@ the requested change.
 
 - Unset or empty `FUNDING` means `standard` RIA. Select `FUNDING=lump-sum`
   explicitly. Make/script settings override direct-compilation metadata defaults.
-- The supplied full-RIA profiles default to 40/45 pages; verify the actual call
+- The full-RIA profiles default to 40/45 pages; verify the actual call
   and submission stage before applying those limits. The applicable cap covers
   the whole Part B PDF, including references. Part A has field constraints and
   no inherited Part B page cap. `FUNDING` selects the funding model, not another

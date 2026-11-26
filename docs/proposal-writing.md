@@ -40,14 +40,14 @@ structure on ERC, MSCA, EIC, CSA or other instruments with different requirement
   instructions. Do not carry page limits, reimbursement rates, consortium
   minima or evaluation rules over from another call or year.
 
-Use the sources and version records already maintained in
-[formatting.md](formatting.md#authoritative-sources) and
+Use the template baseline and constraints maintained in
+[formatting.md](formatting.md#template-baseline) and
 [part-a.md](part-a.md#source-and-scope), then verify their applicability to the
-selected call. Maintain those records when a requirement changes rather than
+selected call. Update those documents when a requirement changes rather than
 creating conflicting copies of the same rule.
 
 `FUNDING` unset or empty selects this template's `standard` RIA profile;
-`FUNDING=lump-sum` selects the lump-sum profile. Their supplied Part B defaults
+`FUNDING=lump-sum` selects the lump-sum profile. Their Part B defaults
 are 40 and 45 pages, respectively. These are configurable defaults for the
 supported full-proposal form, not universal Horizon rules. Use `PAGE_LIMIT`
 for an evidenced call-specific override and update the relevant template or
@@ -154,8 +154,7 @@ Write objectives and ambition in section 1.1 and methodology in section 1.2 of
 - Explain how prior projects and existing assets feed into the work, including
   the necessary access and the distinction from activities already funded.
 
-Use the appropriate instrument-specific [evaluation form][evaluation-form];
-the form linked here is a starting reference for RIA/IA proposals.
+Use the evaluation criteria applicable to the selected instrument and call.
 
 ## 6. Impact: explain who will use results and what changes
 
@@ -230,8 +229,8 @@ Keep those roles and the actual call's requested columns intact.
   work is distinct from guaranteed scientific success; the standard
   reimbursement calculation does not establish a lump-sum award.
 
-Apply the current [lump-sum guidance][lump-sum] only when that funding model
-applies. The template's budget checks support drafting; they do not replace
+Apply lump-sum requirements only when that funding model applies.
+The template's budget checks support drafting; they do not replace
 the required call-specific budget form or an institutional budget review.
 
 ## 8. Integrate cross-cutting requirements into the work
@@ -248,12 +247,12 @@ the required call-specific budget form or an institutional budget review.
   repositories, FAIR data, access conditions and responsibilities. FAIR does
   not mean unrestricted public access. Explain justified restrictions and
   follow the call's data-management planning requirements without inventing
-  submission annexes. Consult the [Programme Guide][programme-guide].
+  submission annexes.
 - Identify ethics, personal-data, security and misuse issues arising from the
   actual activities. Align answers in `ethics/` with Part B safeguards and
   declarations. State required approvals, responsible roles and timing;
-  describe existing approvals only when evidenced. Use the applicable
-  [ethics self-assessment guidance][ethics-guidance].
+  describe existing approvals only when evidenced. Check the applicable
+  ethics self-assessment requirements.
 - Check additional topic conditions, such as multi-actor participation,
   standardisation, international cooperation or policy obligations. Translate
   applicable requirements into tasks, resources and evidence, not generic
@@ -322,8 +321,8 @@ as a replacement for completing that form.
   funding prospects.
 - Protect confidential partner information, unpublished results and personal
   data. Use approved tools and safeguards; do not upload protected material to
-  unapproved external services. Consult the Commission's applicable
-  [responsible-AI guidance][responsible-ai].
+  unapproved external services. Check the applicable requirements for
+  responsible AI use.
 - Report what changed, which call documents and inputs were checked, remaining
   gaps and who must resolve them. Distinguish a concept draft, a complete draft
   and files that passed the stated final checks.
@@ -331,26 +330,5 @@ as a replacement for completing that form.
   making institutional declarations and submitting through the Portal require
   explicit user authorisation; respect authorisation already given.
 
-## Provenance and linked guidance
-
-Adapted from the user-supplied
-[`AGENTS-horizon.md`](../references/AGENTS-horizon.md) and mapped to this project's
-author files, commands and validation scope. Its attribution and reported
-source-check date are recorded in
-[`THIRD_PARTY_NOTICES.md`](../THIRD_PARTY_NOTICES.md#supplied-proposal-writing-workflow).
-This adaptation does not represent a new verification of the external links.
-Recheck the relevant live topic documents for each application. These are
-editorial instructions, not an official Commission template.
-
-The links below are retained from the supplied workflow. Their provenance,
-alongside the application form, General Annexes, budget sources and original
-input hashes, is maintained in the [source registry](../references/README.md).
-`formatting.md` and `part-a.md` explain how those sources are applied.
-
-[evaluation-form]: https://ec.europa.eu/info/funding-tenders/opportunities/docs/2021-2027/horizon/temp-form/ef/ef_he-ria-ia_en.pdf
 [exploitation]: https://research-and-innovation.ec.europa.eu/strategy/dissemination-and-exploitation-research-results_en
-[lump-sum]: https://ec.europa.eu/info/funding-tenders/opportunities/docs/2021-2027/common/guidance/how-to-manage-your-lump-sum-grants_en.pdf
 [gender]: https://rea.ec.europa.eu/gender-eu-research-and-innovation_en
-[programme-guide]: https://ec.europa.eu/info/funding-tenders/opportunities/docs/2021-2027/horizon/guidance/programme-guide_horizon_en.pdf
-[ethics-guidance]: https://ec.europa.eu/info/funding-tenders/opportunities/docs/2021-2027/common/guidance/how-to-complete-your-ethics-self-assessment_en.pdf
-[responsible-ai]: https://research-and-innovation.ec.europa.eu/document/download/edc8027b-2811-4347-82f4-fa8b29ece534_en?filename=ec_rtd_ai-guidelines-factsheet.pdf

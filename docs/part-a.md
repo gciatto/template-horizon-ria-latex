@@ -2,23 +2,15 @@
 
 ## Source and scope
 
-The administrative structure comes from the supplied
-`horizon-part-a-templates(2).zip`, preserved as
-`references/part-a-structure-source.zip`. Its data dictionary identifies
-`Proposal-SEP-211303496.pdf`, administrative pages 1–202, and form version
-`Horizon Europe ver 1.00 20241022` as its original evidence. That source PDF
-was not supplied with this integration; the archive's evidence labels are
-retained rather than presented as a fresh examination of that proposal.
+The administrative structure and constraints are maintained in
+`scripts/data/part-a-fields.json` and `scripts/data/part-a-questions.json`.
+Their confidence labels distinguish explicit constraints, counter-derived
+limits, observed values and inferences. These inherited labels do not
+constitute a fresh verification of the actual call's requirements.
 
-The [EC standard RIA/IA application form](../references/README.md#ec-application-form)
-was checked on 25 November 2026. Its Part A version 3.0, dated 10 November 2025,
-supplies the title/keyword limits, conditional lump-sum declaration and
-other-ethics explanation added during integration. The actual call's Portal
-form determines its enabled fields and conditional follow-up questions.
-
-These sources serve different purposes: the supplied archive provides the
-editable drafting structure; current official guidance refines known rules.
-The PDF produced here coordinates answers for entry into the Portal.
+The actual call's Portal form determines its enabled fields and conditional
+follow-up questions. The PDF produced here coordinates answers for entry
+into the Portal.
 
 ## What to edit
 
@@ -44,21 +36,21 @@ do not edit or regenerate them.
 Lengths include spaces. Blank lines denote paragraph breaks; physical source
 line wrapping is normalised to spaces as in ordinary LaTeX prose.
 
-| Field | Limit | Evidence |
+| Field | Limit | Basis recorded in the constraint catalogue |
 | --- | ---: | --- |
-| Proposal title | 200 characters | Current EC Part A, printed p. 4 |
-| Free keywords | 200 characters | Current EC Part A, printed p. 4 |
-| Abstract | 2,000 characters | Exact counter reconstruction recorded in the supplied archive |
-| Other participant role | 50 characters | Explicit limit recorded in the supplied archive |
-| Achievement description | 500 characters | Explicit limit recorded in the supplied archive |
-| Previous-project description | 500 characters | Explicit limit recorded in the supplied archive |
-| Infrastructure description | 300 characters | Explicit limit recorded in the supplied archive |
-| Ethics dimension narrative | 5,000 characters | Counter-derived limit recorded in the supplied archive |
-| Ethics compliance narrative | 5,000 characters | Counter-derived limit recorded in the supplied archive |
-| Other ethics explanation | 1,000 characters | Current EC Part A, printed p. 20 |
-| Security national-restrictions explanation | 1,000 characters | Explicit limit in the supplied archive and current EC form |
-| Other security explanation | 1,000 characters | Explicit limit in the supplied archive and current EC form |
-| Security self-assessment | 5,000 characters | Current EC Part A, printed p. 23 |
+| Proposal title | 200 characters | Explicit limit |
+| Free keywords | 200 characters | Explicit limit |
+| Abstract | 2,000 characters | Exact counter reconstruction |
+| Other participant role | 50 characters | Explicit limit |
+| Achievement description | 500 characters | Explicit limit |
+| Previous-project description | 500 characters | Explicit limit |
+| Infrastructure description | 300 characters | Explicit limit |
+| Ethics dimension narrative | 5,000 characters | Counter-derived limit |
+| Ethics compliance narrative | 5,000 characters | Counter-derived limit |
+| Other ethics explanation | 1,000 characters | Explicit limit |
+| Security national-restrictions explanation | 1,000 characters | Explicit limit |
+| Other security explanation | 1,000 characters | Explicit limit |
+| Security self-assessment | 5,000 characters | Explicit limit |
 
 The title excludes `<`, `>`, `"` and `&`. Unknown lengths remain unspecified.
 Each participant may provide up to five achievements and five previous projects.
@@ -88,7 +80,7 @@ Numeric fields use literal values without formatting commands.
 | EUR amount | Nonnegative decimal with at most two decimal places, e.g. `1250.50` |
 | Funding rate | Numeric percentage from 0 to 100, e.g. `100` |
 | PIC | Nine digits |
-| Previous proposal reference | Six or nine digits, as recorded in the supplied archive |
+| Previous proposal reference | Six or nine digits, as recorded in the constraint catalogue |
 | Part B page references | Numbers, lists or ranges such as `3`, `3, 7`, `7-9` |
 
 For participating-organisation roles, use a comma-separated selection from:
@@ -130,14 +122,14 @@ contact or identity. The source's affiliated-entity contact exception is retaine
 The ordinary check accepts incomplete drafting information. The strict check
 requires the known mandatory fields, confirmations and applicable explanatory
 narratives. It does not certify that every call-specific online field is covered.
-The inherited ethics/security catalogue reflects questions visible in the
-supplied source. Add call-specific follow-up prompts and answers as ordinary
+The ethics/security catalogue is maintained in `scripts/data/part-a-questions.json`.
+Add call-specific follow-up prompts and answers as ordinary
 LaTeX in the relevant `.tex` source or `part-a-other.tex`. Adding a new typed
 field ID is a template-maintenance change and also requires its checker definition.
 
 ## Budget arithmetic
 
-The supplied stub represents six ordinary direct-cost categories: personnel,
+The budget fields represent six ordinary direct-cost categories: personnel,
 subcontracting, travel/subsistence, equipment, other goods/works/services, and
 internally invoiced goods/services. For the standard profile, the checker uses:
 
@@ -148,12 +140,9 @@ maximum EU contribution = round_to_cents(total eligible × funding rate / 100)
 total estimated income = requested EU + action income + financial contributions + own resources
 ```
 
-These are the ordinary-category calculations in the supplied source. The
-[Horizon Europe Model Grant Agreement](../references/README.md#model-grant-agreement),
-Articles 6.2.D.2 and 6.2.E, excludes internally invoiced costs from the indirect
-base and establishes the 25% flat rate with its listed exclusions. The
-[2026–2027 General Annexes](../references/README.md#general-annexes)
-also describe that rate and exclusions.
+The implemented indirect-cost base excludes subcontracting and internally
+invoiced costs. Verify the applicable rate, categories and exclusions for
+the selected call.
 
 Calculations use decimal arithmetic. Every supplied amount is checked for
 finiteness, sign and precision. Empty means unknown; zero means known zero.
